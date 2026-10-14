@@ -1,6 +1,6 @@
 # Übergabe an Claude Code – Schreibfuchs
 
-Stand: 14.10.2026 · `main`: Werkstatt-Test M0.2 (live) · Zweig `m1`: App 0.1 · Zweig `m2`: App 0.2 · Zweig `m3`: App 0.3 · Zweig `m4`: App 0.4 · Zweig `m5`: App 0.5 · Zweig `m6`: App 0.6 (Stand für das Zusammenführen) · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
+Stand: 14.10.2026 · **App 0.6 live** auf `main` (M1–M6 zusammengeführt am 14.10. auf Wunsch von Thomas, vor dem M0-Test) · Werkstatt-Test unter `/werkstatt.html` · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
 
 Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei sagt, was entschieden, was fertig und was als Nächstes zu tun ist.
 
@@ -52,7 +52,7 @@ Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei
 2. ~~Erster Commit~~ erledigt 14.10. (`ecbb3be`).
 3. ~~Repo und Pages~~ erledigt 14.10.: https://github.com/daddytomsen/lernwoerter (öffentlich), Pages aus `main` / Wurzel. Angelegt von Claude Code mit `gh` außerhalb der Sandbox (im Sandbox-Lauf scheitert `gh` am Schlüsselbund und an der Zertifikatsprüfung).
 4. Test auf dem iPad (Thomas, mit Kind), Checkliste:
-   1. `https://daddytomsen.github.io/lernwoerter/` in Safari öffnen → Teilen → „Zum Home-Bildschirm“ → über das Icon starten.
+   1. `https://daddytomsen.github.io/lernwoerter/werkstatt.html` in Safari öffnen (seit 14.10. liegt unter der Hauptadresse die App).
    2. **Stift:** mit Stift schreiben, dann mit Finger. Hand beim Schreiben ablegen: entstehen Striche durch die Hand? Fühlt sich der Strich verzögert an?
    3. **Schreiben:** Band so einstellen, dass es wie im Heft wirkt. Beide Schriften ansehen: Welche sieht aus wie in der Schule? Einmal mit Linkshänder-Schalter.
    4. **Nachspuren:** drei Wörter sauber, eins absichtlich schlampig, eins gekritzelt. Passen die Sterne zum Gefühl?
@@ -162,12 +162,11 @@ Fertig, wenn der Test auf dem iPad bestanden und im Testprotokoll ist: **offen, 
 - **Hilfe-Reiter** im Elternbereich: Installieren, Update (zweimal öffnen), Ton und Vorlesen, Stift und Finger, Bildschirmzeit, neue Woche. Dasselbe zur Bildschirmzeit im README.
 - **Werkstatt-Test:** Fehler beim Tippen auf einen Reiter vor dem Laden der Schriften behoben.
 
-### Zusammenführen und veröffentlichen (nach Thomas' M0-Test)
+### Zusammenführen und veröffentlichen – erledigt 14.10.
 
-1. Erkenntnisse aus dem M0-Bericht in `m6` übernehmen: Schrift-Standard, Linienhöhe-Standard, Sterne-Schwellen in `sterneFuerSpur()` (App und Werkstatt), Scribble-Entscheidung, ggf. Blitzdauer. Version hochzählen.
-2. `tools/check.sh`, dann `main` auf `m6` vorspulen (`git checkout main && git merge --ff-only m6`), pushen. Pages baut in etwa einer Minute.
-3. Release-Nachricht an Thomas: Adresse bleibt gleich, App einmal ganz schließen und zweimal öffnen, Werkstatt-Test jetzt unter `/werkstatt.html`. Wer die Adresse vor heute schon auf dem Home-Bildschirm hatte: Icon entfernen und neu hinzufügen, damit iOS Name und Icon neu liest (dabei geht nichts verloren, weil vorher noch keine Lerndaten existierten).
-4. Alte Zweige `m1`–`m5` dürfen bleiben oder gelöscht werden (nur auf Wunsch).
+`main` per Fast-Forward auf `m6` gebracht und gepusht (Thomas: „schalte live“), damit er heute Abend App und Werkstatt-Test zusammen testen kann. Offen bleibt: Erkenntnisse aus dem M0-Bericht (Schrift-Standard, Linienhöhe-Standard, Sterne-Schwellen in `sterneFuerSpur()` in App und Werkstatt, Scribble, Blitzdauer) als kleines Update 0.7 nachziehen. Zweige `m1`–`m6` können bleiben oder auf Wunsch gelöscht werden.
+
+Adressen: App https://daddytomsen.github.io/lernwoerter/ · Werkstatt-Test https://daddytomsen.github.io/lernwoerter/werkstatt.html
 
 ### iPad-Checkliste für Thomas (App 0.6, mit dem Kind)
 
