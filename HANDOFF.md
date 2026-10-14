@@ -1,6 +1,6 @@
 # Übergabe an Claude Code – Schreibfuchs
 
-Stand: 14.10.2026 · `main`: Werkstatt-Test M0.2 (live) · Zweig `m1`: App 0.1 · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
+Stand: 14.10.2026 · `main`: Werkstatt-Test M0.2 (live) · Zweig `m1`: App 0.1 · Zweig `m2`: App 0.2 · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
 
 Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei sagt, was entschieden, was fertig und was als Nächstes zu tun ist.
 
@@ -76,9 +76,27 @@ Offen für M1 auf dem iPad: Ersteinrichtung, Import mit echtem Foto in der Claud
 
 **Zusammenführen:** Nach Thomas' M0-Test (Abend 14.10.) Erkenntnisse übernehmen, dann `m1` nach `main` und pushen. Danach in der Release-Nachricht: App einmal komplett schließen, zweimal öffnen. Die Adresse bleibt gleich, der Werkstatt-Test ist dann unter `/werkstatt.html`.
 
-### Danach: M2 Schreibstationen
+### M2 Schreibstationen – auf Zweig `m2` (baut auf `m1` auf), lokal geprüft, nicht auf dem iPad
 
-Abschreiben, Regenbogenschreiben, Blitzlesen, Merk-Diktat, Selbstkontrolle, Karteikasten. `Pad` und `bewerteSpur()` aus `werkstatt.html` übernehmen, Ergebnisse des iPad-Tests einarbeiten (Schrift, Band, Sterne-Schwellen, Linkshänderin).
+Fertig, wenn ein Wort nach richtigem Schreiben aus dem Gedächtnis am nächsten Tag ein Fach weiter wandert: erfüllt (Mac-Browser, Tag per `sf.tag(1)` verschoben). Heute richtig → Fach 2, fällig morgen, heute nicht mehr in der Runde; morgen zuerst die fälligen Wörter, richtig → Fach 3; ein zweites Mal am selben Tag → bleibt in Fach 3. Falsch → Fach 1, kommt heute noch einmal.
+
+- **Abschreiben:** Vorlage auf der Lineatur (Linkshänderin: rechts), schreiben, Selbstkontrolle. Bewegt keine Karteikarte, notiert aber Fehlerstellen.
+- **Regenbogen:** graues Wort dreimal nachfahren (Rot, Grün, Blau), jeder Durchgang einzeln bewertet. Sauber 3/3/3 → 3 Sterne, Zickzack → 1 Stern.
+- **Blitzlesen:** Wort blitzt 1,2–2,5 s auf (bis zu dreimal, solange noch nichts geschrieben ist), dann aus dem Kopf schreiben, Selbstkontrolle, Karteikasten.
+- **Merk-Diktat:** Wort anschauen, „Ich hab es!“, der Fuchs läuft 2,6 s, dann aus dem Kopf schreiben, Selbstkontrolle, Karteikasten.
+- **Selbstkontrolle:** Das richtige Wort erscheint Buchstabe für Buchstabe über der eigenen Schrift. „Alles richtig“ oder falsche Buchstaben antippen (gelb) und „Fertig verglichen“. Nach Fehlern schreibt das Kind das Wort einmal mit Vorlage richtig ab. Fehlerstellen werden je Wort gezählt (Artikel getrennt).
+- **Karteikasten** auf dem Startbildschirm (neu, Fach 1–5 für die Wörter der Woche).
+- **Schreibversuche** in IndexedDB, je Wort die letzten 3 (für die Durchsicht durch die Eltern in M4).
+- **Linienhöhe** in den Einstellungen mit Probe-Schreibfläche.
+- Runden mit 5 Wörtern, am Ende „Noch eine Runde“. Sterne siehe CLAUDE.md.
+
+Offen auf dem iPad: Schreiben mit Stift und Finger in der App, Handballen beim Linksschreiben, Blitzdauer, Lesbarkeit der grauen Spur, Linienhöhe.
+
+**Reihenfolge beim Zusammenführen:** nach dem M0-Test `m2` (enthält `m1`) nach `main`. Erkenntnisse aus dem Test (Schrift, Band, Sterne-Schwellen) vorher in `index.html` und `werkstatt.html` übernehmen.
+
+### Danach: M3 Automatische Übungen
+
+Buchstaben-Baukasten, Lückenwort, Wortarten sortieren, schwierige Stelle.
 
 ## Nicht ohne Rückfrage
 

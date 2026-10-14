@@ -125,6 +125,37 @@ button{font:inherit;color:inherit;cursor:pointer}
 .nochmal{font-weight:700;color:var(--accent-deep);text-align:center;margin:0}
 .gross-stern{font-size:80px;color:var(--star);line-height:1;text-align:center}
 
+/* writing stations */
+.pad{position:relative;width:100%;border-radius:18px;overflow:hidden;border:2px solid var(--line);background:#fff}
+.pad canvas{position:absolute;left:0;top:0;width:100%;display:block}
+.pad .ink{touch-action:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.schreibzeile{width:100%;margin:12px 0}
+.werkzeuge{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.anweisung{font-weight:700;text-align:center;margin:14px 0 8px}
+.blitzfeld{min-height:200px;display:flex;align-items:center;justify-content:center;width:100%}
+.verdeckt{width:min(560px,80%);height:150px;border-radius:22px;background:repeating-linear-gradient(45deg,var(--accent-soft) 0 20px,#fff 20px 40px)}
+.vergleich{display:flex;flex-wrap:wrap;justify-content:center;gap:4px}
+.vbst{min-width:56px;min-height:84px;padding:0 6px;border:2px solid var(--line);border-radius:12px;background:#fff;font:400 50px/1 var(--f-school);color:var(--ink);opacity:0;animation:auf .25s ease forwards}
+.vbst.sofort{animation:none;opacity:1}
+.vbst.falsch{background:#FFE066;border-color:#E0B23A}
+.vluecke{width:24px}
+@keyframes auf{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.lauf{height:160px;position:relative;overflow:hidden;width:100%}
+.lauf .fox{position:absolute;left:-80px;top:50px;width:80px;height:80px;animation:laufen 2.6s linear forwards,huepfen .32s ease-in-out infinite alternate}
+@keyframes laufen{to{left:calc(100% + 10px)}}
+@keyframes huepfen{to{top:24px}}
+.paesse{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.pass{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 16px;border-radius:999px;border:3px solid var(--f);color:var(--f);font-weight:800;background:#fff}
+.pass.an{background:var(--f);color:#fff}
+.pass .i{color:var(--star)}
+.sternreihe{display:flex;gap:6px;justify-content:center;color:var(--star)}
+.sternreihe .i{width:48px;height:48px}
+.faecher{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:8px}
+.fach{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;min-height:86px;border-radius:14px;background:var(--surface-2);padding:8px 4px;border-bottom:6px solid var(--line)}
+.fach b{font-size:30px;line-height:1}
+.fach span{font-size:14px;color:var(--ink-2);font-weight:600}
+.fach.f1{border-bottom-color:#FF7F61} .fach.f2{border-bottom-color:#FFAE3D} .fach.f3{border-bottom-color:#F5CB2E} .fach.f4{border-bottom-color:#6FD3A0} .fach.f5{border-bottom-color:#12A16B}
+
 /* onboarding */
 .themen{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
 .thema{border:4px solid transparent;border-radius:var(--r-lg);background:var(--surface);min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-weight:800;font-size:24px}
@@ -187,6 +218,10 @@ textarea{width:100%;font:15px/1.4 ui-monospace,Menlo,monospace}
 <symbol id="i-drum" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="8" ry="3"/><path d="M4 9v7c0 1.7 3.6 3 8 3s8 -1.3 8 -3v-7"/><path d="M8 11.7v7M16 11.7v7M12 12v7"/><path d="M15 2l-3 5M9 2l3 5"/></g></symbol>
 <symbol id="i-crown" viewBox="0 0 24 24"><path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
 <symbol id="i-camera" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2"/><path d="M9 13a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/></g></symbol>
+<symbol id="i-write" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 17v-12c0 -1.121 -.879 -2 -2 -2s-2 .879 -2 2v12l2 2l2 -2z"/><path d="M16 7h4"/><path d="M18 19h-13a2 2 0 1 1 0 -4h4a2 2 0 1 0 0 -4h-3"/></g></symbol>
+<symbol id="i-rainbow" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17c0 -5.523 -4.477 -10 -10 -10c-5.523 0 -10 4.477 -10 10"/><path d="M18 17a6 6 0 1 0 -12 0"/><path d="M14 17a2 2 0 1 0 -4 0"/></g></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-run" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M4 17l5 1l.75 -1.5"/><path d="M15 21l0 -4l-4 -3l1 -6"/><path d="M7 12l0 -3l5 -1l3 3l3 1"/></g></symbol>
 <symbol id="i-down" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></g></symbol>
 <symbol id="i-up" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 9l5 -5l5 5"/><path d="M12 4l0 12"/></g></symbol>
 </defs></svg>
@@ -217,9 +252,13 @@ function dayStart(t) { const d = new Date(t); d.setHours(0, 0, 0, 0); return d.g
 function dayShift(t, n) { const d = new Date(dayStart(t)); d.setDate(d.getDate() + n); return d.getTime() }
 function isoDay(t) { const d = new Date(t); return `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}` }
 function parseDay(s) { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); return m ? new Date(+m[1], +m[2] - 1, +m[3]).getTime() : NaN }
-function tageBis(s) { return Math.round((parseDay(s) - dayStart(Date.now())) / DAY) }
+// "Now" for all learning logic. zeitVersatz shifts whole calendar days, only used by local checks (?debug).
+let zeitVersatz = 0;
+function jetzt() { const t = Date.now(); return zeitVersatz ? dayShift(t, zeitVersatz) + (t - dayStart(t)) : t }
+const heute = () => isoDay(jetzt());
+function tageBis(s) { return Math.round((parseDay(s) - dayStart(jetzt())) / DAY) }
 function datumLang(s) { const t = parseDay(s); return isNaN(t) ? '' : new Date(t).toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' }) }
-function naechsterFreitag() { const now = Date.now(), wd = new Date(now).getDay(); return isoDay(dayShift(now, (5 - wd + 7) % 7)) }
+function naechsterFreitag() { const now = jetzt(), wd = new Date(now).getDay(); return isoDay(dayShift(now, (5 - wd + 7) % 7)) }
 
 /* ---------- words: syllables, syllable kings, tricky spots ---------- */
 // Tokens: vowel groups count as one unit (au, ei, eu, ie, double vowels), as do sch, ch, ck, ph, qu.
@@ -369,15 +408,16 @@ function parseImport(text) {
 }
 
 /* ---------- state & persistence ---------- */
-const VERSION = '0.1';
+const VERSION = '0.2';
 const LS_PROF = 'lernwoerter.profile.v1', lsDaten = id => `lernwoerter.daten.${id}.v1`;
 const S = { view: 'start', prof: store.get(LS_PROF, null), D: null };
-const leereDaten = () => ({ v: 1, woerter: {}, wochen: [], stand: { sterne: 0, tage: {} } });
+const leererStand = () => ({ sterne: 0, tage: {}, w: {}, rot: {} });
+const leereDaten = () => ({ v: 1, woerter: {}, wochen: [], stand: leererStand() });
 function aktiv() { const P = S.prof; return (P && P.liste.find(p => p.id === P.aktiv)) || null }
 function ladeDaten() {
   const p = aktiv(), d = p ? store.get(lsDaten(p.id), null) : null;
   S.D = Object.assign(leereDaten(), d || {});
-  S.D.stand = Object.assign({ sterne: 0, tage: {} }, S.D.stand);
+  S.D.stand = Object.assign(leererStand(), S.D.stand);   // 0.1 data has no w/rot yet
 }
 function saveProf() { if (!store.set(LS_PROF, S.prof)) toast('Speichern hat nicht geklappt. Ist der Speicher voll?') }
 function saveDaten() { const p = aktiv(); if (p && !store.set(lsDaten(p.id), S.D)) toast('Speichern hat nicht geklappt. Ist der Speicher voll?') }
@@ -386,9 +426,9 @@ function wendeProfilAn() {
   document.body.dataset.thema = (p && p.thema) || '';
   document.body.dataset.schrift = (p && p.schrift) || 'grund';
 }
-function sternPlus() {
-  const st = S.D.stand, heute = isoDay(Date.now());
-  st.sterne++; st.tage[heute] = (st.tage[heute] || 0) + 1;
+function sternPlus(n = 1) {
+  const st = S.D.stand, tag = heute();
+  st.sterne += n; st.tage[tag] = (st.tage[tag] || 0) + n;
   saveDaten();
 }
 // The week shown to the child: the next dictation from today on, otherwise the latest one.
@@ -397,6 +437,55 @@ function aktuelleWoche() {
   return w.find(k => tageBis(k.diktat) >= 0) || w[w.length - 1] || null;
 }
 const wochenWoerter = k => (k ? k.woerter.map(id => S.D.woerter[id]).filter(Boolean) : []);
+
+/* ---------- Karteikasten (five compartments, tempo "fast" as in Voc a Bit 1.12) ---------- */
+// Only writing from memory (Blitzlesen, Merk-Diktat, later Mini-Diktat) moves a word. Right and due → one
+// compartment up, due again after WARTE[fach] calendar days; at most one step a day. Wrong → compartment 1, due today.
+// New words start like compartment 1, so the first right answer lands in 2. Compartment 5 rests 7 days.
+const WARTE = [0, 0, 1, 1, 1, 7];
+const karte = id => S.D.stand.w[id];
+const istFaellig = (id, tag) => { const k = karte(id); return !!k && k.fach > 0 && k.faellig <= tag };
+const heuteRichtig = (id, tag) => { const k = karte(id); return !!k && k.zuletzt === tag && k.letztes === 'ok' };
+function notiereFehler(id, fehler) {
+  const k = S.D.stand.w[id] || (S.D.stand.w[id] = { fach: 0, faellig: '', richtig: 0, falsch: 0, zuletzt: '', letztes: '', fehlerstellen: {} });
+  for (const f of fehler || []) k.fehlerstellen[f] = (k.fehlerstellen[f] || 0) + 1;
+  return k;
+}
+function bewerte(id, ok, fehler) {
+  const k = notiereFehler(id, ok ? [] : fehler), tag = heute(), now = jetzt();
+  let auf = false;
+  if (ok) {
+    k.richtig++;
+    if (!k.fach) { k.fach = 2; auf = true; k.faellig = isoDay(dayShift(now, WARTE[2])) }
+    else if (k.faellig <= tag) { if (k.fach < 5) { k.fach++; auf = true } k.faellig = isoDay(dayShift(now, WARTE[k.fach])) }
+  } else { k.falsch++; k.fach = 1; k.faellig = tag }
+  k.zuletzt = tag; k.letztes = ok ? 'ok' : 'falsch';
+  saveDaten();
+  return { auf, fach: k.fach };
+}
+// Fixed shares instead of weights (lesson from Voc a Bit 1.10): at most half due words, then new words of the
+// week, then more due words, then the rest by oldest practice. A word written right today does not come back today.
+function rundeAusDemKopf(n) {
+  const tag = heute(), woche = wochenWoerter(aktuelleWoche()), inWoche = new Set(woche.map(w => w.id));
+  const pool = woche.concat(Object.values(S.D.woerter).filter(w => !inWoche.has(w.id) && istFaellig(w.id, tag)))
+    .filter(w => !heuteRichtig(w.id, tag));
+  const due = pool.filter(w => istFaellig(w.id, tag)).sort((a, b) => karte(a.id).fach - karte(b.id).fach || karte(a.id).faellig.localeCompare(karte(b.id).faellig));
+  const neu = pool.filter(w => !karte(w.id) || !karte(w.id).fach);
+  const rest = pool.filter(w => karte(w.id) && karte(w.id).fach && !istFaellig(w.id, tag)).sort((a, b) => (karte(a.id).zuletzt || '').localeCompare(karte(b.id).zuletzt || ''));
+  const half = Math.ceil(n / 2), take = [];
+  const add = list => { for (const w of list) { if (take.length >= n) break; if (!take.includes(w)) take.push(w) } };
+  add(due.slice(0, half)); add(neu); add(due); add(rest);
+  return take;
+}
+// Copying and tracing do not move words: they take the week's words in turn, n at a time.
+function rundeReihum(typ, n) {
+  const woche = wochenWoerter(aktuelleWoche()), rot = S.D.stand.rot;
+  if (!woche.length) return [];
+  const start = (rot[typ] || 0) % woche.length, take = [];
+  for (let k = 0; k < Math.min(n, woche.length); k++) take.push(woche[(start + k) % woche.length]);
+  rot[typ] = (start + take.length) % woche.length; saveDaten();
+  return take;
+}
 
 /* ---------- sound & speech (iOS rules from Voc a Bit) ---------- */
 let actx = null, unlocked = false;
@@ -483,6 +572,214 @@ function copyText(t, ok) {
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(() => toast(ok), fallback); else fallback();
 }
 
+/* ---------- writing attempts (IndexedDB, last 3 per word, for the parents' review in M4) ---------- */
+let idb = null;
+function idbOpen() {
+  if (idb) return Promise.resolve(idb);
+  return new Promise(res => {
+    try {
+      if (!window.indexedDB) return res(null);
+      const r = indexedDB.open('lernwoerter', 1);
+      r.onupgradeneeded = () => { const s = r.result.createObjectStore('versuche', { keyPath: 'id', autoIncrement: true }); s.createIndex('wort', ['profil', 'wort']) };
+      r.onsuccess = () => res(idb = r.result);
+      r.onerror = () => res(null);
+    } catch (e) { res(null) }
+  });
+}
+function speichereVersuch(v) {
+  return idbOpen().then(db => new Promise(res => {
+    if (!db) return res(false);
+    try {
+      const tx = db.transaction('versuche', 'readwrite'), st = tx.objectStore('versuche');
+      st.add(v);
+      st.index('wort').getAll([v.profil, v.wort]).onsuccess = e => {
+        const alle = e.target.result.sort((a, b) => a.zeit - b.zeit);
+        alle.slice(0, Math.max(0, alle.length - 3)).forEach(x => st.delete(x.id));
+      };
+      tx.oncomplete = () => res(true); tx.onerror = () => res(false);
+    } catch (e) { res(false) }
+  }));
+}
+
+/* ---------- writing pad (from werkstatt.html, M0) ---------- */
+// Two stacked canvases: bg (ruling + template) and ink. Strokes are point lists [x, y, pressure] in CSS px.
+const FONTS = { grund: '"Playwrite DE Grund"', andika: '"Andika"' };
+const xCache = {};
+function xRatio(key) {   // x-height per px of font size; the template's x-height fills the middle band
+  if (xCache[key]) return xCache[key];
+  const c = document.createElement('canvas').getContext('2d');
+  c.font = '200px ' + FONTS[key];
+  const a = c.measureText('x').actualBoundingBoxAscent;
+  return (xCache[key] = a > 0 ? a / 200 : 0.5);
+}
+// Palm rejection: once a pen was seen, fingers are ignored. Three finger taps within 5 s while the pen
+// has been idle for 20 s switch fingers back on (the child put the pen away).
+let penSeen = false, penZuletzt = 0, fingerTipps = [], pMin = 1, pMax = 0;
+const pressureVaries = () => pMax - pMin > 0.15;
+function Pad(o) {
+  this.o = Object.assign({ mode: 'leer', template: '', ghost: '#CDD3E6' }, o);
+  this.wrap = document.createElement('div'); this.wrap.className = 'pad';
+  this.bg = document.createElement('canvas'); this.ink = document.createElement('canvas'); this.ink.className = 'ink';
+  this.wrap.append(this.bg, this.ink);
+  this.strokes = []; this.cur = null; this.active = null; this.color = '#1F2546'; this.pass = 0; this.locked = false;
+  this.band = 40; this.w = 600; this.h = 170; this.dpr = 1;
+  this.bind();
+}
+Pad.prototype.layout = function () {
+  const p = aktiv() || {};
+  this.band = p.band || 40; this.font = FONTS[p.schrift] ? p.schrift : 'grund'; this.lefty = !!p.lefty;
+  this.w = this.wrap.clientWidth || 600; this.h = Math.round(this.band * 4.2);
+  this.dpr = Math.min(3, window.devicePixelRatio || 1);
+  for (const c of [this.bg, this.ink]) { c.width = Math.round(this.w * this.dpr); c.height = Math.round(this.h * this.dpr); c.style.height = this.h + 'px' }
+  this.wrap.style.height = this.h + 'px';
+  this.drawBg(); this.redraw();
+};
+Pad.prototype.lines = function () { const top = this.band * 0.6; return { ober: top, mittel: top + this.band, grund: top + 2 * this.band, unter: top + 3 * this.band } };
+Pad.prototype.tplFont = function () { return (this.band / xRatio(this.font)).toFixed(2) + 'px ' + FONTS[this.font] };
+Pad.prototype.drawTemplate = function (c, color) {
+  if (!this.o.template || this.o.mode === 'leer') return;
+  c.save(); c.font = this.tplFont(); c.textBaseline = 'alphabetic'; c.fillStyle = color;
+  const tw = c.measureText(this.o.template).width, m = this.band * 0.6;
+  c.fillText(this.o.template, this.o.mode === 'vorlage' && this.lefty ? this.w - m - tw : m, this.lines().grund);
+  c.restore();
+};
+Pad.prototype.drawBg = function () {
+  const c = this.bg.getContext('2d'), L = this.lines();
+  c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+  c.fillStyle = '#FFFFFF'; c.fillRect(0, 0, this.w, this.h);
+  c.strokeStyle = '#8E98BF'; c.lineWidth = 1;
+  for (const y of [L.ober, L.mittel, L.unter]) { c.beginPath(); c.moveTo(0, y); c.lineTo(this.w, y); c.stroke() }
+  c.strokeStyle = '#1F2546'; c.lineWidth = 2.4; c.beginPath(); c.moveTo(0, L.grund); c.lineTo(this.w, L.grund); c.stroke();
+  this.drawTemplate(c, this.o.mode === 'spur' ? this.o.ghost : '#1F2546');
+};
+Pad.prototype.ctx = function () { const c = this.ink.getContext('2d'); c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); return c };
+Pad.prototype.baseW = function () { return Math.max(2.5, this.band * 0.11) };
+Pad.prototype.widthAt = function (p, s) { return s.vp ? this.baseW() * (0.55 + 0.9 * p) : this.baseW() };
+Pad.prototype.seg = function (c, a, b, s, col) {
+  c.strokeStyle = col; c.lineCap = 'round'; c.lineJoin = 'round'; c.lineWidth = this.widthAt((a[2] + b[2]) / 2, s);
+  c.beginPath(); c.moveTo(a[0], a[1]); c.lineTo(b[0], b[1]); c.stroke();
+};
+Pad.prototype.drawStroke = function (c, s, color) {
+  const col = color || s.color, p = s.pts;
+  if (!p.length) return;
+  if (p.length === 1) { c.fillStyle = col; c.beginPath(); c.arc(p[0][0], p[0][1], this.widthAt(p[0][2], s) / 2, 0, Math.PI * 2); c.fill(); return }
+  for (let i = 1; i < p.length; i++) this.seg(c, p[i - 1], p[i], s, col);
+};
+Pad.prototype.drawStrokes = function (c, color, nurPass) { for (const s of this.strokes) if (nurPass == null || s.pass === nurPass) this.drawStroke(c, s, color) };
+Pad.prototype.redraw = function () { const c = this.ctx(); c.clearRect(0, 0, this.w, this.h); this.drawStrokes(c); if (this.cur) this.drawStroke(c, this.cur) };
+Pad.prototype.bind = function () {
+  const ink = this.ink, stop = e => { if (e.cancelable) e.preventDefault() };
+  // iOS: otherwise the magnifier, text selection and Scribble steal pen strokes from the canvas.
+  ink.addEventListener('touchstart', stop, { passive: false });
+  ink.addEventListener('touchmove', stop, { passive: false });
+  ink.addEventListener('contextmenu', stop);
+  ink.addEventListener('pointerdown', e => this.down(e));
+  ink.addEventListener('pointermove', e => this.move(e));
+  ink.addEventListener('pointerup', e => this.up(e));
+  ink.addEventListener('pointercancel', e => this.up(e));
+};
+Pad.prototype.add = function (e) {
+  const x = e.clientX - this.rect.left, y = e.clientY - this.rect.top, p = e.pointerType === 'mouse' ? 0.5 : (e.pressure || 0);
+  const pts = this.cur.pts, last = pts[pts.length - 1];
+  if (last && Math.abs(last[0] - x) < 0.3 && Math.abs(last[1] - y) < 0.3) return null;
+  const pt = [x, y, p]; pts.push(pt); return pt;
+};
+Pad.prototype.down = function (e) {
+  const t = Date.now();
+  if (e.pointerType === 'pen') { penSeen = true; penZuletzt = t }
+  if (penSeen && e.pointerType === 'touch') {
+    fingerTipps = fingerTipps.filter(x => t - x < 5000); fingerTipps.push(t);
+    if (fingerTipps.length >= 3 && t - penZuletzt > 20000) { penSeen = false; fingerTipps = []; toast('Finger sind wieder an') }
+    return;
+  }
+  if (this.locked || this.active !== null || (e.pointerType === 'mouse' && e.button !== 0)) return;
+  e.preventDefault();
+  this.active = e.pointerId;
+  try { this.ink.setPointerCapture(e.pointerId) } catch (x) { /* optional */ }
+  this.rect = this.ink.getBoundingClientRect();
+  this.cur = { pts: [], color: this.color, pass: this.pass, vp: e.pointerType === 'pen' && pressureVaries() };
+  this.add(e); this.drawStroke(this.ctx(), this.cur);
+};
+Pad.prototype.move = function (e) {
+  if (e.pointerId !== this.active || !this.cur) return;
+  if (e.pointerType === 'pen') { penZuletzt = Date.now(); if (e.pressure > 0) { pMin = Math.min(pMin, e.pressure); pMax = Math.max(pMax, e.pressure) } }
+  const list = typeof e.getCoalescedEvents === 'function' ? e.getCoalescedEvents() : [];
+  const c = this.ctx();
+  for (const ev of (list.length ? list : [e])) { const a = this.cur.pts[this.cur.pts.length - 1], b = this.add(ev); if (a && b) this.seg(c, a, b, this.cur, this.cur.color) }
+};
+Pad.prototype.up = function (e) {
+  if (e.pointerId !== this.active) return;
+  this.active = null;
+  const s = this.cur; this.cur = null;
+  if (s && s.pts.length) this.strokes.push(s);
+  if (this.onChange) this.onChange();
+};
+Pad.prototype.passStriche = function () { return this.strokes.filter(s => s.pass === this.pass).length };
+Pad.prototype.undo = function () { for (let i = this.strokes.length - 1; i >= 0; i--) if (this.strokes[i].pass === this.pass) { this.strokes.splice(i, 1); break } this.redraw(); if (this.onChange) this.onChange() };
+Pad.prototype.clear = function () { this.strokes = this.strokes.filter(s => s.pass !== this.pass); this.redraw(); if (this.onChange) this.onChange() };
+
+// Stored form: Ramer-Douglas-Peucker simplified, coordinates in hundredths of a band.
+function rdp(pts, eps) {
+  if (pts.length < 3) return pts.slice();
+  const keep = new Uint8Array(pts.length), stack = [[0, pts.length - 1]];
+  keep[0] = keep[pts.length - 1] = 1;
+  while (stack.length) {
+    const [a, b] = stack.pop(), [ax, ay] = pts[a], [bx, by] = pts[b], dx = bx - ax, dy = by - ay, L = Math.hypot(dx, dy);
+    let md = 0, mi = -1;
+    for (let i = a + 1; i < b; i++) {
+      const d = L < 1e-6 ? Math.hypot(pts[i][0] - ax, pts[i][1] - ay) : Math.abs(dy * pts[i][0] - dx * pts[i][1] + bx * ay - by * ax) / L;
+      if (d > md) { md = d; mi = i }
+    }
+    if (md > eps) { keep[mi] = 1; stack.push([a, mi], [mi, b]) }
+  }
+  return pts.filter((_, i) => keep[i]);
+}
+function pack(pad) { return pad.strokes.map(s => rdp(s.pts, pad.band * 0.02).map(p => [Math.round(p[0] / pad.band * 100), Math.round(p[1] / pad.band * 100)])) }
+
+// Trace scoring (M0): precision = ink near the template, coverage = template near the ink, tolerance 0.15 band.
+function maskFrom(W, H, cell, draw) {
+  const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const c = cv.getContext('2d', { willReadFrequently: true });
+  c.setTransform(1 / cell, 0, 0, 1 / cell, 0, 0); draw(c);
+  const d = c.getImageData(0, 0, W, H).data, m = new Uint8Array(W * H);
+  for (let i = 0; i < m.length; i++) m[i] = d[i * 4 + 3] > 96 ? 1 : 0;
+  return m;
+}
+function distField(m, W, H) {
+  const d = new Float32Array(W * H), D = Math.SQRT2;
+  for (let i = 0; i < d.length; i++) d[i] = m[i] ? 0 : 1e9;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const i = y * W + x; let v = d[i];
+    if (x > 0) v = Math.min(v, d[i - 1] + 1);
+    if (y > 0) { v = Math.min(v, d[i - W] + 1); if (x > 0) v = Math.min(v, d[i - W - 1] + D); if (x < W - 1) v = Math.min(v, d[i - W + 1] + D) }
+    d[i] = v;
+  }
+  for (let y = H - 1; y >= 0; y--) for (let x = W - 1; x >= 0; x--) {
+    const i = y * W + x; let v = d[i];
+    if (x < W - 1) v = Math.min(v, d[i + 1] + 1);
+    if (y < H - 1) { v = Math.min(v, d[i + W] + 1); if (x < W - 1) v = Math.min(v, d[i + W + 1] + D); if (x > 0) v = Math.min(v, d[i + W - 1] + D) }
+    d[i] = v;
+  }
+  return d;
+}
+function bewerteSpur(pad, nurPass, tolBand = 0.15) {
+  const cell = Math.max(2, Math.round(pad.band / 12)), W = Math.ceil(pad.w / cell), H = Math.ceil(pad.h / cell);
+  const tpl = maskFrom(W, H, cell, c => pad.drawTemplate(c, '#000'));
+  const ink = maskFrom(W, H, cell, c => pad.drawStrokes(c, '#000', nurPass));
+  const dT = distField(tpl, W, H), dI = distField(ink, W, H), tol = pad.band * tolBand / cell;
+  let nI = 0, okI = 0, nT = 0, okT = 0;
+  for (let i = 0; i < W * H; i++) {
+    if (ink[i]) { nI++; if (dT[i] <= tol) okI++ }
+    if (tpl[i]) { nT++; if (dI[i] <= tol) okT++ }
+  }
+  return { leer: !nI, praezision: nI ? okI / nI : 0, abdeckung: nT ? okT / nT : 0 };
+}
+// The weaker measure counts: clean but half-finished and complete scribbles both stay at one star.
+function sterneFuerSpur(praezision, abdeckung) {
+  const schwach = Math.min(praezision, abdeckung);
+  return schwach >= 0.85 ? 3 : schwach >= 0.65 ? 2 : 1;
+}
+
 /* ---------- pictures ---------- */
 const FOX = `<svg class="fox" viewBox="0 0 64 64" aria-hidden="true"><path d="M6 6l16 14h20L58 6l-3 28c-3 14-12 22-23 24C21 56 12 48 9 34z" fill="#E8742A"/><path d="M6 6l9 18M58 6l-9 18" stroke="#B9531A" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M12 34c6 2 12 8 20 24-11-2-19-9-20-24zM52 34c-6 2-12 8-20 24 11-2 19-9 20-24z" fill="#FFF"/><circle cx="23" cy="32" r="3.2" fill="#1F2546"/><circle cx="41" cy="32" r="3.2" fill="#1F2546"/><path d="M28 47h8l-4 5z" fill="#1F2546"/></svg>`;
 const THEMEN = {
@@ -519,12 +816,25 @@ function viewStart() {
         <button class="kachel" data-act="karte" data-i="0">${icon('cards')}Wortkarten<small>ansehen und anhören</small></button>
         <button class="kachel" data-act="station" data-typ="silben">${icon('drum')}Silben schwingen<small>für jede Silbe trommeln</small></button>
         <button class="kachel" data-act="station" data-typ="koenige">${icon('crown')}Silbenkönige<small>alle Könige finden</small></button>
-      </div>`;
+        <button class="kachel" data-act="station" data-typ="abschreiben">${icon('write')}Abschreiben<small>genau hinschauen</small></button>
+        <button class="kachel" data-act="station" data-typ="regenbogen">${icon('rainbow')}Regenbogen<small>dreimal nachfahren</small></button>
+        <button class="kachel" data-act="station" data-typ="blitz">${icon('bolt')}Blitzlesen<small>aus dem Kopf schreiben</small></button>
+        <button class="kachel" data-act="station" data-typ="merk">${icon('run')}Merk-Diktat<small>merken, laufen, schreiben</small></button>
+      </div>${kastenHtml(ws)}`;
   }
   return `<div class="bar">${FOX}<div class="grow"><p class="hallo">Hallo, ${esc(p.name)}!</p>${n > 1 ? `<button class="btn klein" data-act="wer">Nicht ${esc(p.name)}?</button>` : ''}</div>
       <button class="rund klein" data-act="hallo" aria-label="Vorlesen">${icon('speaker')}</button>
       <span class="sterne">${icon('star')}${S.D.stand.sterne}</span>
       <button class="rund klein" data-act="eltern" aria-label="Elternbereich">${icon('gear')}</button></div>${woche}`;
+}
+
+// The child's Karteikasten for this week: how many words sit in which compartment.
+function kastenHtml(ws) {
+  const n = [0, 0, 0, 0, 0, 0];
+  ws.forEach(w => { const k = karte(w.id); n[k && k.fach ? k.fach : 0]++ });
+  return `<div class="card"><h2>Mein Karteikasten</h2><div class="faecher">${n.map((x, i) =>
+    `<div class="fach f${i}"><b>${x}</b><span>${i ? 'Fach ' + i : 'neu'}</span></div>`).join('')}</div>
+    <p class="leise" style="margin:8px 0 0;font-size:15px">Wörter wandern weiter, wenn du sie bei Blitzlesen oder Merk-Diktat richtig aus dem Kopf schreibst.</p></div>`;
 }
 
 function viewKarte() {
@@ -557,18 +867,26 @@ function markiere(satz, wort) {
 
 const ANLEITUNG = {
   silben: 'Sprich das Wort und schwing die Silben. Tippe für jede Silbe einmal auf die Trommel. Dann tippe auf Fertig.',
-  koenige: 'Finde die Silbenkönige. Tippe auf alle Selbstlaute: a, e, i, o, u, ä, ö, ü und au, ei, eu, ie.'
+  koenige: 'Finde die Silbenkönige. Tippe auf alle Selbstlaute: a, e, i, o, u, ä, ö, ü und au, ei, eu, ie.',
+  abschreiben: 'Schau das Wort genau an und schreib es auf die Linien. Dann tippe auf Fertig.',
+  regenbogen: 'Fahre das graue Wort dreimal nach, jedes Mal in einer anderen Farbe.',
+  blitz: 'Das Wort blitzt kurz auf. Merk es dir gut und schreib es dann aus dem Kopf.',
+  merk: 'Schau dir das Wort genau an. Wenn du es weißt, tippe auf: Ich hab es! Dann schreibst du es aus dem Kopf.'
 };
+const SCHREIB = ['abschreiben', 'regenbogen', 'blitz', 'merk'], AUS_DEM_KOPF = ['blitz', 'merk'], RUNDE = 5;
+const FARBEN = ['#E5484D', '#2E9E5B', '#2E6FD8'], FARB_NAME = ['Rot', 'Grün', 'Blau'];
+const sternReihe = n => `<div class="sternreihe">${icon('star').repeat(n)}</div>`;
 function viewStation() {
   const st = S.st, ws = st.ws;
   if (st.ende) {
     return `${topBar(homeBtn)}<div class="card" style="text-align:center"><div class="gross-stern">${icon('star')}</div>
       <p class="lob">Geschafft!</p><p class="leise">${st.sterne} ${st.sterne === 1 ? 'Stern' : 'Sterne'} gesammelt</p>
-      <div class="row mitte"><button class="btn main" data-act="home">${icon('home')}Zum Start</button></div></div>`;
+      <div class="row mitte"><button class="btn" data-act="station" data-typ="${st.typ}">Noch eine Runde</button><button class="btn main" data-act="home">${icon('home')}Zum Start</button></div></div>`;
   }
   const w = ws[st.i], kopf = `${topBar(homeBtn, punkte(ws.length, st.i, st.ok))}
     <div class="anleitung"><button class="rund klein" data-act="anleitung" aria-label="Anleitung vorlesen">${icon('speaker')}</button><span>${esc(ANLEITUNG[st.typ])}</span></div>`;
   const weiter = `<button class="btn main" data-act="st-weiter">${st.i === ws.length - 1 ? 'Fertig' : 'Weiter'}${icon('right')}</button>`;
+  if (SCHREIB.includes(st.typ)) return kopf + viewSchreiben(st, w, weiter);
   if (st.typ === 'silben') {
     const geloest = st.status === 'ok' || st.status === 'hilfe';
     return `${kopf}<div class="wortbuehne wa-${w.wortart}">
@@ -593,6 +911,53 @@ function viewStation() {
     <button class="btn" data-act="sag-wort">${icon('speaker')}Anhören</button>
     ${st.status === 'ok' ? `<p class="lob">Alle Könige gefunden!</p>${weiter}` : ''}
   </div>`;
+}
+
+// Writing stations. Phases: zeigen (Merk-Diktat) / blitzbereit → blitz (Blitzlesen) / pause (fox runs) →
+// schreiben → pruefen (self-check) → nochmal (copy it right once, after a mistake) → ergebnis.
+function viewSchreiben(st, w, weiter) {
+  const host = '<div class="schreibzeile" data-pad-host></div>';
+  const hoeren = `<button class="btn" data-act="sag-wort">${icon('speaker')}Anhören</button>`;
+  const leer = !(st.pad && st.pad.passStriche());
+  const werkzeug = extra => `<div class="werkzeuge"><div class="row"><button class="btn" data-act="pad-undo">Rückgängig</button><button class="btn" data-act="pad-neu">Neu</button>${extra || ''}</div>
+    <button class="btn main" data-act="pad-fertig" ${leer ? 'disabled' : ''}>${icon('check')}Fertig</button></div>`;
+  switch (st.phase) {
+    case 'zeigen':
+      return `<div class="wortbuehne wa-${w.wortart}">${wortHtml(w)}<div class="row mitte">${hoeren}<button class="btn main" data-act="merk-ok">${icon('check')}Ich hab es!</button></div></div>`;
+    case 'blitzbereit':
+      return `<div class="wortbuehne"><div class="blitzfeld"><div class="verdeckt"></div></div><button class="btn main" data-act="blitz-los">${icon('bolt')}Los!</button></div>`;
+    case 'blitz':
+      return `<div class="wortbuehne"><div class="blitzfeld">${wortHtml(w)}</div><span class="btn" style="visibility:hidden">.</span></div>`;
+    case 'pause':
+      return `<div class="wortbuehne"><div class="lauf">${FOX}</div><p class="leise">Der Fuchs läuft mit dir zum Platz …</p></div>`;
+    case 'schreiben': {
+      let oben = '';
+      if (st.typ === 'regenbogen') oben = `<div class="paesse">${FARBEN.map((f, k) => `<span class="pass${k === st.pad.pass ? ' an' : ''}" style="--f:${f}">${FARB_NAME[k]}${st.passSterne[k] ? ' ' + icon('star').repeat(st.passSterne[k]) : ''}</span>`).join('')}</div>`;
+      const extra = st.typ === 'blitz' && st.blitze < 3 ? `<button class="btn" data-act="blitz-los" ${leer ? '' : 'hidden'}>${icon('bolt')}Nochmal blitzen</button>` : st.typ === 'merk' ? hoeren : '';
+      return `${oben}${host}${werkzeug(extra)}`;
+    }
+    case 'pruefen':
+      return `<p class="anweisung">Vergleiche Buchstabe für Buchstabe. Tippe jeden Buchstaben an, der bei dir anders ist.</p>
+        <div class="vergleich">${vergleichHtml(w, st.markiert, st.aufgedeckt)}</div>${host}
+        <div class="row mitte" style="margin-top:12px"><button class="btn gut" data-act="alles-richtig">${icon('check')}Alles richtig</button>
+        <button class="btn main" data-act="fehler-fertig" ${st.markiert.size ? '' : 'hidden'}>Fertig verglichen</button></div>`;
+    case 'nochmal':
+      return `<p class="anweisung">Gut verglichen! Schreib das Wort jetzt einmal richtig ab.</p>${host}${werkzeug(hoeren)}`;
+    default:   // ergebnis
+      return `<div class="wortbuehne wa-${w.wortart}">${wortHtml(w, { boegen: true })}<p class="lob">${esc(st.lob)}</p>${sternReihe(st.sterneWort)}
+        ${st.fachText ? `<p class="leise" style="margin:0">${esc(st.fachText)}</p>` : ''}${weiter}</div>`;
+  }
+}
+// Correct word as letter tiles; positions are keys for fehlerstellen ("a0".. = article, "0".. = word).
+function vergleichHtml(w, fehler, sofort) {
+  const s = vollWort(w), off = w.artikel ? w.artikel.length + 1 : 0;
+  let h = '';
+  for (let j = 0; j < s.length; j++) {
+    if (s[j] === ' ') { h += '<span class="vluecke"></span>'; continue }
+    const key = j < off ? 'a' + j : String(j - off);
+    h += `<button class="vbst${fehler.has(key) ? ' falsch' : ''}${sofort ? ' sofort' : ''}" data-act="vbst" data-key="${key}" style="animation-delay:${(j * 0.12).toFixed(2)}s">${esc(s[j])}</button>`;
+  }
+  return h;
 }
 
 /* ---------- views: first start ---------- */
@@ -643,6 +1008,9 @@ function viewEltern() {
     body = `<label class="feld">Name des Kindes<input data-in="p-name" value="${esc(p.name)}" autocomplete="off" autocorrect="off" spellcheck="false" maxlength="24"></label>
       <label class="check"><input type="checkbox" data-ch="p-lefty" ${p.lefty ? 'checked' : ''}> schreibt mit links (Vorlage beim Schreiben rechts)</label>
       <label class="feld">Schulschrift<select data-ch="p-schrift"><option value="grund" ${p.schrift !== 'andika' ? 'selected' : ''}>Grundschrift (Playwrite DE Grund)</option><option value="andika" ${p.schrift === 'andika' ? 'selected' : ''}>Druckschrift (Andika)</option></select></label>
+      <label class="feld">Linienhöhe beim Schreiben: <span id="band-wert">${p.band || 40} px</span><input type="range" min="28" max="72" step="2" data-in="p-band" value="${p.band || 40}"></label>
+      <div data-pad-host></div>
+      <p class="leise" style="font-size:15px;margin:6px 0 0">Zum Ausprobieren darf man hier schreiben. So sehen Lineatur und Vorlage in den Schreibstationen aus.</p>
       <p style="font-weight:600;margin:14px 0 6px">Thema</p>
       <div class="chips">${Object.entries(THEMEN).map(([id, t]) => `<button class="chip" data-act="p-thema" data-thema="${id}" aria-pressed="${p.thema === id}">${esc(t.name)}</button>`).join('')}</div>
       <p style="font-weight:600;margin:18px 0 6px">Kinder auf diesem iPad</p>
@@ -727,17 +1095,67 @@ const VIEWS = { start: viewStart, karte: viewKarte, station: viewStation, onboar
 function render() {
   if (!aktiv() && S.view !== 'onboard') { S.ob = S.ob || { schritt: 1, name: '', lefty: false }; S.view = 'onboard' }
   $('#app').innerHTML = VIEWS[S.view]();
+  // The pad is one long-lived object per word: re-rendering only re-attaches it, strokes survive.
+  const host = $('[data-pad-host]'), pad = aktuellesPad();
+  if (host && pad) { host.appendChild(pad.wrap); pad.layout() }
   window.scrollTo(0, 0);
+}
+function aktuellesPad() {
+  if (S.view === 'station' && S.st && S.st.pad) return S.st.pad;
+  if (S.view === 'eltern' && S.etab === 'einstellungen') return S.vorschau || (S.vorschau = new Pad({ mode: 'vorlage', template: 'der Abend' }));
+  return null;
 }
 function renderTeil() { const el = $('#wedit-teil'); if (el) el.innerHTML = weditTeil() }
 
 /* ---------- actions ---------- */
 function startStation(typ) {
-  const ws = wochenWoerter(aktuelleWoche());
-  if (!ws.length) return;
+  const ws = AUS_DEM_KOPF.includes(typ) ? rundeAusDemKopf(RUNDE) : SCHREIB.includes(typ) ? rundeReihum(typ, RUNDE) : wochenWoerter(aktuelleWoche());
+  if (!ws.length) {
+    if (AUS_DEM_KOPF.includes(typ)) { const t = 'Alle Wörter hast du heute schon richtig geschrieben. Morgen geht es weiter!'; toast(t); say(t) }
+    return;
+  }
   S.st = { typ, ws, i: 0, taps: 0, fehler: 0, status: '', gefunden: new Set(), wackel: -1, ok: new Set(), sterne: 0 };
+  if (SCHREIB.includes(typ)) wortBeginnen(S.st);
   S.view = 'station'; render();
   say(ANLEITUNG[typ]);
+}
+function wortBeginnen(st) {
+  const w = st.ws[st.i];
+  st.markiert = new Set(); st.passSterne = []; st.blitze = 0; st.lob = ''; st.fachText = ''; st.sterneWort = 0; st.aufgedeckt = false;
+  st.phase = st.typ === 'merk' ? 'zeigen' : st.typ === 'blitz' ? 'blitzbereit' : 'schreiben';
+  st.pad = new Pad({ mode: st.typ === 'abschreiben' ? 'vorlage' : st.typ === 'regenbogen' ? 'spur' : 'leer', template: vollWort(w) });
+  if (st.typ === 'regenbogen') st.pad.color = FARBEN[0];
+  st.pad.onChange = padGeaendert;
+}
+function padGeaendert() {
+  const pad = S.st && S.st.pad; if (!pad) return;
+  const b = $('[data-act="pad-fertig"]'); if (b) b.disabled = !pad.passStriche();
+  const nb = $('.werkzeuge [data-act="blitz-los"]'); if (nb) nb.hidden = pad.strokes.length > 0;
+}
+const LOB = ['Super!', 'Toll gemacht!', 'Klasse!', 'Prima!', 'Spitze!'];
+const lob = () => rnd(3) ? LOB[rnd(LOB.length)] : `Super, ${aktiv().name}!`;
+function wortSterne(st, n, text) {
+  st.sterneWort = n; st.sterne += n; st.ok.add(st.i); sternPlus(n);
+  st.lob = text; st.phase = 'ergebnis'; render(); SFX.ok(); say(text + (st.fachText ? ' ' + st.fachText : ''));
+}
+// Self-check finished. Saved attempt (for the parents' review), Karteikasten only for writing from memory.
+function pruefungFertig(ok) {
+  const st = S.st, w = stationWort(), fehler = [...st.markiert];
+  speichereVersuch({ profil: aktiv().id, wort: w.id, station: st.typ, zeit: Date.now(), tag: heute(), band: st.pad.band, striche: pack(st.pad), selbst: ok, fehler });
+  if (AUS_DEM_KOPF.includes(st.typ)) {
+    const r = bewerte(w.id, ok, fehler);
+    st.fachText = ok ? (r.auf ? `Ab in Fach ${r.fach}!` : 'Das Wort sitzt schon gut.') : 'Das Wort übst du bald noch einmal.';
+  } else if (!ok) { notiereFehler(w.id, fehler); saveDaten() }
+  if (ok) { wortSterne(st, 2, lob()); return }
+  st.phase = 'nochmal';
+  st.pad = new Pad({ mode: 'vorlage', template: vollWort(w) }); st.pad.onChange = padGeaendert;
+  render(); SFX.sanft(); say('Gut verglichen! Schreib das Wort jetzt einmal richtig ab.');
+}
+const blitzDauer = w => Math.min(2500, 1200 + 80 * vollWort(w).length);
+function blitzen() {
+  const st = S.st, w = stationWort();
+  st.blitze++; st.phase = 'blitz'; render();
+  setTimeout(() => { if (S.view === 'station' && S.st === st && st.phase === 'blitz') { st.phase = 'schreiben'; render() } }, blitzDauer(w));
 }
 function stationGeloest() {
   const st = S.st;
@@ -812,10 +1230,45 @@ const ACT = {
   },
   'st-weiter': () => {
     const st = S.st;
-    if (st.i >= st.ws.length - 1) { st.ende = true; render(); SFX.fertig(); say(`Geschafft! Toll gemacht, ${aktiv().name}!`); return }
+    if (st.i >= st.ws.length - 1) { st.ende = true; st.pad = null; render(); SFX.fertig(); say(`Geschafft! Toll gemacht, ${aktiv().name}!`); return }
     st.i++; st.taps = 0; st.fehler = 0; st.status = ''; st.gefunden = new Set(); st.wackel = -1;
-    render(); say(vollWort(stationWort()));
+    if (SCHREIB.includes(st.typ)) wortBeginnen(st);
+    render();
+    if (st.typ !== 'blitz') say(vollWort(stationWort()));   // Blitzlesen is reading: no spoiler
   },
+  // writing stations
+  'pad-undo': () => S.st.pad.undo(),
+  'pad-neu': () => S.st.pad.clear(),
+  'merk-ok': () => {
+    const st = S.st; st.phase = 'pause'; render();
+    setTimeout(() => { if (S.view === 'station' && S.st === st && st.phase === 'pause') { st.phase = 'schreiben'; render(); SFX.krone() } }, 2600);
+  },
+  'blitz-los': blitzen,
+  'pad-fertig': () => {
+    const st = S.st, pad = st.pad, w = stationWort();
+    if (!pad.passStriche()) return;
+    if (st.typ === 'regenbogen' && st.phase === 'schreiben') {
+      const r = bewerteSpur(pad, pad.pass);
+      st.passSterne.push(sterneFuerSpur(r.praezision, r.abdeckung));
+      if (pad.pass < FARBEN.length - 1) { pad.pass++; pad.color = FARBEN[pad.pass]; render(); SFX.krone(); say('Jetzt in ' + FARB_NAME[pad.pass] + '.'); return }
+      speichereVersuch({ profil: aktiv().id, wort: w.id, station: st.typ, zeit: Date.now(), tag: heute(), band: pad.band, striche: pack(pad), spur: st.passSterne.slice() });
+      const n = Math.round(st.passSterne.reduce((a, b) => a + b, 0) / st.passSterne.length);
+      wortSterne(st, n, n === 3 ? 'Wunderschöner Regenbogen!' : n === 2 ? 'Schöner Regenbogen!' : 'Geschafft! Beim nächsten Mal noch genauer.');
+      return;
+    }
+    if (st.phase === 'nochmal') { wortSterne(st, 2, 'Prima abgeschrieben!'); return }
+    pad.locked = true; st.phase = 'pruefen'; render(); st.aufgedeckt = true;
+    say(vollWort(w));
+  },
+  vbst: el => {
+    const st = S.st, key = el.dataset.key;
+    if (st.markiert.has(key)) st.markiert.delete(key); else st.markiert.add(key);
+    el.classList.toggle('falsch', st.markiert.has(key));
+    $('[data-act="fehler-fertig"]').hidden = !st.markiert.size;
+    $('[data-act="alles-richtig"]').hidden = st.markiert.size > 0;
+  },
+  'alles-richtig': () => pruefungFertig(true),
+  'fehler-fertig': () => pruefungFertig(false),
   // first start
   'ob-weiter': () => {
     const n = (S.ob.name || '').trim();
@@ -904,6 +1357,7 @@ const ACT = {
 const IN = {
   'ob-name': el => { S.ob.name = el.value },
   'p-name': el => { const n = el.value.trim(); if (n) { aktiv().name = n; saveProf() } },
+  'p-band': el => { aktiv().band = Number(el.value) || 40; saveProf(); $('#band-wert').textContent = aktiv().band + ' px'; if (S.vorschau) S.vorschau.layout() },
   import: el => { S.importText = el.value },
   'e-titel': el => { S.entwurf.titel = el.value },
   'e-diktat': el => { S.entwurf.diktat = el.value },
@@ -913,8 +1367,8 @@ const IN = {
 };
 const CH = {
   'ob-lefty': el => { S.ob.lefty = el.checked },
-  'p-lefty': el => { aktiv().lefty = el.checked; saveProf() },
-  'p-schrift': el => { aktiv().schrift = el.value; saveProf(); wendeProfilAn() }
+  'p-lefty': el => { aktiv().lefty = el.checked; saveProf(); if (S.vorschau) S.vorschau.layout() },
+  'p-schrift': el => { aktiv().schrift = el.value; saveProf(); wendeProfilAn(); if (S.vorschau) S.vorschau.layout() }
 };
 
 /* ---------- events ---------- */
@@ -936,8 +1390,10 @@ if (aktiv()) S.view = 'start';
 const fonts = document.fonts && document.fonts.load ? Promise.all([document.fonts.load('40px "Playwrite DE Grund"', 'Abä'), document.fonts.load('40px "Andika"', 'Abä')]) : Promise.resolve();
 fonts.then(render, render);
 if ('serviceWorker' in navigator && location.protocol === 'https:') { try { navigator.serviceWorker.register('sw.js') } catch (e) {} }
-// Debug hook for local checks only (?debug), never needed by the app.
-if (/[?&]debug\b/.test(location.search)) window.sf = { S, parseImport, silbenVorschlag, stellenVorschlag, neuesWort, tokens, render };
+let resizeTimer = 0;
+window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { const p = aktuellesPad(); if (p && p.wrap.isConnected) p.layout() }, 150) });
+// Debug hook for local checks only (?debug): state, word functions, Karteikasten, and a day shift for "tomorrow".
+if (/[?&]debug\b/.test(location.search)) window.sf = { S, parseImport, silbenVorschlag, stellenVorschlag, neuesWort, tokens, render, bewerte, rundeAusDemKopf, bewerteSpur, tag: n => { zeitVersatz = n; return heute() } };
 })();
 </script>
 </body>

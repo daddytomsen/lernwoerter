@@ -31,8 +31,8 @@ Repo und interne Schlüssel heißen neutral `lernwoerter` (Speicher `lernwoerter
 
 Bei jeder Änderung an `index.html`, `werkstatt.html` oder den Schriften **beide Versionsnummern gleichzeitig** hochzählen, sonst bekommt das iPad die alte Fassung aus dem Cache:
 
-- `sw.js`: `const CACHE = 'lernwoerter-v0.1';`
-- `index.html`: `const VERSION = '0.1';` (sichtbar im Elternbereich)
+- `sw.js`: `const CACHE = 'lernwoerter-v0.2';`
+- `index.html`: `const VERSION = '0.2';` (sichtbar im Elternbereich)
 
 `tools/check.sh` bricht ab, wenn sie nicht übereinstimmen. Nach jedem Update muss die Home-Bildschirm-App komplett geschlossen und zweimal geöffnet werden. Das gehört in jede Release-Nachricht an Thomas.
 
@@ -41,29 +41,37 @@ Bei jeder Änderung an `index.html`, `werkstatt.html` oder den Schriften **beide
 Abschnitte im Skript (Kommentare `/* ---------- … ---------- */`):
 
 1. **helpers** – `esc()`, `icon()`, `store` (localStorage mit try/catch), `toast()`, `uid()`.
-2. **calendar days** – `dayStart`, `dayShift`, `isoDay`, `parseDay`, `tageBis`, `naechsterFreitag()`. Immer Kalendertage, nie „+24 h“.
+2. **calendar days** – `dayStart`, `dayShift`, `isoDay`, `parseDay`, `tageBis`, `naechsterFreitag()`. Immer Kalendertage, nie „+24 h“. Alle Lernlogik fragt `jetzt()` / `heute()`; `zeitVersatz` verschiebt um ganze Tage (nur `?debug`, `sf.tag(1)` = morgen).
 3. **words** – `tokens()`: Selbstlaut-Gruppen (au, äu, ei, eu, ai, ie, aa, ee, oo) und sch/ch/ck/ph/qu sind je eine Einheit. `silbenVorschlag()` mit Schulregel (ein Mitlaut zur nächsten Silbe, von mehreren nur der letzte). `stellenVorschlag()` erkennt sp/st am Anfang, ie, ck, tz, Doppelmitlaut nach Selbstlaut, Dehnungs-h vor l/m/n/r, ä/äu (ableiten), v, ß, Doppelselbstlaut, Auslaut d/b/g (verlängern). `artVorschlag()` → FRESCH-Art. Alles nur Vorschläge, die Eltern prüfen. Bekannte Grenzen: „Fa-mi-lie“ (statt li-e), „Käse“ als ableiten.
 4. **import** – `importPrompt()` (Anleitung für Claude), `parseImport()` (JSON auch im ```-Block, Arrays erlaubt). Stellen kommen als `{ zeichen, typ, tipp, nr }` und werden in `{ von, bis }` umgerechnet (`stelleAus()`), weil Buchstaben zählen für ein Sprachmodell unzuverlässig ist. Silben werden nur übernommen, wenn sie zusammen genau das Wort ergeben.
-5. **state & persistence** – `S` (Ansicht und Entwürfe), `S.prof`, `S.D` (Daten des aktiven Kindes). `aktuelleWoche()` = nächstes Diktat ab heute, sonst das letzte.
-6. **sound & speech** – wie Voc a Bit: Ton beim ersten Tippen freischalten, `say()` synchron aus dem Tipp-Handler, deutsche Stimme bevorzugt lokal. Sanfter Ton statt Fehlerton.
-7. **files** – `downloadFile()` über das Teilen-Menü, `copyText()`.
-8. **pictures** – Fuchs und Themenbilder als Inline-SVG.
-9. **views** – Kind: `viewStart`, `viewKarte`, `viewStation` (silben, koenige). Erster Start: `viewOnboard`, `viewWer`. Eltern: `viewGate`, `viewEltern` (Wochen, Einstellungen, Sicherung), `viewImport`, `viewWoche`, `viewWortEdit`.
-10. **render / actions / events** – `render()` → `#app.innerHTML`; der Wort-Editor rendert beim Tippen nur `#wedit-teil` neu (Fokus bleibt). Ereignisse über `data-act` (Klick, Tabelle `ACT`), `data-in` (`IN`), `data-ch` (`CH`).
+5. **state & persistence** – `S` (Ansicht und Entwürfe), `S.prof`, `S.D` (Daten des aktiven Kindes). `aktuelleWoche()` = nächstes Diktat ab heute, sonst das letzte. `ladeDaten()` ergänzt fehlende Felder älterer Stände (`leererStand()`).
+6. **Karteikasten** – `WARTE = [0, 0, 1, 1, 1, 7]` (Tempo „Schnell“ wie Voc a Bit 1.12). `bewerte(id, ok, fehler)`: richtig und fällig → ein Fach hoch, fällig nach `WARTE[fach]` Kalendertagen, höchstens ein Fach pro Tag; neu und richtig → Fach 2; falsch → Fach 1, heute fällig. **Nur Blitzlesen und Merk-Diktat rufen `bewerte()`** (später auch das Mini-Diktat). Abschreiben notiert nur Fehlerstellen (`notiereFehler()`). `rundeAusDemKopf(5)`: feste Anteile (höchstens die Hälfte fällig, dann neu, dann weitere fällige, dann Rest), heute schon richtige Wörter nicht; fällige Wörter aus älteren Wochen kommen mit. `rundeReihum(typ, 5)`: Abschreiben und Regenbogen nehmen die Wörter der Woche der Reihe nach (`stand.rot`).
+7. **sound & speech** – wie Voc a Bit: Ton beim ersten Tippen freischalten, `say()` synchron aus dem Tipp-Handler, deutsche Stimme bevorzugt lokal. Sanfter Ton statt Fehlerton.
+8. **files** – `downloadFile()` über das Teilen-Menü, `copyText()`.
+9. **writing attempts** – IndexedDB `lernwoerter` / Store `versuche` (Index `[profil, wort]`), je Wort die letzten 3: `{ profil, wort, station, zeit, tag, band, striche (pack), selbst, fehler | spur }`. Für die Eltern-Durchsicht in M4. Nicht in der Sicherung.
+10. **writing pad** – `Pad` aus `werkstatt.html` übernommen, liest Band, Schrift und Linkshänder aus dem Profil. Striche tragen `pass` (Regenbogen-Durchgang); `undo`/`clear` wirken nur auf den aktuellen Durchgang. Handballen: nach Stift werden Finger ignoriert; drei Fingertipps in 5 s bei 20 s Stiftpause schalten Finger wieder an. `bewerteSpur(pad, pass)` und `sterneFuerSpur()` wie im Werkstatt-Test.
+11. **pictures** – Fuchs und Themenbilder als Inline-SVG.
+12. **views** – Kind: `viewStart` (7 Kacheln, Karteikasten `kastenHtml`), `viewKarte`, `viewStation` (silben, koenige) und `viewSchreiben` (abschreiben, regenbogen, blitz, merk). Phasen der Schreibstationen: zeigen (Merk-Diktat) bzw. blitzbereit → blitz (Blitzlesen, 1,2 s + 80 ms je Zeichen, höchstens 2,5 s, bis zu 3 Blitze vor dem ersten Strich) bzw. pause (Fuchs läuft 2,6 s) → schreiben → pruefen (Selbstkontrolle: Buchstaben erscheinen nacheinander, Antippen markiert direkt im DOM ohne Neu-Rendern) → nochmal (nach Fehlern einmal mit Vorlage richtig abschreiben) → ergebnis. Erster Start: `viewOnboard`, `viewWer`. Eltern: `viewGate`, `viewEltern` (Wochen, Einstellungen, Sicherung), `viewImport`, `viewWoche`, `viewWortEdit`.
+13. **render / actions / events** – `render()` → `#app.innerHTML`, danach hängt es das langlebige Pad (`aktuellesPad()`) wieder in `[data-pad-host]` ein, Striche bleiben erhalten; der Wort-Editor rendert beim Tippen nur `#wedit-teil` neu (Fokus bleibt). Ereignisse über `data-act` (Klick, Tabelle `ACT`), `data-in` (`IN`), `data-ch` (`CH`).
 
 `?debug` setzt `window.sf` (Zustand und Wortfunktionen) für lokale Prüfungen.
 
 ## Datenmodell
 
 - **Profile** `localStorage['lernwoerter.profile.v1']`: `{ aktiv, liste: [{ id, name, lefty, schrift: grund|andika, thema: einhorn|halloween|tiere, band }] }`.
-- **Daten je Kind** `localStorage['lernwoerter.daten.<profil-id>.v1']`: `{ v: 1, woerter: { id: Wort }, wochen: [Woche], stand: { sterne, tage: { JJJJ-MM-TT: sterne } } }`.
+- **Daten je Kind** `localStorage['lernwoerter.daten.<profil-id>.v1']`: `{ v: 1, woerter: { id: Wort }, wochen: [Woche], stand: { sterne, tage: { JJJJ-MM-TT: sterne }, w: { wortId: Karte }, rot: { station: index } } }`.
+- **Karte** (Lernstand je Wort): `{ fach: 0–5, faellig: "JJJJ-MM-TT", richtig, falsch, zuletzt: "JJJJ-MM-TT", letztes: ok|falsch, fehlerstellen: { "a0".. (Artikel) / "0".. (Wort): anzahl } }`.
 - **Wort:** `{ id, wort, artikel, wortart: nomen|verb|adjektiv|andere, art: mitsprech|nachdenk|merk, silben: ["A","bend"], stellen: [{ von, bis, typ, tipp }], satz }`. Ids sind fest, der Lernstand hängt daran. Gleiches Wort (Artikel + Wort, ohne Groß/klein) behält beim Speichern einer Woche seine Id.
 - **Woche:** `{ id, titel, diktat: "JJJJ-MM-TT", woerter: [ids], fehlerwoerter: [ids], angelegt }`.
 - **Sicherung:** `{ app: "lernwoerter", v: 1, exported, profile, daten: { profil-id: Daten } }`, Dateiname `schreibfuchs-sicherung-JJJJ-MM-TT.json`.
 
+## Sterne
+
+Silben schwingen und Silbenkönige: 1 je Wort. Abschreiben, Blitzlesen, Merk-Diktat: 2 je Wort, **unabhängig davon, ob die Selbstkontrolle richtig oder falsch ergab**, damit sich Schummeln bei der Selbstkontrolle nicht lohnt. Regenbogen: Durchschnitt der drei Durchgänge (1–3).
+
 ## Elternbereich
 
-Zugang nur über eine Rechenaufgabe: zweistellig × einstellig mit Ergebnis über 100 (`neueAufgabe()`), Eingabe über Ziffernfeld, falsche Antwort → neue Aufgabe. 7 × 8 o. ä. reicht nicht, das Einmaleins lernt man in NRW in Klasse 2.
+Einstellungen enthalten die Linienhöhe (28–72 px) mit einer Probe-Schreibfläche. Zugang nur über eine Rechenaufgabe: zweistellig × einstellig mit Ergebnis über 100 (`neueAufgabe()`), Eingabe über Ziffernfeld, falsche Antwort → neue Aufgabe. 7 × 8 o. ä. reicht nicht, das Einmaleins lernt man in NRW in Klasse 2.
 
 ## Schrift und Lineatur
 
