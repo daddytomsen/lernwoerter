@@ -91,7 +91,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .silbe{position:relative;display:inline-block}
 .silbe.bogen{margin:0 .05em}
 .silbe.bogen::after{content:"";position:absolute;left:10%;right:10%;bottom:.03em;height:.2em;border:4px solid var(--accent);border-top:0;border-radius:0 0 999px 999px}
-.koenig{color:var(--koenig);position:relative;display:inline-block}
+/* Königsbuchstaben as at school: highlighted yellow (Wednesday sheet) with the crown of the letter chart */
+.koenig{position:relative;display:inline-block;background:linear-gradient(transparent 38%,#FFE066 38%,#FFE066 92%,transparent 92%);border-radius:.08em}
 /* crown heights from the font metrics: baseline ≈ 1.2em below the top of a 1.5em line, x-height .5em, caps .92em */
 .koenig::before{content:"";position:absolute;left:50%;top:.43em;width:.34em;height:.22em;transform:translateX(-50%);background:var(--star);
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16'%3E%3Cpath d='M2 15h20l1-12-6 5-5-7-5 7-6-5z'/%3E%3C/svg%3E") center/contain no-repeat;
@@ -117,7 +118,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .tiles{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 4px}
 .tiles .gruppe{display:flex;gap:4px;padding:0 10px}
 .tile{min-width:64px;min-height:84px;padding:0 10px;border-radius:14px;border:2px solid var(--line);background:#fff;font:400 48px/1 var(--f-school);color:var(--ink);position:relative}
-.tile.koenig-ok{border-color:var(--koenig);color:var(--koenig);background:#FFF1F1}
+.tile.koenig-ok{border-color:#E0B23A;background:#FFE066}
 .tile.koenig-ok::before{content:"";position:absolute;left:50%;top:6px;width:26px;height:17px;transform:translateX(-50%);background:var(--star);
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16'%3E%3Cpath d='M2 15h20l1-12-6 5-5-7-5 7-6-5z'/%3E%3C/svg%3E") center/contain no-repeat;
   mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16'%3E%3Cpath d='M2 15h20l1-12-6 5-5-7-5 7-6-5z'/%3E%3C/svg%3E") center/contain no-repeat}
@@ -174,11 +175,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 .luecke.voll{background:var(--good-soft);border-bottom-color:var(--good);color:var(--good)}
 .tile.wahl{min-width:110px;font-size:52px}
 .tile.wahl small{font:700 18px/1.2 var(--f-ui)}
-.tile[disabled]{opacity:.4}
+.tile.wahl[disabled]{opacity:.4}
 .tipp{background:var(--warn-soft);border-radius:14px;padding:10px 16px;margin:0;font-weight:600;text-align:center;max-width:720px}
 .tipps{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;align-items:center}
-.tipps b{font:400 30px/1 var(--f-school);background:#FFE066;border-radius:6px;padding:2px 8px;margin-right:8px}
-.tile.marker{background:#FFE066;border-color:#E0B23A}
+.tipps b{font:400 30px/1 var(--f-school);background:#FF9C9C;border-radius:6px;padding:2px 8px;margin-right:8px}
+/* Stolperstellen as at school: coloured red (Thursday sheet) */
+.tile.marker{background:#FF9C9C;border-color:#E5484D}
 .kisten{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .kiste{min-height:150px;border-radius:22px;border:0;border-top:14px solid var(--andere);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:24px}
 .kiste.wa-nomen{border-top-color:var(--nomen)} .kiste.wa-verb{border-top-color:var(--verb)} .kiste.wa-adjektiv{border-top-color:var(--adjektiv)}
@@ -207,7 +209,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .pokal{width:150px;height:165px;display:block;margin:0 auto}
 .diktat-kopf{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px;font-size:22px}
 canvas.versuch{width:100%;display:block;border:2px solid var(--line);border-radius:14px;margin-top:12px;background:#fff}
-.fs{background:rgba(255,214,0,var(--a));border-radius:4px}
+.fs{background:rgba(229,72,77,calc(var(--a) * .55));border-radius:4px}
 .fw{font:400 28px/1.4 var(--f-school)}
 .tabelle{overflow-x:auto}
 .tabelle table{border-collapse:collapse;width:100%;font-size:16px}
@@ -299,10 +301,12 @@ textarea{width:100%;font:15px/1.4 ui-monospace,Menlo,monospace}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{min-height:46px;padding:0 14px;border-radius:999px;border:2px solid var(--line);background:#fff;font-weight:600;font-size:16px}
 .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip.sd{font:400 24px/1.4 var(--f-school);min-height:56px}
+.chip.sd.falsch{background:#FFE1E1;border-color:#E5484D;color:#9C2127;text-decoration:line-through}
 .buchstaben{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:8px 0}
 .bst{min-width:46px;min-height:62px;border:2px solid var(--line);border-radius:10px;background:#fff;font:400 30px/1 var(--f-school)}
 .bst.sel{background:var(--warn-soft);border-color:#E0B23A}
-.bst.mark{box-shadow:inset 0 -8px 0 #FFE066}
+.bst.mark{box-shadow:inset 0 -8px 0 #FF9C9C}
 .gap{width:22px;min-height:62px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-weight:800}
 .gap.an{color:var(--accent-deep)}
 .gap.an::before{content:"|";font-size:34px;line-height:1}
@@ -536,7 +540,7 @@ function parseImport(text) {
 }
 
 /* ---------- state & persistence ---------- */
-const VERSION = '0.7';
+const VERSION = '0.8';
 const LS_PROF = 'lernwoerter.profile.v1', lsDaten = id => `lernwoerter.daten.${id}.v1`;
 const S = { view: 'start', prof: store.get(LS_PROF, null), D: null };
 const leererStand = () => ({ sterne: 0, tage: {}, w: {}, rot: {}, plan: {}, zaehler: {}, abzeichen: {}, sticker: {}, heute: null });
@@ -785,19 +789,39 @@ Pad.prototype.tplFont = function () { return (this.band / xRatio(this.font)).toF
 Pad.prototype.drawTemplate = function (c, color) {
   if (!this.o.template || this.o.mode === 'leer') return;
   c.save(); c.font = this.tplFont(); c.textBaseline = 'alphabetic'; c.fillStyle = color;
-  const tw = c.measureText(this.o.template).width, m = this.band * 0.6;
-  c.fillText(this.o.template, this.o.mode === 'vorlage' && this.lefty ? this.w - m - tw : m, this.lines().grund);
+  const tw = c.measureText(this.o.template).width;
+  // Left-hander: template at the right end (the hand does not cover it); otherwise right after the little house.
+  c.fillText(this.o.template, this.o.mode === 'vorlage' && this.lefty ? this.w - this.band * 0.6 - tw : hausEnde(this.band), this.lines().grund);
   c.restore();
 };
 Pad.prototype.drawBg = function () {
-  const c = this.bg.getContext('2d'), L = this.lines();
+  const c = this.bg.getContext('2d');
   c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
   c.fillStyle = '#FFFFFF'; c.fillRect(0, 0, this.w, this.h);
-  c.strokeStyle = '#8E98BF'; c.lineWidth = 1;
-  for (const y of [L.ober, L.mittel, L.unter]) { c.beginPath(); c.moveTo(0, y); c.lineTo(this.w, y); c.stroke() }
-  c.strokeStyle = '#1F2546'; c.lineWidth = 2.4; c.beginPath(); c.moveTo(0, L.grund); c.lineTo(this.w, L.grund); c.stroke();
+  zeichneLineatur(c, this.w, this.band);
   this.drawTemplate(c, this.o.mode === 'spur' ? this.o.ghost : '#1F2546');
 };
+// School ruling as on the weekly worksheet: four lines, bold baseline, light grey middle band and the little house
+// at the start of the row (roof = top band, rooms = middle band, cellar with stairs = bottom band).
+const HAUS_RAND = 0.25, HAUS_BREITE = 0.8;
+const hausEnde = band => band * (HAUS_RAND + HAUS_BREITE + 0.35);
+function zeichneLineatur(c, w, band) {
+  const ober = band * 0.6, mittel = ober + band, grund = ober + 2 * band, unter = ober + 3 * band;
+  c.fillStyle = '#E4E8F1'; c.fillRect(0, mittel, w, band);
+  c.strokeStyle = '#8E98BF'; c.lineWidth = 1;
+  for (const y of [ober, mittel, unter]) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke() }
+  c.strokeStyle = '#1F2546'; c.lineWidth = Math.max(1.6, band * 0.043); c.beginPath(); c.moveTo(0, grund); c.lineTo(w, grund); c.stroke();
+  const x0 = band * HAUS_RAND, hw = band * HAUS_BREITE, s = band * 0.24;
+  c.save(); c.lineWidth = Math.max(1.2, band * 0.035); c.lineJoin = 'round'; c.fillStyle = '#FFFFFF';
+  c.beginPath(); c.moveTo(x0, mittel); c.lineTo(x0 + hw / 2, ober + band * 0.08); c.lineTo(x0 + hw, mittel); c.closePath(); c.fill(); c.stroke();
+  c.fillRect(x0, mittel, hw, 2 * band); c.strokeRect(x0, mittel, hw, 2 * band);
+  c.beginPath(); c.moveTo(x0, grund); c.lineTo(x0 + hw, grund); c.stroke();
+  c.strokeRect(x0 + hw * 0.16, mittel + band * 0.28, s, s); c.strokeRect(x0 + hw * 0.56, mittel + band * 0.28, s, s);
+  let x = x0 + hw * 0.12, y = unter - band * 0.06;
+  c.beginPath(); c.moveTo(x, y);
+  for (let k = 0; k < 3; k++) { y -= band * 0.26; c.lineTo(x, y); x += hw * 0.24; c.lineTo(x, y) }
+  c.stroke(); c.restore();
+}
 Pad.prototype.ctx = function () { const c = this.ink.getContext('2d'); c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); return c };
 Pad.prototype.baseW = function () { return Math.max(2.5, this.band * 0.11) };
 Pad.prototype.widthAt = function (p, s) { return s.vp ? this.baseW() * (0.55 + 0.9 * p) : this.baseW() };
@@ -978,8 +1002,8 @@ function viewStart() {
 
 // Stations on the start screen, grouped. Stations whose pool is empty this week are hidden.
 const STATIONEN = [
-  ['Anschauen und Silben', [['karte', 'cards', 'Wortkarten', 'ansehen und anhören'], ['silben', 'drum', 'Silben schwingen', 'für jede Silbe trommeln'], ['koenige', 'crown', 'Silbenkönige', 'alle Könige finden']]],
-  ['Knobeln', [['baukasten', 'blocks', 'Baukasten', 'Buchstaben legen'], ['luecke', 'puzzle', 'Lückenwort', 'welcher fehlt?'], ['wortarten', 'box', 'Wortarten', 'in die Kisten sortieren'], ['stelle', 'marker', 'Knifflige Stelle', 'mit dem Textmarker']]],
+  ['Anschauen und Silben', [['karte', 'cards', 'Wortkarten', 'ansehen und anhören'], ['silben', 'drum', 'Silben schwingen', 'für jede Silbe trommeln'], ['koenige', 'crown', 'Königsbuchstaben', 'gelb markieren']]],
+  ['Knobeln', [['baukasten', 'blocks', 'Baukasten', 'Buchstaben legen'], ['luecke', 'puzzle', 'Lückenwort', 'welcher fehlt?'], ['wortarten', 'box', 'Wortarten', 'in die Kisten sortieren'], ['stelle', 'marker', 'Stolperstellen', 'rot anmalen']]],
   ['Schreiben', [['abschreiben', 'write', 'Abschreiben', 'genau hinschauen'], ['regenbogen', 'rainbow', 'Regenbogen', 'dreimal nachfahren']]],
   ['Aus dem Kopf', [['blitz', 'bolt', 'Blitzlesen', 'kurz sehen, dann schreiben'], ['merk', 'run', 'Merk-Diktat', 'merken, laufen, schreiben']]]
 ];
@@ -1008,7 +1032,7 @@ function viewKarte() {
         <button class="btn main" data-act="sag-wort">${icon('speaker')}Wort</button>
         ${w.satz ? `<button class="btn" data-act="sag-satz">${icon('speaker')}Satz</button>` : ''}
         <button class="btn" data-act="boegen" aria-pressed="${K.boegen}">Silbenbögen</button>
-        <button class="btn" data-act="koenige" aria-pressed="${K.koenige}">${icon('crown')}Silbenkönige</button>
+        <button class="btn" data-act="koenige" aria-pressed="${K.koenige}">${icon('crown')}Königsbuchstaben</button>
       </div>
     </div>
     <div class="row mitte">
@@ -1023,7 +1047,7 @@ function markiere(satz, wort) {
 
 const ANLEITUNG = {
   silben: 'Sprich das Wort und schwing die Silben. Tippe für jede Silbe einmal auf die Trommel. Dann tippe auf Fertig.',
-  koenige: 'Finde die Silbenkönige. Tippe auf alle Selbstlaute: a, e, i, o, u, ä, ö, ü und au, ei, eu, ie.',
+  koenige: 'Finde die Königsbuchstaben und mal sie gelb an. Tippe auf a, e, i, o, u, ä, ö, ü und auf au, ei, eu.',
   abschreiben: 'Schau das Wort genau an und schreib es auf die Linien. Dann tippe auf Fertig.',
   regenbogen: 'Fahre das graue Wort dreimal nach, jedes Mal in einer anderen Farbe.',
   blitz: 'Das Wort blitzt kurz auf. Merk es dir gut und schreib es dann aus dem Kopf.',
@@ -1031,7 +1055,7 @@ const ANLEITUNG = {
   baukasten: 'Hör dir das Wort an. Lege die Buchstaben in der richtigen Reihenfolge. Achtung, ein paar passen nicht!',
   luecke: 'Welcher Buchstabe fehlt? Tippe auf den richtigen. Der Tipp hilft dir.',
   wortarten: 'Ist das ein Nomen, ein Verb oder ein Adjektiv? Tippe auf die richtige Kiste.',
-  stelle: 'Wo ist die knifflige Stelle? Tippe sie an, dann leuchtet sie wie ein Textmarker.',
+  stelle: 'Wo sind die Stolperstellen? Tippe sie an, dann malst du sie rot an.',
   diktat: 'Mini-Diktat! Hör gut zu und schreib jedes Wort auf die Linien. Am Ende vergleichen wir.'
 };
 const SCHREIB = ['abschreiben', 'regenbogen', 'blitz', 'merk'], AUS_DEM_KOPF = ['blitz', 'merk'], RUNDE = 5;
@@ -1072,7 +1096,7 @@ function viewStation() {
   return `${kopf}<div class="wortbuehne wa-${w.wortart}">
     <div class="tiles">${gruppen}</div>
     <button class="btn" data-act="sag-wort">${icon('speaker')}Anhören</button>
-    ${st.status === 'ok' ? `<p class="lob">Alle Könige gefunden!</p>${weiter}` : ''}
+    ${st.status === 'ok' ? `<p class="lob">Alle Königsbuchstaben gefunden!</p>${weiter}` : ''}
   </div>`;
 }
 
@@ -1226,7 +1250,7 @@ function viewKnobel(st, w, weiter) {
   }).join('');
   const tipps = fertig ? `<ul class="tipps">${w.stellen.map(s => `<li><b>${esc(w.wort.slice(s.von, s.bis))}</b> ${esc(s.tipp)}</li>`).join('')}</ul>` : '';
   return `<div class="wortbuehne wa-${w.wortart}">
-    <p class="leise" style="margin:0">${w.stellen.length === 1 ? 'Hier ist eine knifflige Stelle.' : `Hier sind ${w.stellen.length} knifflige Stellen.`}</p>
+    <p class="leise" style="margin:0">${w.stellen.length === 1 ? 'Hier ist eine Stolperstelle.' : `Hier sind ${w.stellen.length} Stolperstellen.`}</p>
     <div class="tiles">${w.artikel ? `<span class="artikel-fest">${esc(w.artikel)}</span>` : ''}<span class="gruppe">${buchst}</span></div>
     ${fertig ? tipps : hoeren}${schluss}</div>`;
 }
@@ -1250,13 +1274,15 @@ function knobelGeloest(st, sterne, text, tipp) {
 }
 
 /* ---------- week path, day plan, Mini-Diktat (M4) ---------- */
-// The school's weekly rhythm (KONZEPT 2). On the dictation day the Mini-Diktat replaces the weekday's plan.
+// The weekly rhythm of the child's school (worksheet Mo abschreiben, Di Silbenbögen, Mi Königsbuchstaben gelb,
+// Do Stolperstellen rot, Fr Diktat), plus a short round from memory Di to Do so the Karteikasten moves every day.
+// On the dictation day the Mini-Diktat replaces the weekday's plan.
 const TAGE = [
-  { kurz: 'Mo', name: 'Kennenlernen', ic: 'cards', stationen: ['karte', 'abschreiben'] },
-  { kurz: 'Di', name: 'Silben', ic: 'drum', stationen: ['silben', 'koenige'] },
-  { kurz: 'Mi', name: 'Knifflige Stellen', ic: 'marker', stationen: ['stelle', 'regenbogen'] },
-  { kurz: 'Do', name: 'Aus dem Kopf', ic: 'bolt', stationen: ['blitz', 'merk'] },
-  { kurz: 'Fr', name: 'Mini-Diktat', ic: 'trophy', stationen: ['diktat'] }
+  { kurz: 'Mo', name: 'Abschreiben', ic: 'write', stationen: ['karte', 'abschreiben'] },
+  { kurz: 'Di', name: 'Silbenbögen', ic: 'drum', stationen: ['silben', 'blitz'] },
+  { kurz: 'Mi', name: 'Königsbuchstaben', ic: 'crown', stationen: ['koenige', 'blitz'] },
+  { kurz: 'Do', name: 'Stolperstellen', ic: 'marker', stationen: ['stelle', 'merk'] },
+  { kurz: 'Fr', name: 'Diktat', ic: 'trophy', stationen: ['diktat'] }
 ];
 const STATION_NAME = Object.assign({ diktat: 'Mini-Diktat' }, ...STATIONEN.map(([, l]) => Object.fromEntries(l.map(([t, , n]) => [t, n]))));
 function tagIndexHeute(k) {
@@ -1405,11 +1431,9 @@ function malVersuch(cv, striche, wunschBand) {
   let maxX = 0; striche.forEach(s => s.forEach(p => { maxX = Math.max(maxX, p[0]) }));
   const band = Math.max(14, Math.min(wunschBand, (W - 12) / (maxX / 100 + 0.6))), H = Math.round(band * 4.2), dpr = Math.min(3, window.devicePixelRatio || 1);
   cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cv.style.height = H + 'px';
-  const c = cv.getContext('2d'), top = band * 0.6;
+  const c = cv.getContext('2d');
   c.setTransform(dpr, 0, 0, dpr, 0, 0); c.fillStyle = '#fff'; c.fillRect(0, 0, W, H);
-  c.strokeStyle = '#8E98BF'; c.lineWidth = 1;
-  for (const y of [top, top + band, top + 3 * band]) { c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke() }
-  c.strokeStyle = '#1F2546'; c.lineWidth = 2; c.beginPath(); c.moveTo(0, top + 2 * band); c.lineTo(W, top + 2 * band); c.stroke();
+  zeichneLineatur(c, W, band);
   c.strokeStyle = '#1F2546'; c.fillStyle = '#1F2546'; c.lineWidth = Math.max(2, band * 0.11); c.lineCap = 'round'; c.lineJoin = 'round';
   const f = v => v / 100 * band;
   for (const s of striche) {
@@ -1519,9 +1543,9 @@ function wocheKomplett() {
 }
 const ABZEICHEN = [
   ['trommler', 'Silbentrommler', 'drum', '#E8742A', '15 Wörter in Silben geschwungen', z => (z.silben || 0) >= 15],
-  ['koenig', 'Silbenkönig', 'crown', '#D99A00', 'In 15 Wörtern alle Silbenkönige gefunden', z => (z.koenige || 0) >= 15],
+  ['koenig', 'Königsbuchstaben-Profi', 'crown', '#D99A00', 'In 15 Wörtern alle Königsbuchstaben gefunden', z => (z.koenige || 0) >= 15],
   ['baumeister', 'Baumeister', 'blocks', '#2E6FD8', '15 Wörter im Baukasten gelegt', z => (z.baukasten || 0) >= 15],
-  ['detektiv', 'Stellen-Detektiv', 'marker', '#C08A00', '15 Wörter mit kniffligen Stellen gelöst', z => (z.stelle || 0) >= 15],
+  ['detektiv', 'Stolperstellen-Detektiv', 'marker', '#E5484D', '15 Wörter mit Stolperstellen gelöst', z => (z.stelle || 0) >= 15],
   ['lueckenprofi', 'Lückenprofi', 'puzzle', '#5E3A99', '15 Lückenwörter gelöst', z => (z.luecke || 0) >= 15],
   ['sortierer', 'Wortarten-Profi', 'box', '#2E9E5B', '20 Wörter richtig sortiert', z => (z.wortarten || 0) >= 20],
   ['spurenleser', 'Spurenleser', 'rainbow', '#B65FCF', '5 Regenbögen mit 3 Sternen', z => (z.regenbogen3 || 0) >= 5],
@@ -1629,6 +1653,33 @@ function viewAlbum() {
     <div class="card"><h2>Abzeichen</h2><div class="abzeichen">${ABZEICHEN.map(a => abzeichenHtml(a, !!st.abzeichen[a[0]])).join('')}</div></div>`;
 }
 
+/* ---------- parents: dictation at school ---------- */
+// After the real dictation at school the parent taps the words that were wrong. They count like the app's
+// Mini-Diktat: wrong → Karteikasten compartment 1 and mistake word of the following week; right → one step up.
+function viewSchulDiktat() {
+  const k = S.D.wochen.find(x => x.id === S.sd.id), ws = k.woerter.map(id => S.D.woerter[id]).filter(Boolean), f = S.sd.falsch;
+  return `<div class="bar"><button class="rund" data-act="eltern-zurueck" aria-label="Zurück">${icon('left')}</button><div class="grow"><h2 style="margin:0">Schul-Diktat: ${esc(k.titel)}</h2></div>
+      <button class="btn main" data-act="sd-speichern">${icon('check')}Speichern</button></div>
+    <div class="card"><p class="leise" style="margin-top:0">Tippe die Wörter an, die im Diktat in der Schule falsch waren. Sie kommen in die nächste Woche als Fehlerwörter und zurück in Fach 1 im Karteikasten. Richtige Wörter rücken ein Fach weiter.${k.schulDiktat ? ' Schon eingetragen: Änderungen passen nur die Fehlerwörter an, der Karteikasten zählt nur beim ersten Speichern.' : ''}</p>
+      <div class="chips">${ws.map(w => `<button class="chip sd${f.has(w.id) ? ' falsch' : ''}" data-act="sd-wort" data-id="${w.id}" aria-pressed="${f.has(w.id)}">${esc(vollWort(w))}</button>`).join('')}</div>
+      <p style="font-weight:700;margin:16px 0 0">${ws.length - f.size} von ${ws.length} richtig</p></div>`;
+}
+function schulDiktatSpeichern() {
+  const k = S.D.wochen.find(x => x.id === S.sd.id), falsch = [...S.sd.falsch], alt = k.schulDiktat ? k.schulDiktat.falsch : null;
+  if (!alt) k.woerter.forEach(id => bewerte(id, !falsch.includes(id), []));
+  else falsch.filter(id => !alt.includes(id)).forEach(id => bewerte(id, false, []));
+  const vorher = alt || [], wiederRichtig = vorher.filter(id => !falsch.includes(id));
+  k.diktatFehler = [...new Set((k.diktatFehler || []).filter(id => !wiederRichtig.includes(id)).concat(falsch))];
+  const n = nachbarWoche(k, 1);
+  if (n) n.fehlerwoerter = (n.fehlerwoerter || []).filter(id => !wiederRichtig.includes(id));
+  uebertrageFehler(k);
+  k.schulDiktat = { datum: heute(), falsch };
+  const eintrag = { id: 's' + k.id, woche: k.id, datum: k.diktat || heute(), ergebnis: k.woerter.map(id => ({ wort: id, ok: !falsch.includes(id), fehler: [] })), pokal: null, quelle: 'schule' };
+  S.D.diktate = S.D.diktate.filter(d => d.id !== eintrag.id).concat([eintrag]);
+  saveDaten(); S.view = 'eltern'; S.etab = 'wochen'; render();
+  toast(falsch.length ? `${falsch.length} Fehlerwörter gemerkt` : 'Alles richtig, toll!');
+}
+
 /* ---------- parents: help (M6) ---------- */
 const ADRESSE = 'https://daddytomsen.github.io/lernwoerter/';
 function viewHilfe() {
@@ -1656,7 +1707,8 @@ function viewHilfe() {
       'Kein App-Limit für Safari setzen, das sperrt die App mit.'])
     + abschnitt('Neue Woche', [
       '„Wochen“ → „Neue Woche mit Foto“ → Anleitung kopieren → in der Claude-App mit dem Foto vom Arbeitsblatt senden → Antwort einfügen → prüfen, Diktattermin wählen, speichern.',
-      'Fehlerwörter aus dem letzten Diktat kommen automatisch dazu.']);
+      'Fehlerwörter aus dem letzten Diktat kommen automatisch dazu.',
+      'Nach dem Diktat in der Schule: „Wochen“ → bei der Woche „Schul-Diktat“ → die falschen Wörter antippen → Speichern. Sie kommen als Fehlerwörter in die nächste Woche.']);
 }
 
 /* ---------- parents: progress and review (M4) ---------- */
@@ -1675,12 +1727,12 @@ function viewFortschritt() {
   }).join('');
   const diktate = S.D.diktate.slice().reverse().slice(0, 8).map(d => {
     const kw = S.D.wochen.find(x => x.id === d.woche), falsch = d.ergebnis.filter(e => !e.ok).map(e => S.D.woerter[e.wort]).filter(Boolean);
-    const [, farbe, name] = POKAL.find(x => x[0] === d.pokal) || POKAL[2];
+    const [, farbe, name] = d.quelle === 'schule' ? ['', '#8E98BF', `Schul-Diktat ${d.ergebnis.length - falsch.length}/${d.ergebnis.length}`] : POKAL.find(x => x[0] === d.pokal) || POKAL[2];
     return `<div class="eintrag"><span class="pokal-mini" style="background:${farbe}"></span><div class="info"><b style="color:var(--ink)">${esc(datumLang(d.datum))}</b> · ${esc(kw ? kw.titel : '')} · ${name}<br>${falsch.length ? 'Fehler: ' + falsch.map(w => esc(vollWort(w))).join(', ') : 'alles richtig'}</div></div>`;
   }).join('');
   const tage = []; for (let i = 6; i >= 0; i--) { const d = isoDay(dayShift(jetzt(), -i)); tage.push([d, S.D.stand.tage[d] || 0, !!(S.D.stand.plan[d] && S.D.stand.plan[d].fertig)]) }
   return `<h2>Diese Woche${k ? ': ' + esc(k.titel) : ''}</h2>
-    ${ws.length ? `<p class="leise" style="font-size:15px;margin:0 0 8px">Gelb: Stellen, die beim Vergleichen als falsch markiert wurden (je kräftiger, desto öfter). Richtig / falsch zählt nur Schreiben aus dem Kopf.</p>
+    ${ws.length ? `<p class="leise" style="font-size:15px;margin:0 0 8px">Rot: Stellen, die beim Vergleichen als falsch markiert wurden (je kräftiger, desto öfter). Richtig / falsch zählt nur Schreiben aus dem Kopf.</p>
     <div class="tabelle"><table><thead><tr><th>Wort</th><th>Karteikasten</th><th>richtig / falsch</th><th>nächstes Mal</th></tr></thead><tbody>${zeilen}</tbody></table></div>` : '<p class="leise">Noch keine Woche.</p>'}
     <h2 style="margin-top:22px">Mini-Diktate</h2><div class="liste">${diktate || '<p class="leise">Noch kein Diktat geschrieben.</p>'}</div>
     <h2 style="margin-top:22px">Die letzten 7 Tage</h2>
@@ -1780,6 +1832,7 @@ function viewEltern() {
     const wochen = S.D.wochen.slice().sort((a, b) => (b.diktat || '').localeCompare(a.diktat || ''));
     body = `<div class="row"><button class="btn main" data-act="import">${icon('camera')}Neue Woche mit Foto</button><button class="btn" data-act="woche-neu">${icon('plus')}Neue Woche von Hand</button></div>
       <div class="liste" style="margin-top:14px">${wochen.map(k => `<div class="eintrag"><div class="info"><b style="color:var(--ink);font-size:18px">${esc(k.titel)}</b><br>Diktat ${esc(datumLang(k.diktat))} · ${k.woerter.length} Wörter</div>
+        <button class="btn klein" data-act="schuldiktat" data-id="${k.id}">${icon('trophy')}${k.schulDiktat ? `Schul-Diktat ${k.woerter.length - k.schulDiktat.falsch.length}/${k.woerter.length}` : 'Schul-Diktat'}</button>
         <button class="btn klein" data-act="woche-edit" data-id="${k.id}">${icon('edit')}Bearbeiten</button></div>`).join('') || '<p class="leise">Noch keine Woche angelegt.</p>'}</div>`;
   } else if (tab === 'fortschritt') {
     body = viewFortschritt();
@@ -1867,7 +1920,7 @@ function weditTeil() {
     <div class="chips">${WORTARTEN.map(x => `<button class="chip" data-act="w-wortart" data-x="${x}" aria-pressed="${w.wortart === x}">${WA_NAME[x]}</button>`).join('')}</div>
     <p style="font-weight:600;margin:14px 0 4px">Wortart nach FRESCH</p>
     <div class="chips">${ARTEN.map(x => `<button class="chip" data-act="w-art" data-x="${x}" aria-pressed="${w.art === x}">${ART_NAME[x]}</button>`).join('')}</div>
-    <p style="font-weight:600;margin:14px 0 0">Silben und schwierige Stellen</p>
+    <p style="font-weight:600;margin:14px 0 0">Silben und Stolperstellen</p>
     <p class="leise" style="font-size:15px;margin:2px 0">Zwischen die Buchstaben tippen setzt oder löscht eine Silbengrenze. Buchstaben antippen wählt eine Stelle aus.</p>
     <div class="buchstaben">${bst}</div>
     ${sel ? `<div class="chips">${TYPEN.map(t => `<button class="chip" data-act="w-stelle-neu" data-typ="${t}">${esc(TYP_NAME[t])}</button>`).join('')}<button class="chip" data-act="w-sel-weg">Auswahl aufheben</button></div>` : ''}
@@ -1877,7 +1930,7 @@ function weditTeil() {
 }
 
 /* ---------- render ---------- */
-const VIEWS = { album: viewAlbum, tagfertig: viewTagFertig, start: viewStart, karte: viewKarte, station: viewStation, onboard: viewOnboard, wer: viewWer, gate: viewGate, eltern: viewEltern, import: viewImport, woche: viewWoche, wedit: viewWortEdit };
+const VIEWS = { schuldiktat: viewSchulDiktat, album: viewAlbum, tagfertig: viewTagFertig, start: viewStart, karte: viewKarte, station: viewStation, onboard: viewOnboard, wer: viewWer, gate: viewGate, eltern: viewEltern, import: viewImport, woche: viewWoche, wedit: viewWortEdit };
 function render() {
   if (!aktiv() && S.view !== 'onboard') { S.ob = S.ob || { schritt: 1, name: '', lefty: false }; S.view = 'onboard' }
   $('#app').innerHTML = VIEWS[S.view]();
@@ -2036,7 +2089,7 @@ const ACT = {
       if (st.gefunden.has(k)) return;
       st.gefunden.add(k); st.wackel = -1; SFX.krone();
       const total = stationWort().silben.reduce((n, s) => n + tokens(s).filter(t => t.v).length, 0);
-      if (st.gefunden.size >= total) { stationGeloest(); render(); say('Alle Könige gefunden!') } else render();
+      if (st.gefunden.size >= total) { stationGeloest(); render(); say('Alle Königsbuchstaben gefunden!') } else render();
     } else { st.wackel = k; SFX.sanft(); render() }
   },
   'st-weiter': () => {
@@ -2082,7 +2135,7 @@ const ACT = {
     if (st.status) return;
     if (s < 0) {
       st.versuche++; st.wackel = j;
-      if (st.versuche >= 4) { w.stellen.forEach((_, k) => st.gefunden.add(k)); knobelGeloest(st, 0, 'Hier sind die kniffligen Stellen. Schau sie dir genau an!') }
+      if (st.versuche >= 4) { w.stellen.forEach((_, k) => st.gefunden.add(k)); knobelGeloest(st, 0, 'Hier sind die Stolperstellen. Schau sie dir genau an!') }
       render(); SFX.sanft(); if (st.status) say(w.stellen.map(x => x.tipp).join('. '));
       return;
     }
@@ -2173,6 +2226,9 @@ const ACT = {
     S.importInfo = ''; S.loeschenFrage = false; S.view = 'woche'; render();
   },
   'woche-speichern': speichereEntwurf,
+  schuldiktat: el => { const k = S.D.wochen.find(x => x.id === el.dataset.id); if (!k) return; S.sd = { id: k.id, falsch: new Set(k.schulDiktat ? k.schulDiktat.falsch : []) }; S.view = 'schuldiktat'; render() },
+  'sd-wort': el => { const f = S.sd.falsch, id = el.dataset.id; if (f.has(id)) f.delete(id); else f.add(id); render() },
+  'sd-speichern': schulDiktatSpeichern,
   'fehlerwort-weg': el => { S.entwurf.fehlerwoerter = S.entwurf.fehlerwoerter.filter(id => id !== el.dataset.id); render() },
   'woche-loeschen': () => { S.loeschenFrage = true; render() },
   'woche-loeschen-ja': () => { S.D.wochen = S.D.wochen.filter(k => k.id !== S.entwurf.id); saveDaten(); S.loeschenFrage = false; S.view = 'eltern'; render(); toast('Woche gelöscht') },

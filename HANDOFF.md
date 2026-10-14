@@ -1,6 +1,6 @@
 # Übergabe an Claude Code – Schreibfuchs
 
-Stand: 14.10.2026 · **App 0.7 live** (Linienhöhe 56 aus dem M0-Test) auf `main` (M1–M6 zusammengeführt am 14.10. auf Wunsch von Thomas, vor dem M0-Test) · Werkstatt-Test unter `/werkstatt.html` · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
+Stand: 14.10.2026 · **App 0.8 live** (an die Schule angeglichen) auf `main` (M1–M6 zusammengeführt am 14.10. auf Wunsch von Thomas, vor dem M0-Test) · Werkstatt-Test unter `/werkstatt.html` · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
 
 Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei sagt, was entschieden, was fertig und was als Nächstes zu tun ist.
 
@@ -192,6 +192,15 @@ Adressen: App https://daddytomsen.github.io/lernwoerter/ · Werkstatt-Test https
 15. Elternbereich → Durchsicht: Schreibversuche lesbar? Fortschritt verständlich?
 
 Ergebnisse ins Testprotokoll unten. Fehler und Wünsche an Claude Code.
+
+### 0.8 – Angleichung an die Schule (14.10.2026 abends, Wunsch Thomas)
+
+Aus dem Schulmaterial (Wochenblätter, Anlauttabelle, Diktat, Artikel-Blatt; Fotos lokal in `entwurf/schule-2026-10/`):
+- Begriffe **Königsbuchstaben** (gelb) und **Stolperstellen** (rot) wie im Heft, Wochenweg wie das Wochenblatt (Mo Abschreiben, Di Silbenbögen, Mi Königsbuchstaben, Do Stolperstellen, Fr Diktat), Lineatur mit Häuschen und grauem Mittelband.
+- **Schul-Diktat** im Elternbereich (Wochen → „Schul-Diktat“): falsche Wörter antippen → Fehlerwörter der nächsten Woche, Karteikasten.
+- Drei Wochen als fertige Import-Texte in `~/Downloads/schreibfuchs-transfer/wochen-import.md` (AB 4 mit den drei echten Diktatfehlern als Stolperstellen, „der, die, das“, „hat, haben“ nur 1–7).
+- Geprüft im Browser: Import beider Wochen über die Oberfläche, Schul-Diktat AB 4 12/15 → um, lesen, Baum als Fehlerwörter der Folgewoche und Fach 1, Korrektur nimmt „lesen“ wieder heraus; Optik von Häuschen, Königsbuchstaben, Stolperstellen.
+- **Offen:** Farben. Artikel-Blatt der Schule: der blau, die rot, das grün. App: Wortarten Nomen blau, Verb rot, Adjektiv grün (aus dem Konzept). Thomas klärt, wie die Schule die Wortarten färbt. Empfehlung bei Unklarheit: Artikel nach Schulblatt färben, Wortarten-Kisten mit Symbolen statt Farben.
 
 ## Nicht ohne Rückfrage
 

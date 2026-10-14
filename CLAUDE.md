@@ -32,8 +32,8 @@ Repo und interne Schlüssel heißen neutral `lernwoerter` (Speicher `lernwoerter
 
 Bei jeder Änderung an `index.html`, `werkstatt.html` oder den Schriften **beide Versionsnummern gleichzeitig** hochzählen, sonst bekommt das iPad die alte Fassung aus dem Cache:
 
-- `sw.js`: `const CACHE = 'lernwoerter-v0.7';`
-- `index.html`: `const VERSION = '0.7';` (sichtbar im Elternbereich)
+- `sw.js`: `const CACHE = 'lernwoerter-v0.8';`
+- `index.html`: `const VERSION = '0.8';` (sichtbar im Elternbereich)
 
 `tools/check.sh` bricht ab, wenn sie nicht übereinstimmen. Nach jedem Update muss die Home-Bildschirm-App komplett geschlossen und zweimal geöffnet werden. Das gehört in jede Release-Nachricht an Thomas.
 
@@ -75,6 +75,12 @@ Abschnitte im Skript (Kommentare `/* ---------- … ---------- */`):
     - *Ablauf*: `stationsStart()` beim Start, `stationAbschluss()` genau einmal am Ende (Tagesziel, Abzeichen, Pause, Wachstum), `belohnungHtml()` auf jedem Endbildschirm (Stationen, Mini-Diktat), `feiern()` danach mit Ton, Konfetti (`konfetti()` aus Voc a Bit) und vorgelesenem Lob.
     - *Album* (`viewAlbum`): Begleiter, Sterneglas, Stickerseiten je Thema, Pokalregal, Abzeichenwand. Erreichbar über den Begleiter oder das Sterneglas oben auf dem Start.
     **Feinschliff (M6)**: Elternbereich-Reiter *Hilfe* (`viewHilfe`: Installieren, Update, Ton, Stift, Bildschirmzeit, neue Woche), *Sicherung* zeigt die letzte Sicherung (`stand.letzteSicherung`); `sicherungsText()` getrennt von `sicherungSpeichern()`, damit sie ohne Teilen-Menü prüfbar ist. Schreibversuche (IndexedDB) sind bewusst nicht in der Sicherung.
+    **Angleichung an die Schule (0.8, Schulmaterial vom 14.10., Fotos lokal in `entwurf/schule-2026-10/`)**:
+    - Begriffe wie im Heft: **Königsbuchstaben** (gelb markiert, Krone wie auf der Anlauttabelle; Station `koenige`) und **Stolperstellen** (rot angemalt; Station `stelle`). Die Begriffe „Silbenkönige“ und „knifflige Stelle“ nicht mehr verwenden. Fehlerstellen in Fortschritt und Wort-Editor ebenfalls rot.
+    - Wochenweg nach dem Wochenblatt: Mo Abschreiben (Wortkarten, Abschreiben), Di Silbenbögen (Silben schwingen, Blitzlesen), Mi Königsbuchstaben (+ Blitzlesen), Do Stolperstellen (+ Merk-Diktat), Fr Diktat.
+    - Lineatur wie auf dem Wochenblatt (`zeichneLineatur()`): hellgraues Mittelband #E4E8F1 und das Häuschen am Zeilenanfang (Dach = Oberband, Wohnung mit zwei Fenstern = Mittelband, Keller mit Treppe = Unterband). Schreibfläche und gemalte Versuche nutzen dieselbe Funktion; die Vorlage beginnt nach dem Häuschen (`hausEnde()`), bei Linkshändern rechts.
+    - **Schul-Diktat** (`viewSchulDiktat`, `schulDiktatSpeichern`): Eltern tippen nach dem echten Diktat die falschen Wörter an. Beim ersten Speichern zählt jedes Wort im Karteikasten (falsch → Fach 1, richtig → `bewerte(true)`); spätere Korrekturen ändern nur die Fehlerwörter. `woche.schulDiktat = { datum, falsch }`, Eintrag in `D.diktate` mit `quelle: 'schule'`, Fehler → `diktatFehler` → Folgewoche.
+    - Schulwochen haben 15 Wörter.
 13. **render / actions / events** – `render()` → `#app.innerHTML`, danach hängt es das langlebige Pad (`aktuellesPad()`) wieder in `[data-pad-host]` ein, Striche bleiben erhalten; der Wort-Editor rendert beim Tippen nur `#wedit-teil` neu (Fokus bleibt). Ereignisse über `data-act` (Klick, Tabelle `ACT`), `data-in` (`IN`), `data-ch` (`CH`).
 
 `?debug` setzt `window.sf` (Zustand und Wortfunktionen) für lokale Prüfungen.
