@@ -31,8 +31,8 @@ Repo und interne Schlüssel heißen neutral `lernwoerter` (Speicher `lernwoerter
 
 Bei jeder Änderung an `index.html`, `werkstatt.html` oder den Schriften **beide Versionsnummern gleichzeitig** hochzählen, sonst bekommt das iPad die alte Fassung aus dem Cache:
 
-- `sw.js`: `const CACHE = 'lernwoerter-v0.4';`
-- `index.html`: `const VERSION = '0.4';` (sichtbar im Elternbereich)
+- `sw.js`: `const CACHE = 'lernwoerter-v0.5';`
+- `index.html`: `const VERSION = '0.5';` (sichtbar im Elternbereich)
 
 `tools/check.sh` bricht ab, wenn sie nicht übereinstimmen. Nach jedem Update muss die Home-Bildschirm-App komplett geschlossen und zweimal geöffnet werden. Das gehört in jede Release-Nachricht an Thomas.
 
@@ -65,6 +65,14 @@ Abschnitte im Skript (Kommentare `/* ---------- … ---------- */`):
     - *Fehlerwörter*: `woche.fehlerwoerter` (aus dem Diktat der Vorwoche) werden in `wochenWoerter()` mitgeübt, auf dem Start gestrichelt. Eine neue Woche übernimmt beim Anlegen die offenen Fehler der Vorwoche; ist die Folgewoche schon da, bekommt sie sie beim Diktat. Im Wochen-Editor einzeln entfernbar.
     - *Eltern-Reiter Fortschritt* (`viewFortschritt`): Wörter der Woche mit Fach, richtig/falsch (nur aus dem Kopf), nächstem Termin und gelb schattierten Fehlerstellen (`fehlerHtml`); Diktate mit Pokal und Fehlern; Sterne und Tagesaufgaben der letzten 7 Tage.
     - *Eltern-Reiter Durchsicht* (`viewDurchsicht`): die gespeicherten Versuche (je Wort 3) neu gemalt, „richtig“/„falsch“ überstimmt die Selbstkontrolle (`urteilen()`): speichert `eltern` am Versuch; bei Blitzlesen, Merk-Diktat und Diktat auch Karteikasten (falsch → Fach 1; richtig nach falscher Selbstkontrolle → `bewerte(true)`), beim Diktat auch Diktat-Ergebnis und Fehlerwörter der Folgewoche.
+    **Belohnung (M5)**, Abschnitt *rewards*:
+    - *Sticker*: `STICKER` je Thema 8 Inline-SVGs (Einhörner, Halloween, Tiere). Pro geschaffter Tagesaufgabe einer (`neuerSticker()`, erst das eigene Thema, dann die anderen), einmal pro Tag (`stand.plan[datum].sticker`), erscheint als Stempel auf dem Wochenweg und im Album.
+    - *Begleiter*: `BEGLEITER` (Fuchs, Einhorn, Gespenst nach Thema), wächst mit den Sternen (`STUFEN` 0/40/120/250/450) und bekommt je Stufe ein Zubehör (`ZUBEHOER`: Halstuch, Blume, Glitzer, Krone; `versatz` je Begleiter, wo nötig). Nur positiv: Sprechblase mit Lob, „gewachsen“ oder Pausenvorschlag.
+    - *Sterneglas*: `glasSvg()`, 50 Sterne je Glas, volle Gläser stehen im Pokalregal.
+    - *Abzeichen*: `ABZEICHEN` mit Bild, Name, Bedingung über `stand.zaehler` (je gelöstes Wort pro Station, `kopf` = richtig aus dem Kopf, `regenbogen3`, `diktat`, `gold`) oder Karteikasten/Wochenweg. `pruefeAbzeichen()` am Ende jeder Station und jedes Tagesplans.
+    - *Tagesziel*: 3 Aufgaben oder 10 Minuten (`stand.heute`), Punkte oben auf dem Start. *Pause*: einmal je Sitzung nach 20 Minuten (Sitzung beginnt neu nach 5 Minuten im Hintergrund).
+    - *Ablauf*: `stationsStart()` beim Start, `stationAbschluss()` genau einmal am Ende (Tagesziel, Abzeichen, Pause, Wachstum), `belohnungHtml()` auf jedem Endbildschirm (Stationen, Mini-Diktat), `feiern()` danach mit Ton, Konfetti (`konfetti()` aus Voc a Bit) und vorgelesenem Lob.
+    - *Album* (`viewAlbum`): Begleiter, Sterneglas, Stickerseiten je Thema, Pokalregal, Abzeichenwand. Erreichbar über den Begleiter oder das Sterneglas oben auf dem Start.
 13. **render / actions / events** – `render()` → `#app.innerHTML`, danach hängt es das langlebige Pad (`aktuellesPad()`) wieder in `[data-pad-host]` ein, Striche bleiben erhalten; der Wort-Editor rendert beim Tippen nur `#wedit-teil` neu (Fokus bleibt). Ereignisse über `data-act` (Klick, Tabelle `ACT`), `data-in` (`IN`), `data-ch` (`CH`).
 
 `?debug` setzt `window.sf` (Zustand und Wortfunktionen) für lokale Prüfungen.
@@ -77,7 +85,8 @@ Abschnitte im Skript (Kommentare `/* ---------- … ---------- */`):
 - **Wort:** `{ id, wort, artikel, wortart: nomen|verb|adjektiv|andere, art: mitsprech|nachdenk|merk, silben: ["A","bend"], stellen: [{ von, bis, typ, tipp }], satz }`. Ids sind fest, der Lernstand hängt daran. Gleiches Wort (Artikel + Wort, ohne Groß/klein) behält beim Speichern einer Woche seine Id.
 - **Woche:** `{ id, titel, diktat: "JJJJ-MM-TT", woerter: [ids], fehlerwoerter: [ids aus dem Vorwochen-Diktat], diktatFehler: [ids], angelegt }`.
 - **Diktat** (`D.diktate[]`): `{ id, woche, datum, ergebnis: [{ wort, ok, fehler }], pokal: gold|silber|bronze }`.
-- **Tagesplan** (`stand.plan`): `{ JJJJ-MM-TT: { erledigt: [stationen], fertig } }`.
+- **Tagesplan** (`stand.plan`): `{ JJJJ-MM-TT: { erledigt: [stationen], fertig, sticker } }`.
+- **Belohnung** (im `stand`): `zaehler: { station: anzahl }`, `abzeichen: { id: datum }`, `sticker: { id: datum }`, `heute: { datum, aufgaben, minuten, erreicht }`.
 - **Sicherung:** `{ app: "lernwoerter", v: 1, exported, profile, daten: { profil-id: Daten } }`, Dateiname `schreibfuchs-sicherung-JJJJ-MM-TT.json`.
 
 ## Sterne

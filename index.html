@@ -224,6 +224,57 @@ canvas.versuch{width:100%;display:block;border:2px solid var(--line);border-radi
 .v-kopf .leise{font-size:15px}
 @media (max-width:640px){.tag{min-width:56px}.tag .punkt{width:52px;height:52px}.tag small{display:none}.weglinie{margin-bottom:26px}}
 
+/* rewards (M5) */
+.begleiter{width:150px;height:150px;flex:none;display:block}
+.begleiter.mini{width:76px;height:76px}
+.begleiter.huepft{animation:huepf .6s ease-in-out 3}
+@keyframes huepf{50%{transform:translateY(-14px)}}
+.begleiter-knopf{border:0;background:transparent;padding:0;flex:none;border-radius:50%}
+.glas{width:64px;height:84px;flex:none}
+.glas.mini{width:24px;height:32px}
+.glas.voll{width:44px;height:58px}
+button.sterne{border:0;cursor:pointer}
+.ziel-chip{border:0;background:var(--surface);border-radius:999px;min-height:44px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;color:var(--good)}
+.ziel-chip.erreicht{background:var(--good-soft)}
+.zielpunkte{display:inline-flex;gap:5px}
+.zielpunkte i{width:12px;height:12px;border-radius:50%;background:var(--line);display:block}
+.zielpunkte i.an{background:var(--good)}
+.belohnung{display:flex;justify-content:center;align-items:flex-end;gap:28px;flex-wrap:wrap;margin:6px 0}
+.begleiter-box{display:flex;align-items:center;gap:12px;position:relative}
+.begleiter-box.gross .begleiter{width:170px;height:170px}
+.blase{position:relative;background:var(--surface-2);border-radius:18px;padding:10px 14px;font-weight:700;max-width:220px;text-align:left}
+.blase::before{content:"";position:absolute;left:-8px;bottom:18px;border:8px solid transparent;border-right-color:var(--surface-2);border-left:0}
+.glas-box{display:flex;flex-direction:column;align-items:center;gap:2px}
+.glas-box b{font-size:26px;color:var(--star)}
+.glas-box small{color:var(--ink-2);font-weight:600}
+.neu-karte{display:flex;align-items:center;gap:14px;text-align:left;background:var(--surface-2);border-radius:18px;padding:12px 16px;margin:10px auto 0;max-width:560px}
+.neu-karte > .i{width:44px;height:44px;color:var(--accent-deep);flex:none}
+.neu-karte.ziel{background:var(--good-soft)} .neu-karte.ziel > .i{color:var(--good)}
+.neu-karte.pause{background:var(--warn-soft)}
+.sticker{border:0;background:#fff;border-radius:18px;box-shadow:0 2px 0 var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px;aspect-ratio:1}
+.sticker svg{width:78%;height:auto}
+.sticker small{font-size:13px;font-weight:700;color:var(--ink-2)}
+.sticker.gross{width:84px;height:84px;flex:none;padding:6px}
+.sticker.leer{background:var(--surface-2);box-shadow:none;border:3px dashed var(--line)}
+.sticker.leer b{font-size:34px;color:var(--ink-3)}
+.stickerseite{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px;max-width:640px}
+.tag .punkt.sticker-stempel{background:#fff;border-color:var(--good);padding:6px}
+.tag .punkt.sticker-stempel svg{width:100%;height:100%}
+.stempel svg{width:84px;height:84px}
+.album-kopf{display:flex;flex-wrap:wrap;gap:20px 40px;align-items:center}
+.regal{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;border-bottom:8px solid #C9A27A;padding-bottom:4px;min-height:80px}
+.regal .pokal{width:64px;height:70px;margin:0}
+.abzeichen{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.abz{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.abz b{font-size:15px}
+.abz small{font-size:12px;color:var(--ink-3);line-height:1.25}
+.medaille{width:72px;height:72px;border-radius:50%;background:var(--m);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 -6px 0 rgba(0,0,0,.15),0 0 0 4px #fff,0 0 0 6px var(--m)}
+.medaille .i{width:36px;height:36px}
+.abz.fehlt .medaille{background:var(--surface-2);color:var(--ink-3);box-shadow:inset 0 0 0 3px var(--line)}
+.neu-karte .abz{flex:none}
+.konfetti{position:fixed;inset:0;pointer-events:none;z-index:80;width:100%;height:100%}
+@media (max-width:640px){.belohnung{gap:12px}.begleiter{width:90px;height:90px}.blase{max-width:160px}}
+
 /* onboarding */
 .themen{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
 .thema{border:4px solid transparent;border-radius:var(--r-lg);background:var(--surface);min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-weight:800;font-size:24px}
@@ -481,16 +532,16 @@ function parseImport(text) {
 }
 
 /* ---------- state & persistence ---------- */
-const VERSION = '0.4';
+const VERSION = '0.5';
 const LS_PROF = 'lernwoerter.profile.v1', lsDaten = id => `lernwoerter.daten.${id}.v1`;
 const S = { view: 'start', prof: store.get(LS_PROF, null), D: null };
-const leererStand = () => ({ sterne: 0, tage: {}, w: {}, rot: {}, plan: {} });
+const leererStand = () => ({ sterne: 0, tage: {}, w: {}, rot: {}, plan: {}, zaehler: {}, abzeichen: {}, sticker: {}, heute: null });
 const leereDaten = () => ({ v: 1, woerter: {}, wochen: [], diktate: [], stand: leererStand() });
 function aktiv() { const P = S.prof; return (P && P.liste.find(p => p.id === P.aktiv)) || null }
 function ladeDaten() {
   const p = aktiv(), d = p ? store.get(lsDaten(p.id), null) : null;
   S.D = Object.assign(leereDaten(), d || {});
-  S.D.stand = Object.assign(leererStand(), S.D.stand);   // older data lacks w/rot (0.1) and plan (0.3)
+  S.D.stand = Object.assign(leererStand(), S.D.stand);   // older data lacks w/rot (0.1), plan (0.3), rewards (0.4)
   if (!Array.isArray(S.D.diktate)) S.D.diktate = [];
 }
 function saveProf() { if (!store.set(LS_PROF, S.prof)) toast('Speichern hat nicht geklappt. Ist der Speicher voll?') }
@@ -612,7 +663,8 @@ const SFX = {
   sanft: () => tone([[392, 0, .18, 'sine', .12], [349.23, .14, .22, 'sine', .1]]),   // "try again", never harsh
   trommel: () => tone([[110, 0, .16, 'sine', .35], [220, 0, .05, 'triangle', .08]]),
   krone: () => tone([[880, 0, .1, 'sine'], [1174.66, .08, .16, 'sine']]),
-  fertig: () => tone([[523.25, 0, .16], [659.25, .13, .16], [783.99, .26, .16], [1046.5, .39, .42]])
+  fertig: () => tone([[523.25, 0, .16], [659.25, .13, .16], [783.99, .26, .16], [1046.5, .39, .42]]),
+  badge: () => tone([[880, 0, .1, 'sine'], [1174.66, .08, .1, 'sine'], [1567.98, .16, .34, 'sine']])
 };
 let deVoice = null;
 function pickVoice() {
@@ -910,9 +962,11 @@ function viewStart() {
         return k ? `<h3 class="gruppe-titel">${titel}</h3><div class="kacheln">${k}</div>` : '';
       }).join('')}${kastenHtml(ws)}`;
   }
-  return `<div class="bar">${FOX}<div class="grow"><p class="hallo">Hallo, ${esc(p.name)}!</p>${n > 1 ? `<button class="btn klein" data-act="wer">Nicht ${esc(p.name)}?</button>` : ''}</div>
+  const h = tagesziel(), zielPunkte = [0, 1, 2].map(i => `<i class="${i < h.aufgaben || h.erreicht ? 'an' : ''}"></i>`).join('');
+  return `<div class="bar"><button class="begleiter-knopf" data-act="album" aria-label="Album öffnen">${begleiterSvg(p.thema, S.D.stand.sterne, 'mini')}</button><div class="grow"><p class="hallo">Hallo, ${esc(p.name)}!</p>${n > 1 ? `<button class="btn klein" data-act="wer">Nicht ${esc(p.name)}?</button>` : ''}</div>
       <button class="rund klein" data-act="hallo" aria-label="Vorlesen">${icon('speaker')}</button>
-      <span class="sterne">${icon('star')}${S.D.stand.sterne}</span>
+      <button class="ziel-chip${h.erreicht ? ' erreicht' : ''}" data-act="ziel-sag" aria-label="Tagesziel">${h.erreicht ? icon('check') : ''}<span class="zielpunkte">${zielPunkte}</span></button>
+      <button class="sterne" data-act="album" aria-label="Album">${glasSvg(S.D.stand.sterne, 'mini')}${S.D.stand.sterne}</button>
       <button class="rund klein" data-act="eltern" aria-label="Elternbereich">${icon('gear')}</button></div>${woche}`;
 }
 
@@ -981,9 +1035,9 @@ function viewStation() {
   const st = S.st, ws = st.ws;
   if (st.typ === 'diktat') return viewDiktat(st);
   if (st.ende) {
-    return `${topBar(homeBtn)}<div class="card" style="text-align:center"><div class="gross-stern">${icon('star')}</div>
-      <p class="lob">Geschafft!</p><p class="leise">${st.sterne} ${st.sterne === 1 ? 'Stern' : 'Sterne'} gesammelt</p>
-      <div class="row mitte">${planKnopf() || `<button class="btn" data-act="station" data-typ="${st.typ}">Noch eine Runde</button><button class="btn main" data-act="home">${icon('home')}Zum Start</button>`}</div></div>`;
+    return `${topBar(homeBtn)}<div class="card" style="text-align:center"><p class="lob">Geschafft!</p>
+      ${belohnungHtml(st.belohnung || stationAbschluss(st), st.sterne)}
+      <div class="row mitte" style="margin-top:14px">${planKnopf() || `<button class="btn" data-act="station" data-typ="${st.typ}">Noch eine Runde</button><button class="btn main" data-act="home">${icon('home')}Zum Start</button>`}</div></div>`;
   }
   const w = ws[st.i], kopf = `${topBar(homeBtn, punkte(ws.length, st.i, st.ok))}
     <div class="anleitung"><button class="rund klein" data-act="anleitung" aria-label="Anleitung vorlesen">${icon('speaker')}</button><span>${esc(ANLEITUNG[st.typ])}</span></div>`;
@@ -1186,7 +1240,7 @@ function pruefeBaukasten() {
 }
 function knobelGeloest(st, sterne, text, tipp) {
   st.status = sterne ? 'ok' : 'hilfe'; st.lob = text; st.tipp = tipp || ''; st.sterneWort = sterne;
-  if (sterne) { st.ok.add(st.i); st.sterne += sterne; sternPlus(sterne); SFX.ok() } else SFX.sanft();
+  if (sterne) { st.ok.add(st.i); st.sterne += sterne; zaehle(st.typ); sternPlus(sterne); SFX.ok() } else SFX.sanft();
 }
 
 /* ---------- week path, day plan, Mini-Diktat (M4) ---------- */
@@ -1211,7 +1265,8 @@ function wochenwegHtml(k, ws) {
   const tage = TAGE.map((t, i) => {
     const datum = isoDay(dayShift(mo, i)), p = S.D.stand.plan[datum], fertig = !!(p && p.fertig);
     const cls = (fertig ? ' fertig' : '') + (i === heuteI ? ' heute' : '');
-    return `<button class="tag${cls}" data-act="plan-start" data-i="${i}"><span class="punkt">${icon(fertig ? 'check' : t.ic)}</span><b>${t.kurz}</b><small>${esc(t.name)}</small></button>`;
+    const st = fertig && p.sticker && stickerInfo(p.sticker);
+    return `<button class="tag${cls}" data-act="plan-start" data-i="${i}"><span class="punkt${st ? ' sticker-stempel' : ''}">${st ? st.svg : icon(fertig ? 'check' : t.ic)}</span><b>${t.kurz}</b><small>${esc(t.name)}</small></button>`;
   }).join('<span class="weglinie"></span>');
   const heuteFertig = !!(S.D.stand.plan[heute()] && S.D.stand.plan[heute()].fertig);
   const los = heuteI >= 0
@@ -1237,8 +1292,12 @@ function planWeiter() {
   if (!eintrag.erledigt.includes(p.liste[p.idx])) eintrag.erledigt.push(p.liste[p.idx]);
   p.idx++;
   if (p.idx < p.liste.length) { saveDaten(); planSchritt(); return }
-  eintrag.fertig = true; saveDaten();
-  S.view = 'tagfertig'; render(); SFX.fertig(); say(`Tagesaufgabe geschafft, ${aktiv().name}! Dein Stempel ist auf dem Wochenweg.`);
+  // The sticker is earned once per day; repeating the day's plan keeps the first one.
+  if (!eintrag.sticker) eintrag.sticker = neuerSticker();
+  eintrag.fertig = true;
+  S.tagBelohnung = { ziel: false, neu: pruefeAbzeichen(), pause: false, gewachsen: false, sticker: eintrag.sticker };
+  saveDaten();
+  S.view = 'tagfertig'; render(); feiern(S.tagBelohnung, `Tagesaufgabe geschafft, ${aktiv().name}! Dein Stempel ist auf dem Wochenweg.`); konfetti();
 }
 function planKnopf() {
   const p = S.plan; if (!p) return '';
@@ -1246,9 +1305,12 @@ function planKnopf() {
   return `<button class="btn main" data-act="plan-weiter">${naechste ? 'Weiter: ' + esc(STATION_NAME[naechste]) : 'Tagesaufgabe fertig'}${icon('right')}</button>`;
 }
 function viewTagFertig() {
-  return `${topBar(homeBtn)}<div class="card" style="text-align:center"><div class="stempel">${icon('check')}</div>
+  const b = S.tagBelohnung || { neu: [], sticker: null }, s = b.sticker && stickerInfo(b.sticker);
+  return `${topBar(homeBtn)}<div class="card" style="text-align:center"><div class="stempel">${s ? s.svg : icon('check')}</div>
     <p class="lob">Tagesaufgabe geschafft!</p><p class="leise">Dein Stempel ist auf dem Wochenweg. Morgen geht es weiter.</p>
-    <div class="row mitte"><button class="btn main" data-act="home">${icon('home')}Zum Start</button></div></div>`;
+    ${s ? `<div class="neu-karte"><span class="sticker gross">${s.svg}</span><div><b>Neuer Sticker!</b><br>${esc(s.name)} klebt jetzt in deinem Album.</div></div>` : ''}
+    ${b.neu.map(id => { const a = ABZEICHEN.find(x => x[0] === id); return `<div class="neu-karte">${abzeichenHtml(a, true)}<div><b>Neues Abzeichen!</b><br>${esc(a[4])}</div></div>` }).join('')}
+    <div class="row mitte"><button class="btn" data-act="album">Zum Album</button><button class="btn main" data-act="home">${icon('home')}Zum Start</button></div></div>`;
 }
 
 // Mini-Diktat: the app dictates every word (word, sentence, word), the child writes them all, then compares
@@ -1260,7 +1322,7 @@ function startDiktat() {
   const k = aktuelleWoche(), ws = wochenWoerter(k);
   if (!ws.length) return false;
   S.st = { typ: 'diktat', ws, i: 0, ok: new Set(), sterne: 0, phase: 'schreiben', antworten: [], k: 0, ergebnis: [], woche: k.id, markiert: new Set() };
-  S.st.pad = new Pad({ mode: 'leer' }); S.st.pad.onChange = padGeaendert;
+  S.st.pad = new Pad({ mode: 'leer' }); S.st.pad.onChange = padGeaendert; stationsStart(S.st);
   S.view = 'station'; render();
   say(`${ANLEITUNG.diktat} Das erste Wort: ${diktatSatz(ws[0])}`);
   return true;
@@ -1289,6 +1351,7 @@ function viewDiktat(st) {
   return `${topBar(homeBtn)}<div class="card" style="text-align:center">${pokalSvg(farbe)}
     <p class="lob">${name}-Pokal!</p><p class="leise">${fehler === 0 ? 'Alles richtig geschrieben!' : fehler === 1 ? 'Nur ein Wort üben wir noch.' : `${fehler} Wörter üben wir noch.`} ${st.sterne} Sterne.</p>
     <div class="wortliste" style="justify-content:center">${st.ws.map((w, i) => `<span class="wortchip ${st.ergebnis[i].ok ? 'gut' : 'ueben'}">${esc(vollWort(w))}</span>`).join('')}</div>
+    ${belohnungHtml(st.belohnung || stationAbschluss(st), st.sterne)}
     <div class="row mitte" style="margin-top:14px">${planKnopf() || `<button class="btn main" data-act="home">${icon('home')}Zum Start</button>`}</div></div>`;
 }
 function diktatWeiter() {
@@ -1319,13 +1382,15 @@ function diktatFertig() {
     speichereVersuch({ profil: aktiv().id, wort: e.wort, station: 'diktat', diktat: id, zeit: zeit + i, tag: heute(), band: st.antworten[i].band, striche: st.antworten[i].striche, selbst: e.ok, fehler: e.fehler });
   });
   const fehler = st.ergebnis.filter(e => !e.ok).length;
+  zaehle('diktat'); zaehle('kopf', st.ergebnis.length - fehler); if (!fehler) zaehle('gold');
   st.pokal = fehler === 0 ? 0 : fehler <= 2 ? 1 : 2;   // every attempt earns a cup
   st.sterne = 5 - st.pokal; sternPlus(st.sterne);
   S.D.diktate.push({ id, woche: st.woche, datum: heute(), ergebnis: st.ergebnis, pokal: POKAL[st.pokal][0] });
   if (k) { k.diktatFehler = st.ergebnis.filter(e => !e.ok).map(e => e.wort); uebertrageFehler(k) }
   saveDaten();
-  st.phase = 'ergebnis'; render(); SFX.fertig();
-  say(`${POKAL[st.pokal][2]}-Pokal! ${fehler === 0 ? 'Alles richtig!' : 'Toll geschrieben. Die anderen Wörter üben wir weiter.'}`);
+  st.phase = 'ergebnis'; const b = stationAbschluss(st); render();
+  feiern(b, `${POKAL[st.pokal][2]}-Pokal! ${fehler === 0 ? 'Alles richtig!' : 'Toll geschrieben. Die anderen Wörter üben wir weiter.'}`);
+  if (!b.neu.length && !b.sticker && !b.gewachsen) konfetti();   // a cup always deserves confetti
 }
 
 // Saved strokes (hundredths of a band) drawn on the school ruling, scaled to fit the canvas width.
@@ -1353,6 +1418,209 @@ function malVersuche() {
     if (key.startsWith('diktat-') && S.st && S.st.antworten) { const a = S.st.antworten[Number(key.slice(7))]; if (a) malVersuch(cv, a.striche, 40) }
     else if (S.versuche) { const v = S.versuche.find(x => String(x.id) === key); if (v) malVersuch(cv, v.striche || [], 26) }
   });
+}
+
+/* ---------- rewards (M5): sticker album, companion, star jar, badges, daily goal, break hint ---------- */
+// No pressure (KONZEPT 7): nothing can be lost, the companion is never sad, every finished task earns something.
+const STICKER = {
+  einhorn: [
+    ['einhorn', 'Einhorn', '<path d="M16 54c0-15 8-26 21-26c8 0 13 6 13 13c0 6-4 9-8 9l-5 4v4z" fill="#fff" stroke="#B65FCF" stroke-width="3" stroke-linejoin="round"/><path d="M34 28l7-22l3 24z" fill="#F5B800" stroke="#D99A00" stroke-width="1.5" stroke-linejoin="round"/><path d="M22 32c-7 3-9 10-7 17M27 29c-7 0-12 5-12 10" fill="none" stroke="#E5484D" stroke-width="4" stroke-linecap="round"/><path d="M25 35c-5 3-6 8-5 13" fill="none" stroke="#2E6FD8" stroke-width="4" stroke-linecap="round"/><circle cx="41" cy="38" r="2.6" fill="#1F2546"/>'],
+    ['regenbogen', 'Regenbogen', '<path d="M6 50a26 26 0 0 1 52 0" fill="none" stroke="#E5484D" stroke-width="6"/><path d="M13 50a19 19 0 0 1 38 0" fill="none" stroke="#F5B800" stroke-width="6"/><path d="M20 50a12 12 0 0 1 24 0" fill="none" stroke="#2E9E5B" stroke-width="6"/><path d="M27 50a5 5 0 0 1 10 0" fill="none" stroke="#2E6FD8" stroke-width="5"/><ellipse cx="10" cy="51" rx="8" ry="5" fill="#fff" stroke="#C7CEE5" stroke-width="2"/><ellipse cx="54" cy="51" rx="8" ry="5" fill="#fff" stroke="#C7CEE5" stroke-width="2"/>'],
+    ['stern', 'Stern', '<path d="M32 6l7.6 15.4l17 2.5l-12.3 12l2.9 16.9l-15.2-8l-15.2 8l2.9-16.9l-12.3-12l17-2.5z" fill="#F5B800" stroke="#D99A00" stroke-width="2" stroke-linejoin="round"/><circle cx="27" cy="30" r="2.2" fill="#1F2546"/><circle cx="37" cy="30" r="2.2" fill="#1F2546"/><path d="M27 37c3 3 7 3 10 0" fill="none" stroke="#1F2546" stroke-width="2" stroke-linecap="round"/>'],
+    ['herz', 'Herz', '<path d="M32 56C14 44 6 34 6 23c0-8 6-14 13-14c6 0 10 3 13 8c3-5 7-8 13-8c7 0 13 6 13 14c0 11-8 21-26 33z" fill="#F06AA8" stroke="#C2407C" stroke-width="2.5" stroke-linejoin="round"/><path d="M16 20c1-4 4-6 8-6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>'],
+    ['wolke', 'Wolke', '<path d="M16 48c-7 0-11-5-11-10s4-10 10-10c1-8 8-14 16-14c7 0 13 5 15 11c7 0 13 5 13 12s-5 11-12 11z" fill="#fff" stroke="#8EA6E8" stroke-width="3" stroke-linejoin="round"/><circle cx="26" cy="35" r="2.2" fill="#1F2546"/><circle cx="38" cy="35" r="2.2" fill="#1F2546"/><path d="M28 41c2 2 6 2 8 0" fill="none" stroke="#1F2546" stroke-width="2" stroke-linecap="round"/><circle cx="21" cy="40" r="3" fill="#F7B3D2"/><circle cx="43" cy="40" r="3" fill="#F7B3D2"/>'],
+    ['krone', 'Krone', '<path d="M8 46l4-28l12 12l8-18l8 18l12-12l4 28z" fill="#F5B800" stroke="#D99A00" stroke-width="2.5" stroke-linejoin="round"/><rect x="8" y="46" width="48" height="8" rx="2" fill="#D99A00"/><circle cx="32" cy="36" r="4" fill="#E5484D"/><circle cx="19" cy="38" r="3" fill="#2E6FD8"/><circle cx="45" cy="38" r="3" fill="#2E9E5B"/>'],
+    ['kristall', 'Kristall', '<path d="M32 6l20 18l-20 34l-20-34z" fill="#9FD8F2" stroke="#3A8FC4" stroke-width="2.5" stroke-linejoin="round"/><path d="M12 24h40M32 6l-8 18l8 34l8-34z" fill="none" stroke="#3A8FC4" stroke-width="2" stroke-linejoin="round"/><path d="M22 14l-3 6" stroke="#fff" stroke-width="3" stroke-linecap="round"/>'],
+    ['mond', 'Mond', '<path d="M40 8a24 24 0 1 0 16 38a20 20 0 1 1 -16-38z" fill="#FFE27A" stroke="#D99A00" stroke-width="2.5"/><circle cx="26" cy="32" r="2.2" fill="#1F2546"/><path d="M22 40c3 3 7 3 9 0" fill="none" stroke="#1F2546" stroke-width="2" stroke-linecap="round"/><path d="M52 12l1.5 3.5l3.5 1.5l-3.5 1.5l-1.5 3.5l-1.5-3.5l-3.5-1.5l3.5-1.5z" fill="#F5B800"/>']
+  ],
+  halloween: [
+    ['kuerbis', 'Kürbis', '<path d="M32 14c1-5 4-8 8-9" stroke="#2E9E5B" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="22" cy="36" rx="14" ry="20" fill="#E8742A"/><ellipse cx="42" cy="36" rx="14" ry="20" fill="#E8742A"/><ellipse cx="32" cy="36" rx="13" ry="21" fill="#F28C38"/><path d="M23 31l4-5l4 5zM33 31l4-5l4 5z" fill="#5E3A99"/><path d="M23 42c5 6 13 6 18 0" fill="none" stroke="#5E3A99" stroke-width="3" stroke-linecap="round"/>'],
+    ['gespenst', 'Gespenst', '<path d="M14 56V30c0-12 8-21 18-21s18 9 18 21v26l-6-5l-6 5l-6-5l-6 5l-6-5z" fill="#fff" stroke="#8E94AE" stroke-width="2.5" stroke-linejoin="round"/><circle cx="26" cy="30" r="3" fill="#1F2546"/><circle cx="38" cy="30" r="3" fill="#1F2546"/><ellipse cx="32" cy="39" rx="3" ry="4" fill="#1F2546"/><circle cx="21" cy="36" r="3" fill="#F7B3D2"/><circle cx="43" cy="36" r="3" fill="#F7B3D2"/>'],
+    ['fledermaus', 'Fledermaus', '<path d="M32 22c-6-8-18-10-28-4c6 2 8 8 6 14c4-3 9-3 12 2c2-4 6-6 10-6s8 2 10 6c3-5 8-5 12-2c-2-6 0-12 6-14c-10-6-22-4-28 4z" fill="#5E3A99"/><circle cx="32" cy="30" r="9" fill="#5E3A99"/><path d="M25 22l2-6l3 5M39 22l-2-6l-3 5" fill="#5E3A99"/><circle cx="29" cy="29" r="2" fill="#FFE27A"/><circle cx="35" cy="29" r="2" fill="#FFE27A"/><path d="M29 34c2 1.5 4 1.5 6 0" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>'],
+    ['hexenhut', 'Hexenhut', '<path d="M34 6c-6 8-12 22-14 38h26c-2-12-4-22-6-28c3 1 6 0 8-2c-5-1-9-4-14-8z" fill="#5E3A99" stroke="#3E2470" stroke-width="2" stroke-linejoin="round"/><ellipse cx="32" cy="46" rx="26" ry="7" fill="#5E3A99" stroke="#3E2470" stroke-width="2"/><rect x="21" y="36" width="24" height="6" fill="#E8742A"/><rect x="29" y="35" width="8" height="8" rx="1" fill="#F5B800"/>'],
+    ['bonbon', 'Bonbon', '<path d="M18 32l-12-9v18zM46 32l12-9v18z" fill="#F06AA8" stroke="#C2407C" stroke-width="2" stroke-linejoin="round"/><circle cx="32" cy="32" r="14" fill="#F06AA8" stroke="#C2407C" stroke-width="2.5"/><path d="M22 26c6 4 14 4 20 0M22 38c6-4 14-4 20 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>'],
+    ['spinne', 'Spinne', '<path d="M32 2v18" stroke="#8E94AE" stroke-width="1.5"/><path d="M22 30l-12-6M22 36l-14 2M22 42l-12 8M42 30l12-6M42 36l14 2M42 42l12 8" stroke="#1F2546" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="36" r="12" fill="#1F2546"/><circle cx="27" cy="33" r="3.5" fill="#fff"/><circle cx="37" cy="33" r="3.5" fill="#fff"/><circle cx="27" cy="34" r="1.6" fill="#1F2546"/><circle cx="37" cy="34" r="1.6" fill="#1F2546"/><path d="M28 41c2 2 6 2 8 0" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>'],
+    ['eule', 'Eule', '<path d="M14 18l6 6M50 18l-6 6" stroke="#7A5230" stroke-width="4" stroke-linecap="round"/><ellipse cx="32" cy="36" rx="18" ry="22" fill="#A9774A"/><ellipse cx="32" cy="42" rx="11" ry="13" fill="#E9CFA8"/><circle cx="24" cy="28" r="7" fill="#fff"/><circle cx="40" cy="28" r="7" fill="#fff"/><circle cx="24" cy="28" r="3.5" fill="#1F2546"/><circle cx="40" cy="28" r="3.5" fill="#1F2546"/><path d="M29 34l3 4l3-4z" fill="#F5B800"/>'],
+    ['katze', 'Schwarze Katze', '<path d="M14 26l4-16l10 10h8l10-10l4 16v8c0 12-8 20-18 20s-18-8-18-20z" fill="#2B2F45"/><ellipse cx="25" cy="32" rx="3.5" ry="4.5" fill="#B8E35A"/><ellipse cx="39" cy="32" rx="3.5" ry="4.5" fill="#B8E35A"/><circle cx="25" cy="33" r="1.6" fill="#1F2546"/><circle cx="39" cy="33" r="1.6" fill="#1F2546"/><path d="M30 40l2 2l2-2" fill="none" stroke="#F06AA8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 40l-8 -2M16 44l-8 2M48 40l8-2M48 44l8 2" stroke="#8E94AE" stroke-width="1.6" stroke-linecap="round"/>']
+  ],
+  tiere: [
+    ['fuchs', 'Fuchs', '<path d="M6 8l16 14h20l16-14l-3 26c-3 13-12 22-23 24C21 56 12 47 9 34z" fill="#E8742A"/><path d="M12 34c6 2 12 8 20 22c-11-2-19-9-20-22zM52 34c-6 2-12 8-20 22c11-2 19-9 20-22z" fill="#FFF"/><circle cx="23" cy="32" r="3" fill="#1F2546"/><circle cx="41" cy="32" r="3" fill="#1F2546"/><path d="M28 46h8l-4 5z" fill="#1F2546"/>'],
+    ['hund', 'Hund', '<ellipse cx="14" cy="28" rx="8" ry="15" fill="#7A5230" transform="rotate(15 14 28)"/><ellipse cx="50" cy="28" rx="8" ry="15" fill="#7A5230" transform="rotate(-15 50 28)"/><circle cx="32" cy="34" r="19" fill="#D9A066"/><ellipse cx="32" cy="43" rx="9" ry="7" fill="#F3DDBF"/><circle cx="25" cy="31" r="3" fill="#1F2546"/><circle cx="39" cy="31" r="3" fill="#1F2546"/><ellipse cx="32" cy="39" rx="4" ry="3" fill="#1F2546"/><path d="M32 42v3M28 46c2 2 6 2 8 0" fill="none" stroke="#1F2546" stroke-width="2" stroke-linecap="round"/>'],
+    ['hase', 'Hase', '<ellipse cx="24" cy="18" rx="6" ry="16" fill="#fff" stroke="#C7CEE5" stroke-width="2"/><ellipse cx="40" cy="18" rx="6" ry="16" fill="#fff" stroke="#C7CEE5" stroke-width="2"/><ellipse cx="24" cy="18" rx="2.5" ry="11" fill="#F7B3D2"/><ellipse cx="40" cy="18" rx="2.5" ry="11" fill="#F7B3D2"/><circle cx="32" cy="42" r="17" fill="#fff" stroke="#C7CEE5" stroke-width="2"/><circle cx="26" cy="39" r="2.6" fill="#1F2546"/><circle cx="38" cy="39" r="2.6" fill="#1F2546"/><path d="M30 45h4l-2 2z" fill="#F06AA8"/><path d="M32 47v3M29 51h6" stroke="#1F2546" stroke-width="1.6" stroke-linecap="round"/>'],
+    ['igel', 'Igel', '<path d="M8 46c0-16 12-28 26-28c10 0 18 6 22 14l-6 2l6 4l-7 2l5 5H8z" fill="#7A5230"/><path d="M14 28l-4-4M20 22l-2-6M28 18l0-6M36 18l3-6M44 22l5-4" stroke="#7A5230" stroke-width="4" stroke-linecap="round"/><path d="M36 46c0-8 6-14 14-14c4 0 8 4 8 9c0 3-2 5-5 5z" fill="#E9CFA8"/><circle cx="48" cy="38" r="2.2" fill="#1F2546"/><circle cx="57" cy="41" r="2.2" fill="#1F2546"/>'],
+    ['fisch', 'Fisch', '<path d="M46 32l14-12v24z" fill="#F28C38"/><ellipse cx="28" cy="32" rx="22" ry="15" fill="#F5B800"/><path d="M18 20c4 6 4 18 0 24M28 18c4 7 4 21 0 28" fill="none" stroke="#E8742A" stroke-width="2.5"/><circle cx="14" cy="29" r="3" fill="#1F2546"/><path d="M8 36c2 1 4 1 5 0" fill="none" stroke="#1F2546" stroke-width="2" stroke-linecap="round"/>'],
+    ['schildkroete', 'Schildkröte', '<ellipse cx="14" cy="44" rx="6" ry="4" fill="#6FD3A0"/><ellipse cx="50" cy="44" rx="6" ry="4" fill="#6FD3A0"/><circle cx="54" cy="30" r="8" fill="#6FD3A0"/><circle cx="56" cy="28" r="2" fill="#1F2546"/><path d="M8 42c0-14 10-24 24-24s24 10 24 24z" fill="#2E9E5B"/><path d="M20 42l4-12h16l4 12M32 18v12" fill="none" stroke="#1F7442" stroke-width="2.5"/>'],
+    ['maus', 'Maus', '<circle cx="18" cy="22" r="11" fill="#B8BED0"/><circle cx="46" cy="22" r="11" fill="#B8BED0"/><circle cx="18" cy="22" r="6" fill="#F7B3D2"/><circle cx="46" cy="22" r="6" fill="#F7B3D2"/><ellipse cx="32" cy="38" rx="17" ry="16" fill="#B8BED0"/><circle cx="26" cy="35" r="2.6" fill="#1F2546"/><circle cx="38" cy="35" r="2.6" fill="#1F2546"/><circle cx="32" cy="43" r="3" fill="#F06AA8"/><path d="M20 44l-10-2M20 47l-10 2M44 44l10-2M44 47l10 2" stroke="#8E94AE" stroke-width="1.4" stroke-linecap="round"/>'],
+    ['vogel', 'Vogel', '<ellipse cx="30" cy="36" rx="20" ry="17" fill="#2E6FD8"/><path d="M22 36c4 8 14 10 20 4c-6 0-12-2-14-8z" fill="#7FA8EE"/><circle cx="38" cy="28" r="3" fill="#fff"/><circle cx="39" cy="28" r="1.6" fill="#1F2546"/><path d="M48 30l10 3l-10 3z" fill="#F5B800"/><path d="M24 52v6M32 52v6" stroke="#E8742A" stroke-width="2.5" stroke-linecap="round"/><path d="M12 30l-6-6l8 0z" fill="#2E6FD8"/>']
+  ]
+};
+const stickerSvg = inner => `<svg viewBox="0 0 64 64" aria-hidden="true">${inner}</svg>`;
+function stickerInfo(id) {
+  for (const [thema, liste] of Object.entries(STICKER)) { const s = liste.find(x => x[0] === id); if (s) return { thema, id, name: s[1], svg: stickerSvg(s[2]) } }
+  return null;
+}
+// One sticker per finished day plan: first the child's own theme, then the others.
+function neuerSticker() {
+  const hat = S.D.stand.sticker, thema = (aktiv() || {}).thema || 'tiere';
+  const offen = l => l.filter(s => !hat[s[0]]);
+  let pool = offen(STICKER[thema] || []);
+  if (!pool.length) pool = offen(Object.values(STICKER).flat());
+  if (!pool.length) return null;
+  const s = pool[rnd(pool.length)]; hat[s[0]] = heute();
+  return s[0];
+}
+
+// Companion: grows with the stars and gets one more accessory per stage (scarf, flower, sparkles, crown).
+const STUFEN = [0, 40, 120, 250, 450];
+const stufe = n => STUFEN.filter(x => n >= x).length;
+const BEGLEITER = {
+  tiere: { name: 'Fuchs', svg: '<path d="M14 22l16 14h40l16-14l-3 30c-3 16-14 27-33 29c-19-2-30-13-33-29z" fill="#E8742A"/><path d="M14 22l9 18M86 22l-9 18" stroke="#B9531A" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M22 52c8 3 18 12 28 29c-15-3-25-13-28-29zM78 52c-8 3-18 12-28 29c15-3 25-13 28-29z" fill="#fff"/><circle cx="37" cy="50" r="4.5" fill="#1F2546"/><circle cx="63" cy="50" r="4.5" fill="#1F2546"/><path d="M44 68h12l-6 7z" fill="#1F2546"/>' },
+  einhorn: { name: 'Einhorn', versatz: { 2: 'translate(-58 40)', 4: 'translate(-16 24)' }, svg: '<path d="M22 84c0-24 12-42 32-42c13 0 21 9 21 20c0 10-6 15-13 15l-8 6v1z" fill="#fff" stroke="#B65FCF" stroke-width="3" stroke-linejoin="round"/><path d="M52 42l10-34l5 37z" fill="#F5B800" stroke="#D99A00" stroke-width="2" stroke-linejoin="round"/><path d="M32 50c-10 4-14 15-11 26M38 46c-11 0-18 8-18 16" fill="none" stroke="#E5484D" stroke-width="6" stroke-linecap="round"/><path d="M36 56c-8 5-9 13-7 20" fill="none" stroke="#2E6FD8" stroke-width="6" stroke-linecap="round"/><circle cx="62" cy="60" r="4" fill="#1F2546"/><circle cx="70" cy="70" r="3" fill="#F7B3D2"/>' },
+  halloween: { name: 'Gespenst', svg: '<path d="M22 90V48c0-19 13-34 28-34s28 15 28 34v42l-9-8l-10 8l-9-8l-9 8l-10-8z" fill="#fff" stroke="#8E94AE" stroke-width="3" stroke-linejoin="round"/><circle cx="40" cy="48" r="5" fill="#1F2546"/><circle cx="60" cy="48" r="5" fill="#1F2546"/><path d="M42 62c5 5 11 5 16 0" fill="none" stroke="#1F2546" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="58" r="5" fill="#F7B3D2"/><circle cx="68" cy="58" r="5" fill="#F7B3D2"/>' }
+};
+const ZUBEHOER = [
+  '',
+  '<path d="M28 80c14 7 30 7 44 0l-4 10l-6-4l-2 12l-6-10" fill="#E5484D" stroke="#B92D33" stroke-width="2" stroke-linejoin="round"/>',
+  '<g transform="translate(76 20)"><circle r="6" fill="#F5B800"/><circle cx="0" cy="-9" r="5" fill="#F06AA8"/><circle cx="9" cy="-2" r="5" fill="#F06AA8"/><circle cx="5" cy="8" r="5" fill="#F06AA8"/><circle cx="-6" cy="7" r="5" fill="#F06AA8"/><circle cx="-9" cy="-3" r="5" fill="#F06AA8"/><circle r="5" fill="#F5B800"/></g>',
+  '<g fill="#F5B800"><path d="M10 40l2 5l5 2l-5 2l-2 5l-2-5l-5-2l5-2z"/><path d="M90 58l2 4l4 2l-4 2l-2 4l-2-4l-4-2l4-2z"/><path d="M84 6l1.5 3.5l3.5 1.5l-3.5 1.5l-1.5 3.5l-1.5-3.5l-3.5-1.5l3.5-1.5z"/></g>',
+  '<path d="M32 18l4-14l9 8l5-10l5 10l9-8l4 14z" fill="#F5B800" stroke="#D99A00" stroke-width="2" stroke-linejoin="round"/><circle cx="50" cy="12" r="2.6" fill="#E5484D"/>'
+];
+function begleiterSvg(thema, sterne, cls) {
+  const b = BEGLEITER[thema] || BEGLEITER.tiere, n = stufe(sterne), s = (0.72 + 0.07 * n).toFixed(2);
+  // Accessories sit at the same spot for every companion, except where a companion needs room (unicorn horn).
+  const zub = ZUBEHOER.slice(1, n).map((z, i) => (b.versatz && b.versatz[i + 1] ? `<g transform="${b.versatz[i + 1]}">${z}</g>` : z)).join('');
+  return `<svg class="begleiter ${cls || ''}" viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(50 100) scale(${s}) translate(-50 -100)">${b.svg}${zub}</g></svg>`;
+}
+const bisNaechsteStufe = sterne => { const naechste = STUFEN.find(x => x > sterne); return naechste == null ? 0 : naechste - sterne };
+
+// Star jar: 50 stars per jar; full jars go on the shelf.
+const GLAS = 50;
+function glasSvg(sterne, cls) {
+  const im = sterne % GLAS, h = Math.round(64 * im / GLAS);
+  return `<svg class="glas ${cls || ''}" viewBox="0 0 64 84" aria-hidden="true"><defs><clipPath id="glasinnen"><path d="M12 18h40v54a8 8 0 0 1 -8 8h-24a8 8 0 0 1 -8 -8z"/></clipPath></defs>
+    <rect x="10" y="4" width="44" height="10" rx="3" fill="#C7CEE5"/>
+    <g clip-path="url(#glasinnen)"><rect x="8" y="${80 - h}" width="48" height="${h}" fill="#FFE27A"/>${h > 6 ? `<path d="M24 ${80 - h + 4}l2 4l4 .6l-3 3l.7 4l-3.7-2l-3.7 2l.7-4l-3-3l4-.6zM40 ${Math.min(76, 80 - h + 14)}l2 4l4 .6l-3 3l.7 4l-3.7-2l-3.7 2l.7-4l-3-3l4-.6z" fill="#F5B800"/>` : ''}</g>
+    <path d="M12 18h40v54a8 8 0 0 1 -8 8h-24a8 8 0 0 1 -8 -8z" fill="none" stroke="#8E98BF" stroke-width="3"/><path d="M18 26v40" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg>`;
+}
+
+// Badges: pictures, short names, simple counters (stand.zaehler) or a look at the Karteikasten.
+const zaehler = () => S.D.stand.zaehler;
+function zaehle(typ, n = 1) { const z = zaehler(); z[typ] = (z[typ] || 0) + n }
+function wocheKomplett() {
+  const proMontag = {};
+  Object.entries(S.D.stand.plan).forEach(([d, p]) => { if (p.fertig) { const t = parseDay(d), mo = isoDay(dayShift(t, -((new Date(t).getDay() + 6) % 7))); proMontag[mo] = (proMontag[mo] || 0) + 1 } });
+  return Object.values(proMontag).some(n => n >= 5);
+}
+const ABZEICHEN = [
+  ['trommler', 'Silbentrommler', 'drum', '#E8742A', '15 Wörter in Silben geschwungen', z => (z.silben || 0) >= 15],
+  ['koenig', 'Silbenkönig', 'crown', '#D99A00', 'In 15 Wörtern alle Silbenkönige gefunden', z => (z.koenige || 0) >= 15],
+  ['baumeister', 'Baumeister', 'blocks', '#2E6FD8', '15 Wörter im Baukasten gelegt', z => (z.baukasten || 0) >= 15],
+  ['detektiv', 'Stellen-Detektiv', 'marker', '#C08A00', '15 Wörter mit kniffligen Stellen gelöst', z => (z.stelle || 0) >= 15],
+  ['lueckenprofi', 'Lückenprofi', 'puzzle', '#5E3A99', '15 Lückenwörter gelöst', z => (z.luecke || 0) >= 15],
+  ['sortierer', 'Wortarten-Profi', 'box', '#2E9E5B', '20 Wörter richtig sortiert', z => (z.wortarten || 0) >= 20],
+  ['spurenleser', 'Spurenleser', 'rainbow', '#B65FCF', '5 Regenbögen mit 3 Sternen', z => (z.regenbogen3 || 0) >= 5],
+  ['schreiber', 'Schönschreiber', 'write', '#2E6FD8', '20 Wörter abgeschrieben', z => (z.abschreiben || 0) >= 20],
+  ['kopf', 'Kopf-Schreiber', 'bolt', '#E5484D', '20 Wörter richtig aus dem Kopf', z => (z.kopf || 0) >= 20],
+  ['fach5', 'Karteikasten-Meister', 'star', '#12A16B', '10 Wörter in Fach 5', () => Object.values(S.D.stand.w).filter(k => k.fach === 5).length >= 10],
+  ['diktat', 'Erstes Diktat', 'trophy', '#8E98BF', 'Ein Mini-Diktat geschrieben', z => (z.diktat || 0) >= 1],
+  ['gold', 'Gold-Diktat', 'trophy', '#F5B800', 'Ein Mini-Diktat ohne Fehler', z => (z.gold || 0) >= 1],
+  ['woche', 'Wochenweg-Held', 'check', '#2E9E5B', 'Alle 5 Tage einer Woche gestempelt', () => wocheKomplett()],
+  ['fleissig', 'Fleißig', 'run', '#E8742A', 'An 7 Tagen geübt', () => Object.values(S.D.stand.tage).filter(n => n > 0).length >= 7]
+];
+const abzeichenHtml = (a, hat) => `<div class="abz${hat ? '' : ' fehlt'}"><span class="medaille" style="--m:${a[3]}">${icon(a[2])}</span><b>${esc(a[1])}</b>${hat ? '' : `<small>${esc(a[4])}</small>`}</div>`;
+function pruefeAbzeichen() {
+  const hat = S.D.stand.abzeichen, neu = [];
+  for (const a of ABZEICHEN) if (!hat[a[0]] && a[5](zaehler())) { hat[a[0]] = heute(); neu.push(a[0]) }
+  return neu;
+}
+
+// Daily goal: 3 tasks or 10 minutes. Break hint once per session after 20 minutes.
+function tagesziel() {
+  const h = S.D.stand.heute;
+  if (!h || h.datum !== heute()) S.D.stand.heute = { datum: heute(), aufgaben: 0, minuten: 0, erreicht: false };
+  return S.D.stand.heute;
+}
+S.sitzungStart = Date.now();
+let verstecktSeit = 0;
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) verstecktSeit = Date.now();
+  else if (verstecktSeit && Date.now() - verstecktSeit > 5 * 60000) { S.sitzungStart = Date.now(); S.pauseGezeigt = false }
+});
+function stationsStart(st) { st.t0 = Date.now(); st.sterne0 = S.D.stand.sterne }
+// Called once when a task ends: daily goal, badges, break hint, companion growth. Returns what to celebrate.
+function stationAbschluss(st, extra) {
+  if (st.belohnung) return st.belohnung;
+  const h = tagesziel();
+  h.aufgaben++; h.minuten += Math.min(15, (Date.now() - (st.t0 || Date.now())) / 60000);
+  const ziel = !h.erreicht && (h.aufgaben >= 3 || h.minuten >= 10);
+  if (ziel) h.erreicht = true;
+  const sticker = extra && extra.sticker ? extra.sticker : null;
+  const neu = pruefeAbzeichen();
+  const pause = !S.pauseGezeigt && Date.now() - S.sitzungStart > 20 * 60000;
+  if (pause) S.pauseGezeigt = true;
+  const gewachsen = stufe(S.D.stand.sterne) > stufe(st.sterne0 == null ? S.D.stand.sterne : st.sterne0);
+  saveDaten();
+  return (st.belohnung = { ziel, neu, pause, gewachsen, sticker });
+}
+function belohnungHtml(b, sterne) {
+  const p = aktiv(), thema = p.thema || 'tiere', name = (BEGLEITER[thema] || BEGLEITER.tiere).name;
+  const blase = b.gewachsen ? `Juhu, ich bin gewachsen!` : b.pause ? 'Puh, ich brauche eine Pause. Du auch?' : LOB[rnd(LOB.length)];
+  let h = `<div class="belohnung"><div class="begleiter-box">${begleiterSvg(thema, S.D.stand.sterne, b.gewachsen ? 'huepft' : '')}<span class="blase">${esc(blase)}</span></div>
+    <div class="glas-box">${glasSvg(S.D.stand.sterne)}<b>+${sterne}</b><small>${S.D.stand.sterne} Sterne</small></div></div>`;
+  if (b.sticker) { const s = stickerInfo(b.sticker); if (s) h += `<div class="neu-karte"><span class="sticker gross">${s.svg}</span><div><b>Neuer Sticker!</b><br>${esc(s.name)} für dein Album</div></div>` }
+  for (const id of b.neu) { const a = ABZEICHEN.find(x => x[0] === id); h += `<div class="neu-karte">${abzeichenHtml(a, true)}<div><b>Neues Abzeichen!</b><br>${esc(a[4])}</div></div>` }
+  if (b.ziel) h += `<div class="neu-karte ziel">${icon('check')}<div><b>Tagesziel geschafft!</b><br>Du darfst stolz sein.</div></div>`;
+  if (b.gewachsen) h += `<div class="neu-karte">${icon('star')}<div><b>Dein ${esc(name)} ist gewachsen!</b><br>Schau mal, was er Neues hat.</div></div>`;
+  if (b.pause) h += `<div class="neu-karte pause">${icon('run')}<div><b>Zeit für eine Pause!</b><br>Du übst schon 20 Minuten. Trink etwas und beweg dich ein bisschen.</div></div>`;
+  return h;
+}
+// Sound, confetti and spoken praise after the reward screen is on.
+function feiern(b, text) {
+  const teile = [text];
+  if (b.sticker) { const s = stickerInfo(b.sticker); if (s) teile.push(`Ein neuer Sticker: ${s.name}!`) }
+  if (b.neu.length) teile.push(b.neu.length === 1 ? 'Du hast ein neues Abzeichen!' : 'Du hast neue Abzeichen!');
+  if (b.ziel) teile.push('Tagesziel geschafft!');
+  if (b.gewachsen) teile.push(`Dein ${(BEGLEITER[aktiv().thema] || BEGLEITER.tiere).name} ist gewachsen!`);
+  if (b.pause) teile.push('Zeit für eine kleine Pause!');
+  (b.neu.length || b.sticker || b.gewachsen ? SFX.badge : SFX.fertig)();
+  if (b.neu.length || b.sticker || b.ziel || b.gewachsen) konfetti();
+  say(teile.join(' '));
+}
+const REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function konfetti() {   // from Voc a Bit
+  if (REDUCED) return;
+  const c = document.createElement('canvas'); c.className = 'konfetti'; document.body.appendChild(c);
+  const dpr = Math.min(2, window.devicePixelRatio || 1), W = innerWidth, H = innerHeight;
+  c.width = W * dpr; c.height = H * dpr;
+  const ctx = c.getContext('2d'); ctx.scale(dpr, dpr);
+  const cs = getComputedStyle(document.body), cols = [cs.getPropertyValue('--accent').trim() || '#E8742A', '#F5B800', '#2E9E5B', '#2E6FD8', '#E5484D'];
+  const P = Array.from({ length: 140 }, () => ({ x: W / 2 + (Math.random() - .5) * 80, y: H * .35, vx: (Math.random() - .5) * 13, vy: -Math.random() * 13 - 4, r: Math.random() * 6 + 4, a: Math.random() * 6, va: (Math.random() - .5) * .3, c: cols[rnd(cols.length)] }));
+  const t0 = performance.now();
+  (function step(t) {
+    ctx.clearRect(0, 0, W, H);
+    for (const p of P) { p.vy += .32; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = p.c; ctx.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); ctx.restore() }
+    if (t - t0 < 2600) requestAnimationFrame(step); else c.remove();
+  })(t0);
+}
+
+// Album: companion, star jar, sticker pages, trophy shelf, badge wall.
+function viewAlbum() {
+  const p = aktiv(), thema = p.thema || 'tiere', seite = S.albumSeite || thema, st = S.D.stand;
+  const bis = bisNaechsteStufe(st.sterne), name = (BEGLEITER[thema] || BEGLEITER.tiere).name;
+  const voll = Math.floor(st.sterne / GLAS);
+  const pokale = S.D.diktate.map(d => POKAL.find(x => x[0] === d.pokal) || POKAL[2]);
+  return `${topBar(homeBtn, '<p class="hallo" style="margin:0">Mein Album</p>')}
+    <div class="card album-kopf">
+      <div class="begleiter-box gross">${begleiterSvg(thema, st.sterne)}<div><b>Dein ${esc(name)}</b><br><span class="leise">${bis ? `Noch ${bis} Sterne, dann wächst er weiter.` : 'Er ist ganz groß und trägt eine Krone!'}</span></div></div>
+      <div class="begleiter-box">${glasSvg(st.sterne)}<div><b>${st.sterne} Sterne</b><br><span class="leise">${voll ? `${voll} ${voll === 1 ? 'Glas ist' : 'Gläser sind'} schon voll.` : `Noch ${GLAS - st.sterne % GLAS} bis das Glas voll ist.`}</span></div></div>
+    </div>
+    <div class="card"><div class="tabs">${Object.entries(THEMEN).map(([id, t]) => `<button data-act="album-seite" data-s="${id}" aria-selected="${seite === id}">${esc(t.name)}</button>`).join('')}</div>
+      <div class="stickerseite">${(STICKER[seite] || []).map(([id, n, svg]) => st.sticker[id]
+        ? `<button class="sticker" data-act="sticker-sag" data-n="${esc(n)}">${stickerSvg(svg)}<small>${esc(n)}</small></button>`
+        : '<span class="sticker leer"><b>?</b></span>').join('')}</div>
+      <p class="leise" style="font-size:15px;margin:10px 0 0">Für jede geschaffte Tagesaufgabe gibt es einen Sticker.</p></div>
+    <div class="card"><h2>Pokalregal</h2><div class="regal">${pokale.length ? pokale.map(([, f, n]) => `<span title="${n}">${pokalSvg(f)}</span>`).join('') : '<p class="leise">Dein erster Pokal kommt beim Mini-Diktat.</p>'}${voll ? Array.from({ length: Math.min(voll, 12) }, () => glasSvg(GLAS - 1, 'voll')).join('') : ''}</div></div>
+    <div class="card"><h2>Abzeichen</h2><div class="abzeichen">${ABZEICHEN.map(a => abzeichenHtml(a, !!st.abzeichen[a[0]])).join('')}</div></div>`;
 }
 
 /* ---------- parents: progress and review (M4) ---------- */
@@ -1570,7 +1838,7 @@ function weditTeil() {
 }
 
 /* ---------- render ---------- */
-const VIEWS = { tagfertig: viewTagFertig, start: viewStart, karte: viewKarte, station: viewStation, onboard: viewOnboard, wer: viewWer, gate: viewGate, eltern: viewEltern, import: viewImport, woche: viewWoche, wedit: viewWortEdit };
+const VIEWS = { album: viewAlbum, tagfertig: viewTagFertig, start: viewStart, karte: viewKarte, station: viewStation, onboard: viewOnboard, wer: viewWer, gate: viewGate, eltern: viewEltern, import: viewImport, woche: viewWoche, wedit: viewWortEdit };
 function render() {
   if (!aktiv() && S.view !== 'onboard') { S.ob = S.ob || { schritt: 1, name: '', lefty: false }; S.view = 'onboard' }
   $('#app').innerHTML = VIEWS[S.view]();
@@ -1598,6 +1866,7 @@ function startStation(typ) {
     return false;
   }
   S.st = { typ, ws, i: 0, taps: 0, fehler: 0, status: '', gefunden: new Set(), wackel: -1, ok: new Set(), sterne: 0 };
+  stationsStart(S.st);
   if (SCHREIB.includes(typ)) wortBeginnen(S.st);
   if (KNOBEL.includes(typ)) knobelBeginnen(S.st);
   S.view = 'station'; render();
@@ -1620,7 +1889,7 @@ function padGeaendert() {
 const LOB = ['Super!', 'Toll gemacht!', 'Klasse!', 'Prima!', 'Spitze!'];
 const lob = () => rnd(3) ? LOB[rnd(LOB.length)] : `Super, ${aktiv().name}!`;
 function wortSterne(st, n, text) {
-  st.sterneWort = n; st.sterne += n; st.ok.add(st.i); sternPlus(n);
+  st.sterneWort = n; st.sterne += n; st.ok.add(st.i); zaehle(st.typ); if (st.typ === 'regenbogen' && n === 3) zaehle('regenbogen3'); sternPlus(n);
   st.lob = text; st.phase = 'ergebnis'; render(); SFX.ok(); say(text + (st.fachText ? ' ' + st.fachText : ''));
 }
 // Self-check finished. Saved attempt (for the parents' review), Karteikasten only for writing from memory.
@@ -1630,6 +1899,7 @@ function pruefungFertig(ok) {
   speichereVersuch({ profil: aktiv().id, wort: w.id, station: st.typ, zeit: Date.now(), tag: heute(), band: st.pad.band, striche: pack(st.pad), selbst: ok, fehler });
   if (AUS_DEM_KOPF.includes(st.typ)) {
     const r = bewerte(w.id, ok, fehler);
+    if (ok) zaehle('kopf');
     st.fachText = ok ? (r.auf ? `Ab in Fach ${r.fach}!` : 'Das Wort sitzt schon gut.') : 'Das Wort übst du bald noch einmal.';
   } else if (!ok) { notiereFehler(w.id, fehler); saveDaten() }
   if (ok) { wortSterne(st, 2, lob()); return }
@@ -1645,7 +1915,7 @@ function blitzen() {
 }
 function stationGeloest() {
   const st = S.st;
-  st.status = 'ok'; st.ok.add(st.i); st.sterne++; sternPlus(); SFX.ok();
+  st.status = 'ok'; st.ok.add(st.i); st.sterne++; zaehle(st.typ); sternPlus(); SFX.ok();
 }
 function speichereEntwurf() {
   const e = S.entwurf;
@@ -1690,6 +1960,10 @@ const ACT = {
   home: () => { S.plan = null; S.view = 'start'; render() },
   'plan-start': el => planStart(Number(el.dataset.i)),
   'plan-weiter': planWeiter,
+  album: () => { S.plan = null; S.albumSeite = null; S.view = 'album'; render(); say(`Dein Album. Du hast ${S.D.stand.sterne} Sterne und ${Object.keys(S.D.stand.sticker).length} Sticker.`) },
+  'album-seite': el => { S.albumSeite = el.dataset.s; render() },
+  'sticker-sag': el => say(el.dataset.n),
+  'ziel-sag': () => { const h = tagesziel(); say(h.erreicht ? 'Dein Tagesziel hast du heute schon geschafft!' : `Dein Tagesziel: drei Aufgaben. ${h.aufgaben} hast du schon.`) },
   'diktat-hoeren': () => say(diktatSatz(S.st.ws[S.st.i])),
   hallo: () => say(`Hallo ${aktiv().name}! Schön, dass du da bist.`),
   wer: () => { S.view = 'wer'; render() },
@@ -1723,7 +1997,7 @@ const ACT = {
   },
   'st-weiter': () => {
     const st = S.st;
-    if (st.i >= st.ws.length - 1) { st.ende = true; st.pad = null; render(); SFX.fertig(); say(`Geschafft! Toll gemacht, ${aktiv().name}!`); return }
+    if (st.i >= st.ws.length - 1) { st.ende = true; st.pad = null; const b = stationAbschluss(st); render(); feiern(b, `Geschafft! Toll gemacht, ${aktiv().name}!`); return }
     st.i++; st.taps = 0; st.fehler = 0; st.status = ''; st.gefunden = new Set(); st.wackel = -1;
     if (SCHREIB.includes(st.typ)) wortBeginnen(st);
     if (KNOBEL.includes(st.typ)) knobelBeginnen(st);
@@ -1934,7 +2208,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') { try { navi
 let resizeTimer = 0;
 window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { const p = aktuellesPad(); if (p && p.wrap.isConnected) p.layout() }, 150) });
 // Debug hook for local checks only (?debug): state, word functions, Karteikasten, and a day shift for "tomorrow".
-if (/[?&]debug\b/.test(location.search)) window.sf = { S, parseImport, silbenVorschlag, stellenVorschlag, neuesWort, tokens, render, bewerte, rundeAusDemKopf, bewerteSpur, tag: n => { zeitVersatz = n; return heute() }, alternative, ablenker, poolFuer, planStart, tagIndexHeute };
+if (/[?&]debug\b/.test(location.search)) window.sf = { S, parseImport, silbenVorschlag, stellenVorschlag, neuesWort, tokens, render, bewerte, rundeAusDemKopf, bewerteSpur, tag: n => { zeitVersatz = n; return heute() }, alternative, ablenker, poolFuer, planStart, tagIndexHeute, stufe, pruefeAbzeichen, neuerSticker };
 })();
 </script>
 </body>

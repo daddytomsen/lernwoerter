@@ -1,6 +1,6 @@
 # Übergabe an Claude Code – Schreibfuchs
 
-Stand: 14.10.2026 · `main`: Werkstatt-Test M0.2 (live) · Zweig `m1`: App 0.1 · Zweig `m2`: App 0.2 · Zweig `m3`: App 0.3 · Zweig `m4`: App 0.4 · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
+Stand: 14.10.2026 · `main`: Werkstatt-Test M0.2 (live) · Zweig `m1`: App 0.1 · Zweig `m2`: App 0.2 · Zweig `m3`: App 0.3 · Zweig `m4`: App 0.4 · Zweig `m5`: App 0.5 · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
 
 Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei sagt, was entschieden, was fertig und was als Nächstes zu tun ist.
 
@@ -137,9 +137,24 @@ Offen auf dem iPad: Diktat-Sprachausgabe (Satz, Tempo), ob das Kind im Diktat mi
 
 **Zusammenführen:** nach dem M0-Test `m4` (enthält `m1` bis `m3`) nach `main`.
 
-### Danach: M5 Belohnung
+### M5 Belohnung – auf Zweig `m5` (enthält `m1` bis `m4`), lokal geprüft, nicht auf dem iPad
 
-Sterneglas, Sticker je erledigter Tagesstation mit Stickeralbum (Themen Einhörner, Halloween, Tiere), Begleiter, Wochenstempelkarte (Grundlage steht: `stand.plan`), Pokal (steht), Abzeichen mit Bildern, Tagesziel 3 Stationen oder 10 Minuten, Pausenhinweis nach 20 Minuten, Konfetti.
+Fertig, wenn das Kind nach jeder Station eine Belohnung sieht: erfüllt. Jeder Endbildschirm (alle Stationen und das Mini-Diktat) zeigt Begleiter mit Sprechblase, Sterneglas mit „+n“ und, wenn verdient, neue Sticker, Abzeichen, Tagesziel, Wachstum oder Pausenhinweis, dazu Ton, Konfetti und vorgelesenes Lob.
+
+- **Sticker** (24 Zeichnungen, je 8 Einhörner, Halloween, Tiere) für jede geschaffte Tagesaufgabe, als Stempel auf dem Wochenweg und im **Album**.
+- **Begleiter** nach Thema (Einhorn, Gespenst, Fuchs), wächst in fünf Stufen und bekommt Halstuch, Blume, Glitzer, Krone. Oben links auf dem Start, tippen öffnet das Album.
+- **Sterneglas** (50 Sterne), volle Gläser im **Pokalregal** neben den Diktat-Pokalen.
+- **14 Abzeichen** mit Bildern (Silbentrommler, Silbenkönig, Baumeister, Stellen-Detektiv, Lückenprofi, Wortarten-Profi, Spurenleser, Schönschreiber, Kopf-Schreiber, Karteikasten-Meister, Erstes Diktat, Gold-Diktat, Wochenweg-Held, Fleißig). Noch fehlende stehen grau mit Hinweis im Album.
+- **Tagesziel** 3 Aufgaben oder 10 Minuten (drei Punkte oben), **Pausenhinweis** einmal nach 20 Minuten.
+- Geprüft: Stand aus 0.4 wird ergänzt; Gespenst wächst bei 40 Sternen; Montag-Tagesaufgabe → Bonbon-Sticker als Stempel; Tagesziel nach der 3. Aufgabe; Pausenhinweis nur einmal; Abzeichen Silbenkönig und Silbentrommler an der Schwelle; alle 24 Sticker und alle Begleiter-Stufen angesehen. Einhorn-Zubehör saß auf dem Horn → eigener Versatz.
+
+Offen auf dem iPad: Freude des Kindes am Begleiter und an den Stickern (Thomas beobachtet), Lautstärke der Töne, ob 20 Minuten als Pausengrenze passen.
+
+**Zusammenführen:** nach dem M0-Test `m5` (enthält `m1` bis `m4`) nach `main`.
+
+### Danach: M6 Feinschliff
+
+App-Icon (SVG → PNG, randlos), Offline-Test, Sicherung auf dem iPad prüfen, Bildschirmzeit-Anleitung (Safari erlauben, nur diese Website), iPad-Checkliste für Thomas, Testprotokoll.
 
 ## Nicht ohne Rückfrage
 
