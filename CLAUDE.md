@@ -31,8 +31,8 @@ Repo und interne Schlüssel heißen neutral `lernwoerter` (Speicher `lernwoerter
 
 Bei jeder Änderung an `index.html`, `werkstatt.html` oder den Schriften **beide Versionsnummern gleichzeitig** hochzählen, sonst bekommt das iPad die alte Fassung aus dem Cache:
 
-- `sw.js`: `const CACHE = 'lernwoerter-v0.2';`
-- `index.html`: `const VERSION = '0.2';` (sichtbar im Elternbereich)
+- `sw.js`: `const CACHE = 'lernwoerter-v0.3';`
+- `index.html`: `const VERSION = '0.3';` (sichtbar im Elternbereich)
 
 `tools/check.sh` bricht ab, wenn sie nicht übereinstimmen. Nach jedem Update muss die Home-Bildschirm-App komplett geschlossen und zweimal geöffnet werden. Das gehört in jede Release-Nachricht an Thomas.
 
@@ -51,7 +51,13 @@ Abschnitte im Skript (Kommentare `/* ---------- … ---------- */`):
 9. **writing attempts** – IndexedDB `lernwoerter` / Store `versuche` (Index `[profil, wort]`), je Wort die letzten 3: `{ profil, wort, station, zeit, tag, band, striche (pack), selbst, fehler | spur }`. Für die Eltern-Durchsicht in M4. Nicht in der Sicherung.
 10. **writing pad** – `Pad` aus `werkstatt.html` übernommen, liest Band, Schrift und Linkshänder aus dem Profil. Striche tragen `pass` (Regenbogen-Durchgang); `undo`/`clear` wirken nur auf den aktuellen Durchgang. Handballen: nach Stift werden Finger ignoriert; drei Fingertipps in 5 s bei 20 s Stiftpause schalten Finger wieder an. `bewerteSpur(pad, pass)` und `sterneFuerSpur()` wie im Werkstatt-Test.
 11. **pictures** – Fuchs und Themenbilder als Inline-SVG.
-12. **views** – Kind: `viewStart` (7 Kacheln, Karteikasten `kastenHtml`), `viewKarte`, `viewStation` (silben, koenige) und `viewSchreiben` (abschreiben, regenbogen, blitz, merk). Phasen der Schreibstationen: zeigen (Merk-Diktat) bzw. blitzbereit → blitz (Blitzlesen, 1,2 s + 80 ms je Zeichen, höchstens 2,5 s, bis zu 3 Blitze vor dem ersten Strich) bzw. pause (Fuchs läuft 2,6 s) → schreiben → pruefen (Selbstkontrolle: Buchstaben erscheinen nacheinander, Antippen markiert direkt im DOM ohne Neu-Rendern) → nochmal (nach Fehlern einmal mit Vorlage richtig abschreiben) → ergebnis. Erster Start: `viewOnboard`, `viewWer`. Eltern: `viewGate`, `viewEltern` (Wochen, Einstellungen, Sicherung), `viewImport`, `viewWoche`, `viewWortEdit`.
+12. **views** – Kind: `viewStart` (Kacheln in vier Gruppen aus `STATIONEN`, Stationen mit leerem `poolFuer()` ausgeblendet; Karteikasten `kastenHtml`), `viewKarte`, `viewStation` (silben, koenige) und `viewSchreiben` (abschreiben, regenbogen, blitz, merk). Phasen der Schreibstationen: zeigen (Merk-Diktat) bzw. blitzbereit → blitz (Blitzlesen, 1,2 s + 80 ms je Zeichen, höchstens 2,5 s, bis zu 3 Blitze vor dem ersten Strich) bzw. pause (Fuchs läuft 2,6 s) → schreiben → pruefen (Selbstkontrolle: Buchstaben erscheinen nacheinander, Antippen markiert direkt im DOM ohne Neu-Rendern) → nochmal (nach Fehlern einmal mit Vorlage richtig abschreiben) → ergebnis. Erster Start: `viewOnboard`, `viewWer`. Eltern: `viewGate`, `viewEltern` (Wochen, Einstellungen, Sicherung), `viewImport`, `viewWoche`, `viewWortEdit`.
+    **Knobel-Stationen (M3)** in `viewKnobel`, Start je Wort in `knobelBeginnen()`:
+    - *Baukasten*: Bausteine = `tokens()` (au, ei, ie, sch, ch, ck … bleiben ein Stein), dazu 1–3 Ablenker aus `ablenker()`: zuerst die falschen Zwillinge der eigenen Stellen (`alternative()`: d→t, ie→i, ck→k, tz→z, ä→e, v→f …), dann `VERWECHSLER`. Antippen legt in den nächsten freien Platz, Platz antippen legt zurück. Falsche Plätze wackeln und leeren sich nach 1,2 s, nach drei Versuchen legt die App das Wort.
+    - *Lückenwort*: erste Stelle mit Zwilling (`lueckenStelle()`), zwei Optionen, Dehnungs-h als „ohne h“. Tipp aus der Stelle.
+    - *Wortarten*: Wort ohne Artikel (und ohne Vorlesen des Artikels!), drei Kisten in Schulfarben, bei Nomen danach der/die/das. Wörter mit `wortart: andere` nehmen nicht teil.
+    - *Knifflige Stelle*: jeder Buchstabe eine Kachel, ein Treffer markiert die ganze Stelle gelb; nach vier Fehltipps zeigt die App die Stellen. Danach die Tipps aller Stellen.
+    Sterne: 2 beim ersten Versuch, 1 nach Fehlern, 0 wenn die App helfen musste.
 13. **render / actions / events** – `render()` → `#app.innerHTML`, danach hängt es das langlebige Pad (`aktuellesPad()`) wieder in `[data-pad-host]` ein, Striche bleiben erhalten; der Wort-Editor rendert beim Tippen nur `#wedit-teil` neu (Fokus bleibt). Ereignisse über `data-act` (Klick, Tabelle `ACT`), `data-in` (`IN`), `data-ch` (`CH`).
 
 `?debug` setzt `window.sf` (Zustand und Wortfunktionen) für lokale Prüfungen.
@@ -67,7 +73,7 @@ Abschnitte im Skript (Kommentare `/* ---------- … ---------- */`):
 
 ## Sterne
 
-Silben schwingen und Silbenkönige: 1 je Wort. Abschreiben, Blitzlesen, Merk-Diktat: 2 je Wort, **unabhängig davon, ob die Selbstkontrolle richtig oder falsch ergab**, damit sich Schummeln bei der Selbstkontrolle nicht lohnt. Regenbogen: Durchschnitt der drei Durchgänge (1–3).
+Silben schwingen und Silbenkönige: 1 je Wort. Knobel-Stationen: 2 / 1 / 0 (siehe oben). Abschreiben, Blitzlesen, Merk-Diktat: 2 je Wort, **unabhängig davon, ob die Selbstkontrolle richtig oder falsch ergab**, damit sich Schummeln bei der Selbstkontrolle nicht lohnt. Regenbogen: Durchschnitt der drei Durchgänge (1–3).
 
 ## Elternbereich
 

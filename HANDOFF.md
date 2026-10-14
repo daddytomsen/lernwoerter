@@ -1,6 +1,6 @@
 # Übergabe an Claude Code – Schreibfuchs
 
-Stand: 14.10.2026 · `main`: Werkstatt-Test M0.2 (live) · Zweig `m1`: App 0.1 · Zweig `m2`: App 0.2 · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
+Stand: 14.10.2026 · `main`: Werkstatt-Test M0.2 (live) · Zweig `m1`: App 0.1 · Zweig `m2`: App 0.2 · Zweig `m3`: App 0.3 · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
 
 Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei sagt, was entschieden, was fertig und was als Nächstes zu tun ist.
 
@@ -94,9 +94,28 @@ Offen auf dem iPad: Schreiben mit Stift und Finger in der App, Handballen beim L
 
 **Reihenfolge beim Zusammenführen:** nach dem M0-Test `m2` (enthält `m1`) nach `main`. Erkenntnisse aus dem Test (Schrift, Band, Sterne-Schwellen) vorher in `index.html` und `werkstatt.html` übernehmen.
 
-### Danach: M3 Automatische Übungen
+### M3 Automatische Übungen – auf Zweig `m3` (enthält `m2`), lokal geprüft, nicht auf dem iPad
 
-Buchstaben-Baukasten, Lückenwort, Wortarten sortieren, schwierige Stelle.
+Fertig, wenn alle drei FRESCH-Kategorien passende Übungen haben: erfüllt.
+
+| FRESCH | Übungen |
+|---|---|
+| Mitsprechwort | Silben schwingen, Silbenkönige, Baukasten |
+| Nachdenkwort | Lückenwort (verlängern, ableiten, ie, ck, tz, Doppelmitlaut), Knifflige Stelle, Baukasten mit passenden Ablenkern |
+| Merkwort | Blitzlesen, Merk-Diktat, Knifflige Stelle, Lückenwort für v/f, ß, Dehnungs-h, Doppelselbstlaut |
+
+- Vier neue Stationen: **Baukasten**, **Lückenwort**, **Wortarten** (Kisten Nomen blau, Verb rot, Adjektiv grün, danach der/die/das), **Knifflige Stelle** (Textmarker). Alle automatisch geprüft, sanfte Hilfen statt Fehlerton.
+- Startbildschirm in vier Gruppen: Anschauen und Silben, Knobeln, Schreiben, Aus dem Kopf. Stationen ohne passende Wörter in der Woche werden ausgeblendet.
+- Wortkarte zeigt die FRESCH-Art mit Strategie („Merkwort: genau merken“), antippen liest sie vor.
+- Geprüft mit einer Testwoche aus Arbeitsblatt-Wörtern plus Hund, Tiere, spielen, Zucker, Katze, fahren, Vogel. Gefundener und behobener Fehler: doppelte Ablenker wurden zu einem zusammengelegt (Hund hatte nur „t“).
+
+Offen auf dem iPad: Größe der Bausteine und Kisten für Kinderfinger, Startbildschirm scrollt jetzt (wird in M4 mit dem Wochenweg neu geordnet).
+
+**Zusammenführen:** nach dem M0-Test `m3` (enthält `m1` und `m2`) nach `main`.
+
+### Danach: M4 Woche und Diktat
+
+Wochenweg mit Tagesstation (Mo Einführung, Di Silben, Mi Stelle/Regenbogen, Do aus dem Kopf, Fr Mini-Diktat), Mini-Diktat mit Sprachausgabe und Karteikasten, Fehlerwörter in die nächste Woche, Eltern-Durchsicht der gespeicherten Schreibversuche (überstimmt die Selbstkontrolle), Fortschritt und Fehlerstellen im Elternbereich.
 
 ## Nicht ohne Rückfrage
 

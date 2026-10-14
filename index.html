@@ -156,6 +156,34 @@ button{font:inherit;color:inherit;cursor:pointer}
 .fach span{font-size:14px;color:var(--ink-2);font-weight:600}
 .fach.f1{border-bottom-color:#FF7F61} .fach.f2{border-bottom-color:#FFAE3D} .fach.f3{border-bottom-color:#F5CB2E} .fach.f4{border-bottom-color:#6FD3A0} .fach.f5{border-bottom-color:#12A16B}
 
+/* start screen groups and knobel stations */
+.gruppe-titel{font-size:17px;color:var(--ink-2);margin:18px 4px 8px;font-weight:700}
+.kacheln{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.kachel{min-height:128px}
+.kachel .i{width:48px;height:48px}
+.art-chip{border:0;border-radius:999px;padding:4px 12px;font-size:15px;font-weight:700;background:var(--surface-2);color:var(--ink-2);min-height:32px}
+.artikel-fest{font:400 40px/1 var(--f-school);color:var(--ink-3);align-self:center;margin-right:10px}
+.plaetze{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;align-items:center}
+.platz{min-width:64px;min-height:84px;padding:0 8px;border-radius:14px;border:3px dashed var(--line);background:var(--surface-2);font:400 48px/1 var(--f-school);color:var(--ink)}
+.platz.voll{border-style:solid;border-color:var(--accent);background:#fff}
+.platz.falsch{border-color:#E0B23A;background:#FFF4C2;animation:wackel .35s ease}
+.steine{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:760px}
+.luecke{display:inline-block;min-width:.9em;margin:0 .05em;padding:0 .08em;border-bottom:6px solid var(--accent);color:var(--accent-deep);text-align:center}
+.luecke.voll{background:var(--good-soft);border-bottom-color:var(--good);color:var(--good)}
+.tile.wahl{min-width:110px;font-size:52px}
+.tile.wahl small{font:700 18px/1.2 var(--f-ui)}
+.tile[disabled]{opacity:.4}
+.tipp{background:var(--warn-soft);border-radius:14px;padding:10px 16px;margin:0;font-weight:600;text-align:center;max-width:720px}
+.tipps{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;align-items:center}
+.tipps b{font:400 30px/1 var(--f-school);background:#FFE066;border-radius:6px;padding:2px 8px;margin-right:8px}
+.tile.marker{background:#FFE066;border-color:#E0B23A}
+.kisten{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.kiste{min-height:150px;border-radius:22px;border:0;border-top:14px solid var(--andere);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:24px}
+.kiste.wa-nomen{border-top-color:var(--nomen)} .kiste.wa-verb{border-top-color:var(--verb)} .kiste.wa-adjektiv{border-top-color:var(--adjektiv)}
+.kiste small{font-size:15px;color:var(--ink-2);font-weight:600}
+.kiste.wackel{animation:wackel .35s ease}
+@media (max-width:640px){.kisten{grid-template-columns:1fr}.kiste{min-height:90px}}
+
 /* onboarding */
 .themen{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
 .thema{border:4px solid transparent;border-radius:var(--r-lg);background:var(--surface);min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-weight:800;font-size:24px}
@@ -222,6 +250,10 @@ textarea{width:100%;font:15px/1.4 ui-monospace,Menlo,monospace}
 <symbol id="i-rainbow" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17c0 -5.523 -4.477 -10 -10 -10c-5.523 0 -10 4.477 -10 10"/><path d="M18 17a6 6 0 1 0 -12 0"/><path d="M14 17a2 2 0 1 0 -4 0"/></g></symbol>
 <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-run" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M4 17l5 1l.75 -1.5"/><path d="M15 21l0 -4l-4 -3l1 -6"/><path d="M7 12l0 -3l5 -1l3 3l3 1"/></g></symbol>
+<symbol id="i-blocks" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 13h8v8h-8z"/><path d="M13 13h8v8h-8z"/><path d="M8 3h8v8h-8z"/></g></symbol>
+<symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"/><path d="M12 12l8 -4.5"/><path d="M12 12l0 9"/><path d="M12 12l-8 -4.5"/></g></symbol>
+<symbol id="i-marker" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"/><path d="M12.5 5.5l4 4"/><path d="M4.5 13.5l4 4"/><path d="M21 15v4h-8l4 -4z"/></g></symbol>
 <symbol id="i-down" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></g></symbol>
 <symbol id="i-up" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 9l5 -5l5 5"/><path d="M12 4l0 12"/></g></symbol>
 </defs></svg>
@@ -408,7 +440,7 @@ function parseImport(text) {
 }
 
 /* ---------- state & persistence ---------- */
-const VERSION = '0.2';
+const VERSION = '0.3';
 const LS_PROF = 'lernwoerter.profile.v1', lsDaten = id => `lernwoerter.daten.${id}.v1`;
 const S = { view: 'start', prof: store.get(LS_PROF, null), D: null };
 const leererStand = () => ({ sterne: 0, tage: {}, w: {}, rot: {} });
@@ -812,21 +844,26 @@ function viewStart() {
     const wann = t === 0 ? 'Diktat ist heute!' : t === 1 ? 'Diktat ist morgen' : t > 1 ? `Diktat in ${t} Tagen` : 'Diktat war ' + datumLang(k.diktat);
     woche = `<div class="card"><div class="woche-kopf"><h2>${esc(k.titel || 'Lernwörter')}</h2><span class="diktat">${esc(wann)}</span></div>
       <div class="wortliste">${ws.map((w, i) => `<button class="wortchip wa-${w.wortart}" data-act="karte" data-i="${i}">${esc(vollWort(w))}</button>`).join('')}</div></div>
-      <div class="kacheln">
-        <button class="kachel" data-act="karte" data-i="0">${icon('cards')}Wortkarten<small>ansehen und anhören</small></button>
-        <button class="kachel" data-act="station" data-typ="silben">${icon('drum')}Silben schwingen<small>für jede Silbe trommeln</small></button>
-        <button class="kachel" data-act="station" data-typ="koenige">${icon('crown')}Silbenkönige<small>alle Könige finden</small></button>
-        <button class="kachel" data-act="station" data-typ="abschreiben">${icon('write')}Abschreiben<small>genau hinschauen</small></button>
-        <button class="kachel" data-act="station" data-typ="regenbogen">${icon('rainbow')}Regenbogen<small>dreimal nachfahren</small></button>
-        <button class="kachel" data-act="station" data-typ="blitz">${icon('bolt')}Blitzlesen<small>aus dem Kopf schreiben</small></button>
-        <button class="kachel" data-act="station" data-typ="merk">${icon('run')}Merk-Diktat<small>merken, laufen, schreiben</small></button>
-      </div>${kastenHtml(ws)}`;
+      ${STATIONEN.map(([titel, liste]) => {
+        const k = liste.filter(([typ]) => typ === 'karte' || poolFuer(typ, ws).length).map(([typ, ic, name, klein]) => typ === 'karte'
+          ? `<button class="kachel" data-act="karte" data-i="0">${icon(ic)}${name}<small>${klein}</small></button>`
+          : `<button class="kachel" data-act="station" data-typ="${typ}">${icon(ic)}${name}<small>${klein}</small></button>`).join('');
+        return k ? `<h3 class="gruppe-titel">${titel}</h3><div class="kacheln">${k}</div>` : '';
+      }).join('')}${kastenHtml(ws)}`;
   }
   return `<div class="bar">${FOX}<div class="grow"><p class="hallo">Hallo, ${esc(p.name)}!</p>${n > 1 ? `<button class="btn klein" data-act="wer">Nicht ${esc(p.name)}?</button>` : ''}</div>
       <button class="rund klein" data-act="hallo" aria-label="Vorlesen">${icon('speaker')}</button>
       <span class="sterne">${icon('star')}${S.D.stand.sterne}</span>
       <button class="rund klein" data-act="eltern" aria-label="Elternbereich">${icon('gear')}</button></div>${woche}`;
 }
+
+// Stations on the start screen, grouped. Stations whose pool is empty this week are hidden.
+const STATIONEN = [
+  ['Anschauen und Silben', [['karte', 'cards', 'Wortkarten', 'ansehen und anhören'], ['silben', 'drum', 'Silben schwingen', 'für jede Silbe trommeln'], ['koenige', 'crown', 'Silbenkönige', 'alle Könige finden']]],
+  ['Knobeln', [['baukasten', 'blocks', 'Baukasten', 'Buchstaben legen'], ['luecke', 'puzzle', 'Lückenwort', 'welcher fehlt?'], ['wortarten', 'box', 'Wortarten', 'in die Kisten sortieren'], ['stelle', 'marker', 'Knifflige Stelle', 'mit dem Textmarker']]],
+  ['Schreiben', [['abschreiben', 'write', 'Abschreiben', 'genau hinschauen'], ['regenbogen', 'rainbow', 'Regenbogen', 'dreimal nachfahren']]],
+  ['Aus dem Kopf', [['blitz', 'bolt', 'Blitzlesen', 'kurz sehen, dann schreiben'], ['merk', 'run', 'Merk-Diktat', 'merken, laufen, schreiben']]]
+];
 
 // The child's Karteikasten for this week: how many words sit in which compartment.
 function kastenHtml(ws) {
@@ -845,7 +882,7 @@ function viewKarte() {
   const satz = K.satz && w.satz ? `<p class="satz">${markiere(w.satz, w.wort)}</p>` : '';
   return `${topBar(homeBtn, punkte(ws.length, K.i))}
     <div class="wortbuehne wa-${w.wortart}">
-      <span class="wa-chip wa-${w.wortart}">${WA_NAME[w.wortart]}</span>
+      <div class="row mitte"><span class="wa-chip wa-${w.wortart}">${WA_NAME[w.wortart]}</span><button class="art-chip" data-act="sag-art">${esc(ART_TIPP[w.art])}</button></div>
       ${wortHtml(w, { boegen: K.boegen, koenige: K.koenige })}
       ${satz}
       <div class="row mitte">
@@ -871,7 +908,11 @@ const ANLEITUNG = {
   abschreiben: 'Schau das Wort genau an und schreib es auf die Linien. Dann tippe auf Fertig.',
   regenbogen: 'Fahre das graue Wort dreimal nach, jedes Mal in einer anderen Farbe.',
   blitz: 'Das Wort blitzt kurz auf. Merk es dir gut und schreib es dann aus dem Kopf.',
-  merk: 'Schau dir das Wort genau an. Wenn du es weißt, tippe auf: Ich hab es! Dann schreibst du es aus dem Kopf.'
+  merk: 'Schau dir das Wort genau an. Wenn du es weißt, tippe auf: Ich hab es! Dann schreibst du es aus dem Kopf.',
+  baukasten: 'Hör dir das Wort an. Lege die Buchstaben in der richtigen Reihenfolge. Achtung, ein paar passen nicht!',
+  luecke: 'Welcher Buchstabe fehlt? Tippe auf den richtigen. Der Tipp hilft dir.',
+  wortarten: 'Ist das ein Nomen, ein Verb oder ein Adjektiv? Tippe auf die richtige Kiste.',
+  stelle: 'Wo ist die knifflige Stelle? Tippe sie an, dann leuchtet sie wie ein Textmarker.'
 };
 const SCHREIB = ['abschreiben', 'regenbogen', 'blitz', 'merk'], AUS_DEM_KOPF = ['blitz', 'merk'], RUNDE = 5;
 const FARBEN = ['#E5484D', '#2E9E5B', '#2E6FD8'], FARB_NAME = ['Rot', 'Grün', 'Blau'];
@@ -887,6 +928,7 @@ function viewStation() {
     <div class="anleitung"><button class="rund klein" data-act="anleitung" aria-label="Anleitung vorlesen">${icon('speaker')}</button><span>${esc(ANLEITUNG[st.typ])}</span></div>`;
   const weiter = `<button class="btn main" data-act="st-weiter">${st.i === ws.length - 1 ? 'Fertig' : 'Weiter'}${icon('right')}</button>`;
   if (SCHREIB.includes(st.typ)) return kopf + viewSchreiben(st, w, weiter);
+  if (KNOBEL.includes(st.typ)) return kopf + viewKnobel(st, w, weiter);
   if (st.typ === 'silben') {
     const geloest = st.status === 'ok' || st.status === 'hilfe';
     return `${kopf}<div class="wortbuehne wa-${w.wortart}">
@@ -958,6 +1000,132 @@ function vergleichHtml(w, fehler, sofort) {
     h += `<button class="vbst${fehler.has(key) ? ' falsch' : ''}${sofort ? ' sofort' : ''}" data-act="vbst" data-key="${key}" style="animation-delay:${(j * 0.12).toFixed(2)}s">${esc(s[j])}</button>`;
   }
   return h;
+}
+
+/* ---------- knobel stations (M3): building blocks, gap word, word classes, tricky spot ---------- */
+const KNOBEL = ['baukasten', 'luecke', 'wortarten', 'stelle'];
+const ART_TIPP = { mitsprech: 'Mitsprechwort: Silben schwingen', nachdenk: 'Nachdenkwort: eine Regel hilft', merk: 'Merkwort: genau merken' };
+const ART_SAG = {
+  mitsprech: 'Ein Mitsprechwort. Sprich es deutlich und schwing die Silben, dann hörst du alle Buchstaben.',
+  nachdenk: 'Ein Nachdenkwort. Eine Regel hilft dir, zum Beispiel verlängern.',
+  merk: 'Ein Merkwort. Schau es dir genau an und merk es dir.'
+};
+const mischen = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = rnd(i + 1); [b[i], b[j]] = [b[j], b[i]] } return b };
+const grossWie = (vorbild, s) => s && vorbild[0] !== vorbild[0].toLowerCase() ? s[0].toUpperCase() + s.slice(1) : s;
+// The wrong twin of a tricky spot, or null if this kind of spot has none ("Hun_": d → t).
+function alternative(echt, typ) {
+  const lo = echt.toLowerCase();
+  const m = {
+    verlaengern: { d: 't', b: 'p', g: 'k' }[lo], ableiten: { ä: 'e', äu: 'eu' }[lo],
+    ie: lo === 'ie' ? 'i' : null, doppel: lo.length === 2 && lo[0] === lo[1] ? lo[0] : null,
+    ck: lo === 'ck' ? 'k' : null, tz: lo === 'tz' ? 'z' : null, h: lo === 'h' ? '' : null,
+    sp: lo === 'sp' ? 'schp' : null, st: lo === 'st' ? 'scht' : null, merk: { v: 'f', ß: 'ss', aa: 'a', ee: 'e', oo: 'o' }[lo]
+  }[typ];
+  return m == null ? null : grossWie(echt, m);
+}
+const lueckenStelle = w => w.stellen.find(s => alternative(w.wort.slice(s.von, s.bis), s.typ) !== null) || null;
+function poolFuer(typ, ws) {
+  if (typ === 'luecke') return ws.filter(lueckenStelle);
+  if (typ === 'wortarten') return ws.filter(w => w.wortart !== 'andere');
+  if (typ === 'stelle') return ws.filter(w => w.stellen.length);
+  return ws;
+}
+// Distractor tiles: first from the word's own tricky spots (Abend → t, Tiere → i), then common mix-ups.
+const VERWECHSLER = { b: 'p', p: 'b', d: 't', t: 'd', g: 'k', k: 'g', m: 'n', n: 'm', f: 'v', v: 'f', ie: 'i', ei: 'ie', e: 'ä', ä: 'e', ck: 'k', s: 'ß' };
+function ablenker(w, teile) {
+  const out = [];
+  for (const s of w.stellen) {
+    const a = alternative(w.wort.slice(s.von, s.bis), s.typ);
+    if (a && a.length <= 3 && !/^sch/i.test(a)) out.push(a); else if (s.typ === 'sp' || s.typ === 'st') out.push(grossWie(w.wort, 'sch'));
+  }
+  for (const t of mischen(teile)) { if (new Set(out).size >= 2) break; const v = VERWECHSLER[t.toLowerCase()]; if (v) out.push(grossWie(t, v)) }
+  return [...new Set(out)].slice(0, 3);
+}
+function knobelBeginnen(st) {
+  const w = st.ws[st.i];
+  st.versuche = 0; st.status = ''; st.wackel = -1; st.tipp = ''; st.lob = ''; st.sterneWort = 0; st.wackelKiste = null; st.wackelArt = null;
+  if (st.typ === 'baukasten') {
+    st.teile = tokens(w.wort).map(t => t.t);
+    st.steine = mischen(st.teile.concat(ablenker(w, st.teile)).map((t, k) => ({ id: k, t })));
+    st.plaetze = st.teile.map(() => null); st.falschePlaetze = [];
+  } else if (st.typ === 'luecke') {
+    const s = lueckenStelle(w), echt = w.wort.slice(s.von, s.bis);
+    st.luecke = { s, echt, optionen: mischen([echt, alternative(echt, s.typ)]), weg: [] };
+  } else if (st.typ === 'wortarten') {
+    st.phase = 'kiste';
+  } else if (st.typ === 'stelle') {
+    st.gefunden = new Set();
+  }
+}
+const KISTEN = [['nomen', 'Nomen', 'der, die, das …'], ['verb', 'Verb', 'ich …, du …'], ['adjektiv', 'Adjektiv', 'Wie ist es?']];
+const KISTE_HILFE = {
+  nomen: 'Kannst du der, die oder das davor sagen? Dann ist es ein Nomen. Nomen schreibt man groß.',
+  verb: 'Kannst du ich davor sagen? Ich arbeite, ich antworte. Dann ist es ein Verb.',
+  adjektiv: 'Sagt das Wort, wie etwas ist? Der Hund ist alt. Dann ist es ein Adjektiv.'
+};
+function viewKnobel(st, w, weiter) {
+  const hoeren = `<button class="btn" data-act="sag-wort">${icon('speaker')}Anhören</button>`;
+  const fertig = st.status === 'ok' || st.status === 'hilfe';
+  const schluss = fertig ? `<p class="${st.status === 'ok' ? 'lob' : 'nochmal'}">${esc(st.lob)}</p>${st.sterneWort ? sternReihe(st.sterneWort) : ''}${st.tipp ? `<p class="tipp">${esc(st.tipp)}</p>` : ''}${weiter}` : '';
+  if (st.typ === 'baukasten') {
+    const plaetze = st.plaetze.map((id, k) => {
+      const stein = id === null ? null : st.steine.find(x => x.id === id);
+      return `<button class="platz${stein ? ' voll' : ''}${st.falschePlaetze.includes(k) ? ' falsch' : ''}" data-act="platz" data-k="${k}" ${fertig ? 'disabled' : ''}>${stein ? esc(stein.t) : ''}</button>`;
+    }).join('');
+    const frei = st.steine.filter(x => !st.plaetze.includes(x.id));
+    return `<div class="wortbuehne wa-${w.wortart}">
+      <div class="plaetze">${w.artikel ? `<span class="artikel-fest">${esc(w.artikel)}</span>` : ''}${plaetze}</div>
+      ${fertig ? '' : `<div class="steine">${frei.map(x => `<button class="tile" data-act="stein" data-id="${x.id}">${esc(x.t)}</button>`).join('')}</div>`}
+      ${fertig ? '' : hoeren}${schluss}</div>`;
+  }
+  if (st.typ === 'luecke') {
+    const L = st.luecke, vor = w.wort.slice(0, L.s.von), nach = w.wort.slice(L.s.bis);
+    const fuell = fertig ? `<span class="luecke voll">${esc(L.echt) || '&nbsp;'}</span>` : '<span class="luecke">?</span>';
+    return `<div class="wortbuehne wa-${w.wortart}">
+      <span class="wort" style="font-size:min(110px,14vw)">${w.artikel ? `<span class="artikel">${esc(w.artikel)}</span>` : ''}${esc(vor)}${fuell}${esc(nach)}</span>
+      ${fertig ? '' : `<div class="row mitte">${L.optionen.map((o, k) => `<button class="tile wahl${L.weg.includes(k) ? ' wackel' : ''}" data-act="wahl" data-k="${k}" ${L.weg.includes(k) ? 'disabled' : ''}>${o ? esc(o) : '<small>ohne ' + esc(L.echt) + '</small>'}</button>`).join('')}</div>
+        <div class="row mitte">${hoeren}<button class="btn" data-act="luecke-tipp">Tipp</button></div>${st.tipp ? `<p class="tipp">${esc(st.tipp)}</p>` : ''}`}
+      ${schluss}</div>`;
+  }
+  if (st.typ === 'wortarten') {
+    const karteWort = `<span class="wort" style="font-size:min(100px,13vw)">${st.phase === 'fertig' && w.artikel ? `<span class="artikel">${esc(w.artikel)}</span>` : ''}${esc(w.wort)}</span>`;
+    if (st.phase === 'artikel') {
+      return `<div class="wortbuehne wa-nomen">${karteWort}<p class="anweisung">Ein Nomen! Welcher Begleiter passt?</p>
+        <div class="row mitte">${['der', 'die', 'das'].map(a => `<button class="tile wahl${st.wackelArt === a ? ' wackel' : ''}" data-act="artikel" data-a="${a}">${a}</button>`).join('')}</div>${hoeren}</div>`;
+    }
+    if (st.phase === 'fertig') return `<div class="wortbuehne wa-${w.wortart}">${karteWort}<span class="wa-chip wa-${w.wortart}">${WA_NAME[w.wortart]}</span>${schluss}</div>`;
+    return `<div class="wortbuehne">${karteWort}${hoeren}</div>
+      <div class="kisten">${KISTEN.map(([id, name, hilfe]) => `<button class="kiste wa-${id}${st.wackelKiste === id ? ' wackel' : ''}" data-act="kiste" data-x="${id}"><b>${name}</b><small>${hilfe}</small></button>`).join('')}</div>
+      ${st.tipp ? `<p class="tipp">${esc(st.tipp)}</p>` : ''}`;
+  }
+  // stelle: every letter is a tile; tapping any letter of a tricky spot lights up the whole spot
+  const buchst = [...w.wort].map((ch, j) => {
+    const s = w.stellen.findIndex(x => j >= x.von && j < x.bis), an = s >= 0 && st.gefunden.has(s);
+    return `<button class="tile${an ? ' marker' : ''}${st.wackel === j ? ' wackel' : ''}" data-act="bst-stelle" data-j="${j}" ${fertig ? 'disabled' : ''}>${esc(ch)}</button>`;
+  }).join('');
+  const tipps = fertig ? `<ul class="tipps">${w.stellen.map(s => `<li><b>${esc(w.wort.slice(s.von, s.bis))}</b> ${esc(s.tipp)}</li>`).join('')}</ul>` : '';
+  return `<div class="wortbuehne wa-${w.wortart}">
+    <p class="leise" style="margin:0">${w.stellen.length === 1 ? 'Hier ist eine knifflige Stelle.' : `Hier sind ${w.stellen.length} knifflige Stellen.`}</p>
+    <div class="tiles">${w.artikel ? `<span class="artikel-fest">${esc(w.artikel)}</span>` : ''}<span class="gruppe">${buchst}</span></div>
+    ${fertig ? tipps : hoeren}${schluss}</div>`;
+}
+// Full word laid: right → stars; wrong tiles shake and jump back; after three tries the app lays the word itself.
+function pruefeBaukasten() {
+  const st = S.st, w = stationWort(), stein = id => st.steine.find(x => x.id === id).t;
+  const falsch = st.plaetze.map((id, k) => (stein(id) === st.teile[k] ? -1 : k)).filter(k => k >= 0);
+  if (!falsch.length) { knobelGeloest(st, st.versuche ? 1 : 2, st.versuche ? 'Geschafft!' : lob()); render(); say(vollWort(w)); return }
+  if (++st.versuche >= 3) {
+    const frei = st.steine.slice();
+    st.plaetze = st.teile.map(t => { const i = frei.findIndex(x => x.t === t); return frei.splice(i, 1)[0].id });
+    knobelGeloest(st, 0, 'So ist es richtig. Schau es dir genau an!'); render(); say(vollWort(w));
+    return;
+  }
+  st.falschePlaetze = falsch; render(); SFX.sanft(); say('Fast! Schau noch einmal genau hin.');
+  setTimeout(() => { if (S.st === st && !st.status && st.falschePlaetze.length) { falsch.forEach(k => { st.plaetze[k] = null }); st.falschePlaetze = []; render() } }, 1200);
+}
+function knobelGeloest(st, sterne, text, tipp) {
+  st.status = sterne ? 'ok' : 'hilfe'; st.lob = text; st.tipp = tipp || ''; st.sterneWort = sterne;
+  if (sterne) { st.ok.add(st.i); st.sterne += sterne; sternPlus(sterne); SFX.ok() } else SFX.sanft();
 }
 
 /* ---------- views: first start ---------- */
@@ -1109,13 +1277,17 @@ function renderTeil() { const el = $('#wedit-teil'); if (el) el.innerHTML = wedi
 
 /* ---------- actions ---------- */
 function startStation(typ) {
-  const ws = AUS_DEM_KOPF.includes(typ) ? rundeAusDemKopf(RUNDE) : SCHREIB.includes(typ) ? rundeReihum(typ, RUNDE) : wochenWoerter(aktuelleWoche());
+  const woche = wochenWoerter(aktuelleWoche());
+  const ws = AUS_DEM_KOPF.includes(typ) ? rundeAusDemKopf(RUNDE)
+    : SCHREIB.includes(typ) || typ === 'baukasten' ? rundeReihum(typ, RUNDE)
+    : typ === 'wortarten' ? mischen(poolFuer(typ, woche)) : poolFuer(typ, woche);
   if (!ws.length) {
     if (AUS_DEM_KOPF.includes(typ)) { const t = 'Alle Wörter hast du heute schon richtig geschrieben. Morgen geht es weiter!'; toast(t); say(t) }
     return;
   }
   S.st = { typ, ws, i: 0, taps: 0, fehler: 0, status: '', gefunden: new Set(), wackel: -1, ok: new Set(), sterne: 0 };
   if (SCHREIB.includes(typ)) wortBeginnen(S.st);
+  if (KNOBEL.includes(typ)) knobelBeginnen(S.st);
   S.view = 'station'; render();
   say(ANLEITUNG[typ]);
 }
@@ -1233,9 +1405,54 @@ const ACT = {
     if (st.i >= st.ws.length - 1) { st.ende = true; st.pad = null; render(); SFX.fertig(); say(`Geschafft! Toll gemacht, ${aktiv().name}!`); return }
     st.i++; st.taps = 0; st.fehler = 0; st.status = ''; st.gefunden = new Set(); st.wackel = -1;
     if (SCHREIB.includes(st.typ)) wortBeginnen(st);
+    if (KNOBEL.includes(st.typ)) knobelBeginnen(st);
     render();
-    if (st.typ !== 'blitz') say(vollWort(stationWort()));   // Blitzlesen is reading: no spoiler
+    // No spoilers: Blitzlesen is reading, and the article would give away the noun when sorting word classes.
+    if (st.typ === 'wortarten') say(stationWort().wort); else if (st.typ !== 'blitz') say(vollWort(stationWort()));
   },
+  // knobel stations
+  stein: el => {
+    const st = S.st, k = st.plaetze.indexOf(null);
+    if (k < 0 || st.status) return;
+    st.plaetze[k] = Number(el.dataset.id); st.falschePlaetze = [];
+    tone([[523.25, 0, .07, 'sine', .12]]);
+    if (!st.plaetze.includes(null)) pruefeBaukasten(); else render();
+  },
+  platz: el => { const st = S.st, k = Number(el.dataset.k); if (st.status || st.plaetze[k] === null) return; st.plaetze[k] = null; st.falschePlaetze = []; render() },
+  wahl: el => {
+    const st = S.st, L = st.luecke, k = Number(el.dataset.k), w = stationWort();
+    if (st.status) return;
+    if (L.optionen[k] === L.echt) { knobelGeloest(st, L.weg.length ? 1 : 2, L.weg.length ? 'Richtig!' : lob(), L.s.tipp); render(); say(vollWort(w) + '. ' + L.s.tipp) }
+    else { L.weg.push(k); st.tipp = L.s.tipp; render(); SFX.sanft(); say('Nochmal probieren! ' + L.s.tipp) }
+  },
+  'luecke-tipp': () => { const st = S.st; st.tipp = st.luecke.s.tipp; render(); say(st.tipp) },
+  kiste: el => {
+    const st = S.st, w = stationWort(), x = el.dataset.x;
+    if (x !== w.wortart) { st.versuche++; st.wackelKiste = x; st.tipp = KISTE_HILFE[w.wortart]; render(); SFX.sanft(); say('Nochmal probieren! ' + st.tipp); return }
+    st.wackelKiste = null; st.tipp = '';
+    if (x === 'nomen' && w.artikel) { st.phase = 'artikel'; render(); SFX.krone(); say('Ein Nomen! Der, die oder das?'); return }
+    st.phase = 'fertig'; knobelGeloest(st, st.versuche ? 1 : 2, `Ein ${WA_NAME[x]}!`); render(); say(st.lob);
+  },
+  artikel: el => {
+    const st = S.st, w = stationWort(), a = el.dataset.a;
+    if (a === w.artikel) { st.phase = 'fertig'; knobelGeloest(st, st.versuche ? 1 : 2, `Richtig: ${vollWort(w)}!`); render(); say(vollWort(w)); return }
+    st.versuche++; st.wackelArt = a; render(); SFX.sanft(); say(`Hör genau hin: ${a} ${w.wort}? Probier ein anderes.`);
+  },
+  'bst-stelle': el => {
+    const st = S.st, w = stationWort(), j = Number(el.dataset.j), s = w.stellen.findIndex(x => j >= x.von && j < x.bis);
+    if (st.status) return;
+    if (s < 0) {
+      st.versuche++; st.wackel = j;
+      if (st.versuche >= 4) { w.stellen.forEach((_, k) => st.gefunden.add(k)); knobelGeloest(st, 0, 'Hier sind die kniffligen Stellen. Schau sie dir genau an!') }
+      render(); SFX.sanft(); if (st.status) say(w.stellen.map(x => x.tipp).join('. '));
+      return;
+    }
+    if (st.gefunden.has(s)) return;
+    st.gefunden.add(s); st.wackel = -1; SFX.krone();
+    if (st.gefunden.size === w.stellen.length) { knobelGeloest(st, st.versuche ? 1 : 2, w.stellen.length > 1 ? 'Alle gefunden!' : 'Gefunden!'); render(); say(w.stellen.map(x => x.tipp).join('. ')) }
+    else render();
+  },
+  'sag-art': () => { const w = kartenWort(); if (w) say(ART_SAG[w.art]) },
   // writing stations
   'pad-undo': () => S.st.pad.undo(),
   'pad-neu': () => S.st.pad.clear(),
@@ -1393,7 +1610,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') { try { navi
 let resizeTimer = 0;
 window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { const p = aktuellesPad(); if (p && p.wrap.isConnected) p.layout() }, 150) });
 // Debug hook for local checks only (?debug): state, word functions, Karteikasten, and a day shift for "tomorrow".
-if (/[?&]debug\b/.test(location.search)) window.sf = { S, parseImport, silbenVorschlag, stellenVorschlag, neuesWort, tokens, render, bewerte, rundeAusDemKopf, bewerteSpur, tag: n => { zeitVersatz = n; return heute() } };
+if (/[?&]debug\b/.test(location.search)) window.sf = { S, parseImport, silbenVorschlag, stellenVorschlag, neuesWort, tokens, render, bewerte, rundeAusDemKopf, bewerteSpur, tag: n => { zeitVersatz = n; return heute() }, alternative, ablenker, poolFuer };
 })();
 </script>
 </body>
