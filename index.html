@@ -12,6 +12,8 @@
 <meta name="format-detection" content="telephone=no">
 <meta name="robots" content="noindex, nofollow">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
 <style>
 /* Layout: iPad first (landscape, portrait works), one centred column up to 1040px.
    Children's screens: few words, big targets (≥ 64px), everything can be read aloud.
@@ -315,6 +317,8 @@ textarea{width:100%;font:15px/1.4 ui-monospace,Menlo,monospace}
 .fehlerbox{background:#FDE4E5;color:#9C2127;border-radius:12px;padding:10px 14px;margin:10px 0}
 .hinweis{background:var(--warn-soft);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:16px}
 .version{color:var(--ink-3);font-size:14px;margin-top:20px}
+.hilfe{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.hilfe li{line-height:1.45}
 #toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;padding:14px 22px;border-radius:16px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;text-align:center;z-index:10}
 #toast.on{opacity:1}
 @media (max-width:640px){#app{padding:8px 12px 40px}.hallo{font-size:26px}.kachel{min-height:120px}}
@@ -532,7 +536,7 @@ function parseImport(text) {
 }
 
 /* ---------- state & persistence ---------- */
-const VERSION = '0.5';
+const VERSION = '0.6';
 const LS_PROF = 'lernwoerter.profile.v1', lsDaten = id => `lernwoerter.daten.${id}.v1`;
 const S = { view: 'start', prof: store.get(LS_PROF, null), D: null };
 const leererStand = () => ({ sterne: 0, tage: {}, w: {}, rot: {}, plan: {}, zaehler: {}, abzeichen: {}, sticker: {}, heute: null });
@@ -1623,6 +1627,36 @@ function viewAlbum() {
     <div class="card"><h2>Abzeichen</h2><div class="abzeichen">${ABZEICHEN.map(a => abzeichenHtml(a, !!st.abzeichen[a[0]])).join('')}</div></div>`;
 }
 
+/* ---------- parents: help (M6) ---------- */
+const ADRESSE = 'https://daddytomsen.github.io/lernwoerter/';
+function viewHilfe() {
+  const abschnitt = (titel, punkte) => `<h2 style="margin:18px 0 6px">${titel}</h2><ol class="hilfe">${punkte.map(x => `<li>${x}</li>`).join('')}</ol>`;
+  return abschnitt('Auf das iPad holen', [
+      `In Safari <b>${ADRESSE}</b> öffnen.`,
+      'Teilen → <b>Zum Home-Bildschirm</b>. Danach immer über das Fuchs-Icon starten, nicht im Safari-Tab.',
+      'Die App vom Home-Bildschirm und Safari haben getrennte Speicher. Die App nie vom Home-Bildschirm löschen, sonst ist der Lernstand weg.'])
+    + abschnitt('Nach einem Update', [
+      'Die App einmal ganz schließen: vom unteren Rand nach oben wischen und Schreibfuchs nach oben wegschieben.',
+      '<b>Zweimal</b> öffnen. Erst beim zweiten Start ist die neue Version da (Versionsnummer unter „Einstellungen“).',
+      'Vorher eine Sicherung speichern.'])
+    + abschnitt('Ton und Vorlesen', [
+      'Kein Ton? Im Kontrollzentrum den Stummmodus (Glocke) ausschalten und die Lautstärke erhöhen. Die Vorlesestimme bleibt im Stummmodus still.',
+      'Schönere Stimme: Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Deutsch, z. B. „Anna (Premium)“ laden. Die App nimmt automatisch eine deutsche Stimme.'])
+    + abschnitt('Stift und Finger', [
+      'Sobald der Stift benutzt wurde, zählen Finger auf den Schreibflächen nicht mehr. So macht die Hand beim Schreiben keine Striche.',
+      'Stift weggelegt und mit dem Finger weiter? Dreimal schnell mit dem Finger auf die Schreibfläche tippen, dann sind Finger wieder an.',
+      'Linienhöhe, Schrift und „schreibt mit links“ stehen unter „Einstellungen“. Der Werkstatt-Test dort prüft Stift und Lineatur genauer.'])
+    + abschnitt('Bildschirmzeit: nur Schreibfuchs erlauben', [
+      'Die App auf dem Home-Bildschirm ist technisch ein Teil von Safari. Safari darf darum nicht gesperrt sein, sonst startet auch Schreibfuchs nicht.',
+      'Einstellungen → Bildschirmzeit → Beschränkungen (Inhalt &amp; Datenschutz) → Erlaubte Apps &amp; Funktionen → <b>Safari einschalten</b>.',
+      'Zurück → Inhaltsbeschränkungen → Webinhalt → <b>Nur erlaubte Websites</b>.',
+      `„Website hinzufügen“: Titel „Schreibfuchs“, URL <b>${ADRESSE}</b>. Vorinstallierte Einträge nach Bedarf löschen. Weitere Adressen braucht die App nicht, Schriften und Bilder sind eingebaut.`,
+      'Kein App-Limit für Safari setzen, das sperrt die App mit.'])
+    + abschnitt('Neue Woche', [
+      '„Wochen“ → „Neue Woche mit Foto“ → Anleitung kopieren → in der Claude-App mit dem Foto vom Arbeitsblatt senden → Antwort einfügen → prüfen, Diktattermin wählen, speichern.',
+      'Fehlerwörter aus dem letzten Diktat kommen automatisch dazu.']);
+}
+
 /* ---------- parents: progress and review (M4) ---------- */
 // Word with its error spots shaded by how often they went wrong (article and word separately).
 function fehlerHtml(w) {
@@ -1737,7 +1771,7 @@ function viewGate() {
 }
 function viewEltern() {
   const tab = S.etab || 'wochen', p = aktiv();
-  const tabs = [['wochen', 'Wochen'], ['fortschritt', 'Fortschritt'], ['durchsicht', 'Durchsicht'], ['einstellungen', 'Einstellungen'], ['sicherung', 'Sicherung']]
+  const tabs = [['wochen', 'Wochen'], ['fortschritt', 'Fortschritt'], ['durchsicht', 'Durchsicht'], ['einstellungen', 'Einstellungen'], ['sicherung', 'Sicherung'], ['hilfe', 'Hilfe']]
     .map(([id, n]) => `<button data-act="etab" data-tab="${id}" aria-selected="${tab === id}">${n}</button>`).join('');
   let body = '';
   if (tab === 'wochen') {
@@ -1749,6 +1783,8 @@ function viewEltern() {
     body = viewFortschritt();
   } else if (tab === 'durchsicht') {
     body = viewDurchsicht();
+  } else if (tab === 'hilfe') {
+    body = viewHilfe();
   } else if (tab === 'einstellungen') {
     body = `<label class="feld">Name des Kindes<input data-in="p-name" value="${esc(p.name)}" autocomplete="off" autocorrect="off" spellcheck="false" maxlength="24"></label>
       <label class="check"><input type="checkbox" data-ch="p-lefty" ${p.lefty ? 'checked' : ''}> schreibt mit links (Vorlage beim Schreiben rechts)</label>
@@ -1762,7 +1798,8 @@ function viewEltern() {
       <div class="chips">${S.prof.liste.map(x => `<span class="chip" aria-pressed="${x.id === p.id}">${esc(x.name)}</span>`).join('')}<button class="chip" data-act="kind-neu">${icon('plus')} Kind anlegen</button></div>
       <p style="margin-top:18px"><a href="werkstatt.html">Werkstatt-Test (Stift und Lineatur prüfen)</a></p>`;
   } else {
-    body = `<p class="leise">Lernstand und Wörter liegen nur auf diesem iPad. Die App vom Home-Bildschirm und Safari haben getrennte Speicher. Die App nie vom Home-Bildschirm löschen, sonst ist alles weg. Vor Updates eine Sicherung speichern.</p>
+    const ls = S.D.stand.letzteSicherung;
+    body = `<p><b>Letzte Sicherung:</b> ${ls ? esc(datumLang(ls)) : 'noch nie'}</p><p class="leise">Lernstand und Wörter liegen nur auf diesem iPad. Die App vom Home-Bildschirm und Safari haben getrennte Speicher. Die App nie vom Home-Bildschirm löschen, sonst ist alles weg. Vor Updates eine Sicherung speichern.</p>
       <div class="row"><button class="btn main" data-act="sichern">${icon('down')}Sicherung speichern</button><button class="btn" data-act="laden">${icon('up')}Sicherung laden</button></div>`;
   }
   return `<div class="bar"><div class="grow"><h2 style="margin:0">Elternbereich · ${esc(p.name)}</h2></div><button class="btn main" data-act="home">${icon('check')}Fertig</button></div>
@@ -1938,10 +1975,15 @@ function speichereEntwurf() {
   if (!e.id && vorher) uebertrageFehler(vorher);
   saveDaten(); S.view = 'eltern'; S.etab = 'wochen'; S.importInfo = ''; render(); toast('Woche gespeichert');
 }
-function sicherungSpeichern() {
-  const data = { app: 'lernwoerter', v: 1, exported: new Date().toISOString(), profile: S.prof, daten: {} };
+// Backup = profiles + all learning data. Writing attempts (IndexedDB) stay on the device on purpose: they are only for review.
+function sicherungsText() {
+  const data = { app: 'lernwoerter', v: 1, exported: new Date().toISOString(), version: VERSION, profile: S.prof, daten: {} };
   S.prof.liste.forEach(p => { data.daten[p.id] = p.id === aktiv().id ? S.D : store.get(lsDaten(p.id), leereDaten()) });
-  downloadFile(`schreibfuchs-sicherung-${isoDay(Date.now())}.json`, JSON.stringify(data))
+  return JSON.stringify(data);
+}
+function sicherungSpeichern() {
+  S.D.stand.letzteSicherung = isoDay(Date.now()); saveDaten();
+  downloadFile(`schreibfuchs-sicherung-${isoDay(Date.now())}.json`, sicherungsText())
     .then(r => { if (r !== 'aborted') toast('Sicherung gespeichert') }, () => toast('Speichern ging nicht'));
 }
 function sicherungLaden(text) {
@@ -2204,11 +2246,12 @@ ladeDaten(); wendeProfilAn();
 if (aktiv()) S.view = 'start';
 const fonts = document.fonts && document.fonts.load ? Promise.all([document.fonts.load('40px "Playwrite DE Grund"', 'Abä'), document.fonts.load('40px "Andika"', 'Abä')]) : Promise.resolve();
 fonts.then(render, render);
-if ('serviceWorker' in navigator && location.protocol === 'https:') { try { navigator.serviceWorker.register('sw.js') } catch (e) {} }
+// Offline: on GitHub Pages always; locally only with ?sw (offline check), so normal previews never serve stale files.
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || /[?&]sw\b/.test(location.search))) { try { navigator.serviceWorker.register('sw.js') } catch (e) {} }
 let resizeTimer = 0;
 window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { const p = aktuellesPad(); if (p && p.wrap.isConnected) p.layout() }, 150) });
 // Debug hook for local checks only (?debug): state, word functions, Karteikasten, and a day shift for "tomorrow".
-if (/[?&]debug\b/.test(location.search)) window.sf = { S, parseImport, silbenVorschlag, stellenVorschlag, neuesWort, tokens, render, bewerte, rundeAusDemKopf, bewerteSpur, tag: n => { zeitVersatz = n; return heute() }, alternative, ablenker, poolFuer, planStart, tagIndexHeute, stufe, pruefeAbzeichen, neuerSticker };
+if (/[?&]debug\b/.test(location.search)) window.sf = { S, parseImport, silbenVorschlag, stellenVorschlag, neuesWort, tokens, render, bewerte, rundeAusDemKopf, bewerteSpur, tag: n => { zeitVersatz = n; return heute() }, alternative, ablenker, poolFuer, planStart, tagIndexHeute, stufe, pruefeAbzeichen, neuerSticker, sicherungsText, sicherungLaden };
 })();
 </script>
 </body>

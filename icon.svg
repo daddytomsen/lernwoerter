@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Schreibfuchs app icon: the fox above a line of school ruling, a pencil writing. Edge to edge: iOS rounds the corners itself. -->
+  <rect width="1024" height="1024" fill="#FFF1DF"/>
+  <g stroke-linecap="round">
+    <path d="M0 800H1024M0 868H1024M0 1004H1024" stroke="#8E98BF" stroke-width="8"/>
+    <path d="M0 936H1024" stroke="#1F2546" stroke-width="16"/>
+  </g>
+  <path d="M150 936c0-90 70-90 70 0c0-90 70-90 70 0c0-90 70-90 70 0c0-90 70-90 70 0" fill="none" stroke="#1F2546" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(160 56) scale(11)">
+    <path d="M6 6l16 14h20L58 6l-3 28c-3 14-12 22-23 24C21 56 12 48 9 34z" fill="#E8742A"/>
+    <path d="M6 6l9 18M58 6l-9 18" stroke="#B9531A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M12 34c6 2 12 8 20 24-11-2-19-9-20-24zM52 34c-6 2-12 8-20 24 11-2 19-9 20-24z" fill="#FFF"/>
+    <circle cx="23" cy="32" r="3.4" fill="#1F2546"/>
+    <circle cx="41" cy="32" r="3.4" fill="#1F2546"/>
+    <path d="M28 47h8l-4 5z" fill="#1F2546"/>
+  </g>
+  <g transform="translate(446 930) rotate(-38)">
+    <rect x="40" y="-34" width="270" height="68" rx="8" fill="#F5B800"/>
+    <rect x="262" y="-34" width="56" height="68" rx="8" fill="#F28C9E"/>
+    <rect x="244" y="-34" width="26" height="68" fill="#C7CEE5"/>
+    <path d="M40 -34L0 0L40 34z" fill="#F3D9B1"/>
+    <path d="M14 -12L0 0L14 12z" fill="#1F2546"/>
+    <path d="M60 -12H232" stroke="#D99A00" stroke-width="8" stroke-linecap="round"/>
+  </g>
+</svg>

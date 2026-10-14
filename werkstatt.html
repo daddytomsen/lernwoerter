@@ -11,6 +11,8 @@
 <meta name="theme-color" content="#FFF4E8">
 <meta name="format-detection" content="telephone=no">
 <meta name="robots" content="noindex, nofollow">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
 <style>
 /* M0 test page (spikes): pen surface, school ruling, trace scoring, Scribble check, report.
    Light only on purpose: the writing surface is paper. Fonts ship with the app so tracing works offline. */
@@ -569,6 +571,7 @@ function syncSettings() {
   $('#band-wert').textContent = E.band + ' px';
 }
 function layoutVisible() {
+  if (!pads.schreiben) return;   // tab tapped before the fonts finished loading: boot will lay out
   pads.schreiben.o.template = pads.spur.o.template = wort();
   for (const k of Object.keys(pads)) if (!$('#t-' + k).hidden) pads[k].layout();
   if (!$('#t-schreiben').hidden) showSchreibStats();

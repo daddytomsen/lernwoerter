@@ -1,6 +1,6 @@
 # Übergabe an Claude Code – Schreibfuchs
 
-Stand: 14.10.2026 · `main`: Werkstatt-Test M0.2 (live) · Zweig `m1`: App 0.1 · Zweig `m2`: App 0.2 · Zweig `m3`: App 0.3 · Zweig `m4`: App 0.4 · Zweig `m5`: App 0.5 · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
+Stand: 14.10.2026 · `main`: Werkstatt-Test M0.2 (live) · Zweig `m1`: App 0.1 · Zweig `m2`: App 0.2 · Zweig `m3`: App 0.3 · Zweig `m4`: App 0.4 · Zweig `m5`: App 0.5 · Zweig `m6`: App 0.6 (Stand für das Zusammenführen) · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
 
 Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei sagt, was entschieden, was fertig und was als Nächstes zu tun ist.
 
@@ -152,9 +152,47 @@ Offen auf dem iPad: Freude des Kindes am Begleiter und an den Stickern (Thomas b
 
 **Zusammenführen:** nach dem M0-Test `m5` (enthält `m1` bis `m4`) nach `main`.
 
-### Danach: M6 Feinschliff
+### M6 Feinschliff – auf Zweig `m6` (enthält `m1` bis `m5`), lokal geprüft, iPad-Test offen
 
-App-Icon (SVG → PNG, randlos), Offline-Test, Sicherung auf dem iPad prüfen, Bildschirmzeit-Anleitung (Safari erlauben, nur diese Website), iPad-Checkliste für Thomas, Testprotokoll.
+Fertig, wenn der Test auf dem iPad bestanden und im Testprotokoll ist: **offen, das macht Thomas** (Checkliste unten). Vorbereitet und am Mac geprüft:
+
+- **App-Icon** (Fuchs über Schul-Lineatur mit Stift): `icon.svg` → `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, randlos, ohne Alphakanal, im Manifest (auch maskable) und im Cache-Kern.
+- **Offline:** Service Worker lokal mit `?sw` eingeschaltet, Cache mit allen 9 Kerndateien, Server gestoppt, neu geladen: App startet mit Schulschrift, Werkstatt-Test und Icons. Danach abgemeldet und Cache geleert.
+- **Sicherung:** Kreislauf Speichern → alles löschen → Laden für zwei Kinderprofile, Karteikasten, Sterne und Sticker gleich; fremde Datei wird abgelehnt, ohne etwas zu ändern. „Letzte Sicherung“ steht im Reiter Sicherung.
+- **Hilfe-Reiter** im Elternbereich: Installieren, Update (zweimal öffnen), Ton und Vorlesen, Stift und Finger, Bildschirmzeit, neue Woche. Dasselbe zur Bildschirmzeit im README.
+- **Werkstatt-Test:** Fehler beim Tippen auf einen Reiter vor dem Laden der Schriften behoben.
+
+### Zusammenführen und veröffentlichen (nach Thomas' M0-Test)
+
+1. Erkenntnisse aus dem M0-Bericht in `m6` übernehmen: Schrift-Standard, Linienhöhe-Standard, Sterne-Schwellen in `sterneFuerSpur()` (App und Werkstatt), Scribble-Entscheidung, ggf. Blitzdauer. Version hochzählen.
+2. `tools/check.sh`, dann `main` auf `m6` vorspulen (`git checkout main && git merge --ff-only m6`), pushen. Pages baut in etwa einer Minute.
+3. Release-Nachricht an Thomas: Adresse bleibt gleich, App einmal ganz schließen und zweimal öffnen, Werkstatt-Test jetzt unter `/werkstatt.html`. Wer die Adresse vor heute schon auf dem Home-Bildschirm hatte: Icon entfernen und neu hinzufügen, damit iOS Name und Icon neu liest (dabei geht nichts verloren, weil vorher noch keine Lerndaten existierten).
+4. Alte Zweige `m1`–`m5` dürfen bleiben oder gelöscht werden (nur auf Wunsch).
+
+### iPad-Checkliste für Thomas (App 0.6, mit dem Kind)
+
+**Einrichten**
+1. Bildschirmzeit wie unter Elternbereich → Hilfe (Safari erlaubt, nur diese Website).
+2. Adresse öffnen → Zum Home-Bildschirm → über das Fuchs-Icon starten. Icon sieht gut aus?
+3. Ersteinrichtung: Name, „schreibt mit links“, Kind wählt Thema.
+4. Elternbereich (Rechenaufgabe) → Neue Woche mit Foto: Anleitung kopieren, in der Claude-App mit Foto vom Arbeitsblatt senden, Antwort einfügen. Stimmen Wörter, Silben, Stellen? Diktattermin, speichern.
+
+**Üben (über mehrere Tage)**
+5. Wochenweg: „Los geht's“ führt durch die Tagesaufgabe, am Ende Sticker und Stempel.
+6. Wortkarte: Vorlesen von Wort und Satz (deutsche Stimme?), Silbenbögen, Silbenkönige.
+7. Schreibstationen mit dem Stift: Handballen ignoriert? Strich flüssig? Linienhöhe passend? Vorlage rechts für die Linkshänderin.
+8. Selbstkontrolle: Versteht das Kind das Antippen falscher Buchstaben?
+9. Knobeln: Bausteine, Lücke, Kisten, Textmarker groß genug für Kinderfinger?
+10. Mini-Diktat am Diktattag: Sprechtempo, „Nochmal hören“, Pokal.
+11. Belohnung: Freut sich das Kind über Begleiter, Sterneglas, Sticker? Töne zu laut? Pausenhinweis nach 20 Minuten passend?
+
+**Technik**
+12. Flugmodus an, App neu starten: läuft sie?
+13. Sicherung speichern (Teilen-Menü → In Dateien sichern), Sicherung laden.
+14. Nach dem nächsten Update: ganz schließen, zweimal öffnen, Versionsnummer unter Einstellungen prüfen.
+15. Elternbereich → Durchsicht: Schreibversuche lesbar? Fortschritt verständlich?
+
+Ergebnisse ins Testprotokoll unten. Fehler und Wünsche an Claude Code.
 
 ## Nicht ohne Rückfrage
 

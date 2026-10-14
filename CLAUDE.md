@@ -21,7 +21,8 @@ Repo und interne Schlüssel heißen neutral `lernwoerter` (Speicher `lernwoerter
 | `index.html` | die App (ab M1, Version in `const VERSION`) |
 | `werkstatt.html` | Werkstatt-Test M0: Stiftdiagnose, Lineatur, Nachspur-Bewertung, Scribble-Prüfung, Bericht. Bleibt als Prüfstand, verlinkt im Elternbereich |
 | `sw.js` | Service Worker: Seiten network-first, Schriften und Rest cache-first, Kern im Cache beim Installieren |
-| `manifest.webmanifest` | Home-Bildschirm (Icons folgen in M6) |
+| `manifest.webmanifest` | Home-Bildschirm, Icons 192/512 (auch maskable) |
+| `icon.svg`, `apple-touch-icon.png` (180), `icon-192.png`, `icon-512.png` | App-Icon: Fuchs über Schul-Lineatur mit Stift. `icon.svg` ist die Quelle; PNGs im Browser per Canvas gerendert, randlos und ohne Alphakanal (iOS füllt Transparenz schwarz) |
 | `fonts/` | `playwrite-de-grund.woff2`, `andika-latin.woff2` (Google-Fonts-Ausgaben) und die OFL-Lizenztexte |
 | `tools/check.sh` | JS-Syntax beider Seiten und `sw.js`, Schriften, Cache-Kern vorhanden, gleiche Version, keine privaten Dateien, keine Kindernamen |
 | `KONZEPT.md` | Auftrag (pädagogische Grundlage, Stationen, Fahrplan) |
@@ -31,8 +32,8 @@ Repo und interne Schlüssel heißen neutral `lernwoerter` (Speicher `lernwoerter
 
 Bei jeder Änderung an `index.html`, `werkstatt.html` oder den Schriften **beide Versionsnummern gleichzeitig** hochzählen, sonst bekommt das iPad die alte Fassung aus dem Cache:
 
-- `sw.js`: `const CACHE = 'lernwoerter-v0.5';`
-- `index.html`: `const VERSION = '0.5';` (sichtbar im Elternbereich)
+- `sw.js`: `const CACHE = 'lernwoerter-v0.6';`
+- `index.html`: `const VERSION = '0.6';` (sichtbar im Elternbereich)
 
 `tools/check.sh` bricht ab, wenn sie nicht übereinstimmen. Nach jedem Update muss die Home-Bildschirm-App komplett geschlossen und zweimal geöffnet werden. Das gehört in jede Release-Nachricht an Thomas.
 
@@ -73,6 +74,7 @@ Abschnitte im Skript (Kommentare `/* ---------- … ---------- */`):
     - *Tagesziel*: 3 Aufgaben oder 10 Minuten (`stand.heute`), Punkte oben auf dem Start. *Pause*: einmal je Sitzung nach 20 Minuten (Sitzung beginnt neu nach 5 Minuten im Hintergrund).
     - *Ablauf*: `stationsStart()` beim Start, `stationAbschluss()` genau einmal am Ende (Tagesziel, Abzeichen, Pause, Wachstum), `belohnungHtml()` auf jedem Endbildschirm (Stationen, Mini-Diktat), `feiern()` danach mit Ton, Konfetti (`konfetti()` aus Voc a Bit) und vorgelesenem Lob.
     - *Album* (`viewAlbum`): Begleiter, Sterneglas, Stickerseiten je Thema, Pokalregal, Abzeichenwand. Erreichbar über den Begleiter oder das Sterneglas oben auf dem Start.
+    **Feinschliff (M6)**: Elternbereich-Reiter *Hilfe* (`viewHilfe`: Installieren, Update, Ton, Stift, Bildschirmzeit, neue Woche), *Sicherung* zeigt die letzte Sicherung (`stand.letzteSicherung`); `sicherungsText()` getrennt von `sicherungSpeichern()`, damit sie ohne Teilen-Menü prüfbar ist. Schreibversuche (IndexedDB) sind bewusst nicht in der Sicherung.
 13. **render / actions / events** – `render()` → `#app.innerHTML`, danach hängt es das langlebige Pad (`aktuellesPad()`) wieder in `[data-pad-host]` ein, Striche bleiben erhalten; der Wort-Editor rendert beim Tippen nur `#wedit-teil` neu (Fokus bleibt). Ereignisse über `data-act` (Klick, Tabelle `ACT`), `data-in` (`IN`), `data-ch` (`CH`).
 
 `?debug` setzt `window.sf` (Zustand und Wortfunktionen) für lokale Prüfungen.
@@ -123,7 +125,7 @@ Direkt aus `~/Downloads` liefert der Vorschau-Server 404. Darum spiegeln:
 rsync -a --delete --exclude entwurf --exclude .git --exclude .claude ~/Downloads/lernwoerter/ /tmp/claude-501/lernwoerter-mirror/
 ```
 
-Dann in Claude Code `preview_start` mit dem Namen `lernwoerter` (Port 8794, Eintrag in `~/Downloads/.claude/launch.json`). Der Service Worker läuft nur unter https, lokal also nicht. Ist die Vorschau ausgeblendet, läuft `requestAnimationFrame` nicht: Werte dann synchron abfragen. Testdaten danach aus dem localStorage der Vorschau löschen.
+Dann in Claude Code `preview_start` mit dem Namen `lernwoerter` (Port 8794, Eintrag in `~/Downloads/.claude/launch.json`). `*.local.*` nicht mitspiegeln. Der Service Worker läuft unter https immer, lokal nur mit `?sw` (Offline-Prüfung: laden, Cache prüfen, Server stoppen, neu laden; danach Service Worker abmelden und Cache löschen, sonst liefert die Vorschau alte Dateien). Ist die Vorschau ausgeblendet, läuft `requestAnimationFrame` nicht: Werte dann synchron abfragen. Testdaten danach aus dem localStorage der Vorschau löschen.
 
 ## Git
 
