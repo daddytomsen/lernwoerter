@@ -58,7 +58,7 @@ Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei
    4. **Nachspuren:** drei Wörter sauber, eins absichtlich schlampig, eins gekritzelt. Passen die Sterne zum Gefühl?
    5. **Scribble:** Einstellungen → Apple Pencil → Scribble („Kritzeln“) an, dann die falschen Wörter mit dem Stift in beide Spalten schreiben.
    6. **Bericht:** „Stimme testen“, dann „Bericht kopieren“ und in Claude einfügen.
-5. ~~Ergebnisse ins Testprotokoll, Entscheidungen~~ erledigt 14.10. (Bericht 16:33): Schrift Playwrite DE Grund, Band 56, Sterne-Schwellen bestätigt, Scribble verworfen. Umgesetzt als 0.7. Offen: ob die Handballen-Sperre greift (Bericht: 0 ignorierte Berührungen, vermutlich filtert iPadOS die Hand schon selbst).
+5. ~~Ergebnisse ins Testprotokoll, Entscheidungen~~ erledigt 14.10. (Bericht 16:33): Schrift Playwrite DE Grund, Band 56, Sterne-Schwellen bestätigt, Scribble verworfen. Umgesetzt als 0.7. Handballen geklärt (Thomas, 14.10.): Hand lag beim Test auf, 0 Berührungen kamen an. iPadOS filtert die Handfläche bei diesem Stift selbst, die Sperre der App ist nur zweite Absicherung.
 
 ### M1 Grundgerüst (KONZEPT 12) – auf Zweig `m1`, lokal geprüft, nicht auf dem iPad
 
@@ -205,4 +205,4 @@ Ergebnisse ins Testprotokoll unten. Fehler und Wünsche an Claude Code.
 
 | Datum | Gerät / iPadOS | Ergebnis |
 |---|---|---|
-| 14.10.2026 | iPad Air M1, Dritthersteller-Stift, Home-Bildschirm, Werkstatt-Test M0.2 | Stift als `pen` erkannt (70 Berührungen), Neigung ja, Druck konstant 0,12 (kein Drucksensor, feste Strichbreite greift), Abtastrate ≈ 281 Hz, 3,9 Zwischenpunkte je Bewegung, Verarbeitung 3,8 ms. Nachspuren „alt“: schlampig 43 %/85 % → 1 Stern, sauber 98 %/100 % → 3 Sterne (Schwellen passen). Gewählt: Playwrite DE Grund, Band 56. Scribble liest falsch (Hunt→Unt, Fogel→Focuel, Fahrad→Farad, Abent→Abert, fröhlig→Gröihlig, nur Apel richtig) → verworfen. Deutsche Stimme Anna vorhanden. Handballen: 0 ignoriert. |
+| 14.10.2026 | iPad Air M1, Dritthersteller-Stift, Home-Bildschirm, Werkstatt-Test M0.2 | Stift als `pen` erkannt (70 Berührungen), Neigung ja, Druck konstant 0,12 (kein Drucksensor, feste Strichbreite greift), Abtastrate ≈ 281 Hz, 3,9 Zwischenpunkte je Bewegung, Verarbeitung 3,8 ms. Nachspuren „alt“: schlampig 43 %/85 % → 1 Stern, sauber 98 %/100 % → 3 Sterne (Schwellen passen). Gewählt: Playwrite DE Grund, Band 56. Scribble liest falsch (Hunt→Unt, Fogel→Focuel, Fahrad→Farad, Abent→Abert, fröhlig→Gröihlig, nur Apel richtig) → verworfen. Deutsche Stimme Anna vorhanden. Handballen: Hand lag auf, 0 Berührungen kamen an (iPadOS filtert selbst). |
