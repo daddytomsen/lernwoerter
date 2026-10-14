@@ -1,6 +1,6 @@
 # Übergabe an Claude Code – Schreibfuchs
 
-Stand: 14.10.2026 · Werkstatt-Test M0.2 · Projektordner `~/Downloads/lernwoerter` · geplant unter https://daddytomsen.github.io/lernwoerter/
+Stand: 14.10.2026 · Werkstatt-Test M0.2 · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
 
 Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei sagt, was entschieden, was fertig und was als Nächstes zu tun ist.
 
@@ -49,12 +49,8 @@ Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei
 ### M0 abschließen
 
 1. ~~`sterneFuerSpur()` festlegen~~ erledigt: der schwächere der beiden Werte zählt, ab 0,85 drei Sterne, ab 0,65 zwei, sonst einer. Mit echten iPad-Werten nachjustieren.
-2. `tools/check.sh`, `git init -b main`, erster Commit.
-3. Thomas legt Repo und Pages an:
-   ```bash
-   gh repo create lernwoerter --public --source . --push
-   gh api -X POST repos/daddytomsen/lernwoerter/pages -f "source[branch]=main" -f "source[path]=/"
-   ```
+2. ~~Erster Commit~~ erledigt 14.10. (`ecbb3be`).
+3. ~~Repo und Pages~~ erledigt 14.10.: https://github.com/daddytomsen/lernwoerter (öffentlich), Pages aus `main` / Wurzel. Angelegt von Claude Code mit `gh` außerhalb der Sandbox (im Sandbox-Lauf scheitert `gh` am Schlüsselbund und an der Zertifikatsprüfung).
 4. Test auf dem iPad (Thomas, mit Kind), Checkliste:
    1. `https://daddytomsen.github.io/lernwoerter/` in Safari öffnen → Teilen → „Zum Home-Bildschirm“ → über das Icon starten.
    2. **Stift:** mit Stift schreiben, dann mit Finger. Hand beim Schreiben ablegen: entstehen Striche durch die Hand? Fühlt sich der Strich verzögert an?

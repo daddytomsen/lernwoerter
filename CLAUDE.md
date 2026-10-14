@@ -53,4 +53,4 @@ Dann in Claude Code `preview_start` mit dem Namen `lernwoerter` (Port 8794, Eint
 
 ## Git
 
-`git init` und `git commit` außerhalb der Sandbox, `git push` mit `allowed_domains: github.com`. Repo anlegen und Pages einschalten macht Thomas selbst. Commits mit den Attributionszeilen aus dem System-Hinweis.
+Repo `daddytomsen/lernwoerter` (öffentlich), Pages aus `main`. `git commit` und `gh` außerhalb der Sandbox (Schlüsselbund, Zertifikate), `git push` mit `allowed_domains: github.com` versuchen. Commits mit den Attributionszeilen aus dem System-Hinweis.
