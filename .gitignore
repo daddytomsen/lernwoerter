@@ -1,0 +1,12 @@
+.DS_Store
+*.local.*
+# Fotos von Arbeitsblättern, Schreibproben und Sicherungen gehören nicht ins öffentliche Repo
+entwurf/
+fotos/
+*.heic
+*.HEIC
+*.jpg
+*.jpeg
+*.webp
+schreibfuchs-sicherung-*.json
+.claude/
