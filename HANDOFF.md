@@ -1,6 +1,6 @@
 # Übergabe an Claude Code – Schreibfuchs
 
-Stand: 14.10.2026 · `main`: Werkstatt-Test M0.2 (live) · Zweig `m1`: App 0.1 · Zweig `m2`: App 0.2 · Zweig `m3`: App 0.3 · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
+Stand: 14.10.2026 · `main`: Werkstatt-Test M0.2 (live) · Zweig `m1`: App 0.1 · Zweig `m2`: App 0.2 · Zweig `m3`: App 0.3 · Zweig `m4`: App 0.4 · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
 
 Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei sagt, was entschieden, was fertig und was als Nächstes zu tun ist.
 
@@ -113,9 +113,33 @@ Offen auf dem iPad: Größe der Bausteine und Kisten für Kinderfinger, Startbil
 
 **Zusammenführen:** nach dem M0-Test `m3` (enthält `m1` und `m2`) nach `main`.
 
-### Danach: M4 Woche und Diktat
+### M4 Woche und Diktat – auf Zweig `m4` (enthält `m1` bis `m3`), lokal geprüft, nicht auf dem iPad
 
-Wochenweg mit Tagesstation (Mo Einführung, Di Silben, Mi Stelle/Regenbogen, Do aus dem Kopf, Fr Mini-Diktat), Mini-Diktat mit Sprachausgabe und Karteikasten, Fehlerwörter in die nächste Woche, Eltern-Durchsicht der gespeicherten Schreibversuche (überstimmt die Selbstkontrolle), Fortschritt und Fehlerstellen im Elternbereich.
+Fertig, wenn ein kompletter Wochenablauf durchläuft: erfüllt. Durchgespielt mit verschobenem Datum (Mo 12.10. bis Sa 17.10.) und zwei Testwochen:
+
+| Tag | Tagesaufgabe | Ergebnis |
+|---|---|---|
+| Mo | Wortkarten → Abschreiben | Stempel |
+| Di | Silben schwingen → Silbenkönige | Stempel |
+| Mi | Knifflige Stelle → Regenbogen | Stempel |
+| Do | Blitzlesen → Merk-Diktat (übersprungen, alle 5 Testwörter schon richtig) | Stempel, alle Wörter Fach 2 |
+| Fr | Mini-Diktat, 2 Fehler (Hund, Vogel) | Silber-Pokal, 4 Sterne, richtige → Fach 3, falsche → Fach 1, Stempel |
+| Sa | Start zeigt Woche 2 | Hund und Vogel gestrichelt als Fehlerwörter dabei, „Heute ist Wochenende“ |
+
+Danach Elternbereich: Fortschritt zeigt Fächer und Fehlerstellen, Durchsicht zeigt 15 gemalte Versuche (5 Wörter × 3). „Hund“ im Diktat auf „richtig“ gestellt → Fach 2, aus den Fehlerwörtern von Woche 2 entfernt, in IndexedDB vermerkt.
+
+- **Wochenweg** mit fünf Tagen, Stempel je geübtem Tag, großer Knopf für die Aufgabe des Tages („Nochmal“, wenn schon erledigt). Darunter „Freies Üben“ mit allen Stationen.
+- **Mini-Diktat:** App spricht Wort, Satz, Wort; „Nochmal hören“; alle Wörter schreiben, dann vergleichen; Pokal in Gold, Silber oder Bronze.
+- **Fehlerwörter** gehen automatisch in die nächste Woche, im Wochen-Editor sichtbar und entfernbar.
+- **Elternbereich** mit neuen Reitern **Fortschritt** und **Durchsicht** (überstimmt die Selbstkontrolle).
+
+Offen auf dem iPad: Diktat-Sprachausgabe (Satz, Tempo), ob das Kind im Diktat mit „Nochmal hören“ zurechtkommt, Lesbarkeit der gemalten Versuche in der Durchsicht.
+
+**Zusammenführen:** nach dem M0-Test `m4` (enthält `m1` bis `m3`) nach `main`.
+
+### Danach: M5 Belohnung
+
+Sterneglas, Sticker je erledigter Tagesstation mit Stickeralbum (Themen Einhörner, Halloween, Tiere), Begleiter, Wochenstempelkarte (Grundlage steht: `stand.plan`), Pokal (steht), Abzeichen mit Bildern, Tagesziel 3 Stationen oder 10 Minuten, Pausenhinweis nach 20 Minuten, Konfetti.
 
 ## Nicht ohne Rückfrage
 

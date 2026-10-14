@@ -31,8 +31,8 @@ Repo und interne Schlüssel heißen neutral `lernwoerter` (Speicher `lernwoerter
 
 Bei jeder Änderung an `index.html`, `werkstatt.html` oder den Schriften **beide Versionsnummern gleichzeitig** hochzählen, sonst bekommt das iPad die alte Fassung aus dem Cache:
 
-- `sw.js`: `const CACHE = 'lernwoerter-v0.3';`
-- `index.html`: `const VERSION = '0.3';` (sichtbar im Elternbereich)
+- `sw.js`: `const CACHE = 'lernwoerter-v0.4';`
+- `index.html`: `const VERSION = '0.4';` (sichtbar im Elternbereich)
 
 `tools/check.sh` bricht ab, wenn sie nicht übereinstimmen. Nach jedem Update muss die Home-Bildschirm-App komplett geschlossen und zweimal geöffnet werden. Das gehört in jede Release-Nachricht an Thomas.
 
@@ -58,6 +58,13 @@ Abschnitte im Skript (Kommentare `/* ---------- … ---------- */`):
     - *Wortarten*: Wort ohne Artikel (und ohne Vorlesen des Artikels!), drei Kisten in Schulfarben, bei Nomen danach der/die/das. Wörter mit `wortart: andere` nehmen nicht teil.
     - *Knifflige Stelle*: jeder Buchstabe eine Kachel, ein Treffer markiert die ganze Stelle gelb; nach vier Fehltipps zeigt die App die Stellen. Danach die Tipps aller Stellen.
     Sterne: 2 beim ersten Versuch, 1 nach Fehlern, 0 wenn die App helfen musste.
+    **Woche und Diktat (M4)**:
+    - *Wochenweg* (`wochenwegHtml`): `TAGE` Mo Kennenlernen (Wortkarten, Abschreiben), Di Silben (Silben schwingen, Silbenkönige), Mi Knifflige Stellen (Stelle, Regenbogen; ohne Stellen → Baukasten), Do Aus dem Kopf (Blitzlesen, Merk-Diktat), Fr Mini-Diktat. `tagIndexHeute()`: am Diktattag immer Fr, am Wochenende keine Tagesaufgabe. Stempel je Kalendertag der laufenden Woche aus `stand.plan[datum].fertig`.
+    - *Tagesplan* `S.plan = { datum, tag, liste, idx }`: `planStart()` → `planSchritt()` (Wortkarten, Station oder Diktat) → Endbildschirm zeigt `planKnopf()` → `planWeiter()`. Eine Station ohne Wörter (z. B. Merk-Diktat, wenn Blitzlesen heute schon alle Wörter richtig hatte) wird übersprungen. `startStation()` gibt zurück, ob sie gestartet ist. „Zum Start“ beendet den Plan.
+    - *Mini-Diktat* (`startDiktat`, `viewDiktat`): spricht „Wort. Satz. Wort.“, das Kind schreibt alle Wörter, dann Selbstkontrolle Wort für Wort (das Geschriebene wird aus den gespeicherten Strichen neu gemalt, `malVersuch()`), dann `diktatFertig()`: jedes Wort durch `bewerte()`, Schreibversuche nach IndexedDB, Pokal 0 Fehler Gold / 1–2 Silber / sonst Bronze (5/4/3 Sterne), Eintrag in `D.diktate`, `woche.diktatFehler` und `uebertrageFehler()` in die Folgewoche.
+    - *Fehlerwörter*: `woche.fehlerwoerter` (aus dem Diktat der Vorwoche) werden in `wochenWoerter()` mitgeübt, auf dem Start gestrichelt. Eine neue Woche übernimmt beim Anlegen die offenen Fehler der Vorwoche; ist die Folgewoche schon da, bekommt sie sie beim Diktat. Im Wochen-Editor einzeln entfernbar.
+    - *Eltern-Reiter Fortschritt* (`viewFortschritt`): Wörter der Woche mit Fach, richtig/falsch (nur aus dem Kopf), nächstem Termin und gelb schattierten Fehlerstellen (`fehlerHtml`); Diktate mit Pokal und Fehlern; Sterne und Tagesaufgaben der letzten 7 Tage.
+    - *Eltern-Reiter Durchsicht* (`viewDurchsicht`): die gespeicherten Versuche (je Wort 3) neu gemalt, „richtig“/„falsch“ überstimmt die Selbstkontrolle (`urteilen()`): speichert `eltern` am Versuch; bei Blitzlesen, Merk-Diktat und Diktat auch Karteikasten (falsch → Fach 1; richtig nach falscher Selbstkontrolle → `bewerte(true)`), beim Diktat auch Diktat-Ergebnis und Fehlerwörter der Folgewoche.
 13. **render / actions / events** – `render()` → `#app.innerHTML`, danach hängt es das langlebige Pad (`aktuellesPad()`) wieder in `[data-pad-host]` ein, Striche bleiben erhalten; der Wort-Editor rendert beim Tippen nur `#wedit-teil` neu (Fokus bleibt). Ereignisse über `data-act` (Klick, Tabelle `ACT`), `data-in` (`IN`), `data-ch` (`CH`).
 
 `?debug` setzt `window.sf` (Zustand und Wortfunktionen) für lokale Prüfungen.
@@ -68,12 +75,14 @@ Abschnitte im Skript (Kommentare `/* ---------- … ---------- */`):
 - **Daten je Kind** `localStorage['lernwoerter.daten.<profil-id>.v1']`: `{ v: 1, woerter: { id: Wort }, wochen: [Woche], stand: { sterne, tage: { JJJJ-MM-TT: sterne }, w: { wortId: Karte }, rot: { station: index } } }`.
 - **Karte** (Lernstand je Wort): `{ fach: 0–5, faellig: "JJJJ-MM-TT", richtig, falsch, zuletzt: "JJJJ-MM-TT", letztes: ok|falsch, fehlerstellen: { "a0".. (Artikel) / "0".. (Wort): anzahl } }`.
 - **Wort:** `{ id, wort, artikel, wortart: nomen|verb|adjektiv|andere, art: mitsprech|nachdenk|merk, silben: ["A","bend"], stellen: [{ von, bis, typ, tipp }], satz }`. Ids sind fest, der Lernstand hängt daran. Gleiches Wort (Artikel + Wort, ohne Groß/klein) behält beim Speichern einer Woche seine Id.
-- **Woche:** `{ id, titel, diktat: "JJJJ-MM-TT", woerter: [ids], fehlerwoerter: [ids], angelegt }`.
+- **Woche:** `{ id, titel, diktat: "JJJJ-MM-TT", woerter: [ids], fehlerwoerter: [ids aus dem Vorwochen-Diktat], diktatFehler: [ids], angelegt }`.
+- **Diktat** (`D.diktate[]`): `{ id, woche, datum, ergebnis: [{ wort, ok, fehler }], pokal: gold|silber|bronze }`.
+- **Tagesplan** (`stand.plan`): `{ JJJJ-MM-TT: { erledigt: [stationen], fertig } }`.
 - **Sicherung:** `{ app: "lernwoerter", v: 1, exported, profile, daten: { profil-id: Daten } }`, Dateiname `schreibfuchs-sicherung-JJJJ-MM-TT.json`.
 
 ## Sterne
 
-Silben schwingen und Silbenkönige: 1 je Wort. Knobel-Stationen: 2 / 1 / 0 (siehe oben). Abschreiben, Blitzlesen, Merk-Diktat: 2 je Wort, **unabhängig davon, ob die Selbstkontrolle richtig oder falsch ergab**, damit sich Schummeln bei der Selbstkontrolle nicht lohnt. Regenbogen: Durchschnitt der drei Durchgänge (1–3).
+Silben schwingen und Silbenkönige: 1 je Wort. Knobel-Stationen: 2 / 1 / 0 (siehe oben). Mini-Diktat: Gold 5, Silber 4, Bronze 3. Abschreiben, Blitzlesen, Merk-Diktat: 2 je Wort, **unabhängig davon, ob die Selbstkontrolle richtig oder falsch ergab**, damit sich Schummeln bei der Selbstkontrolle nicht lohnt. Regenbogen: Durchschnitt der drei Durchgänge (1–3).
 
 ## Elternbereich
 
