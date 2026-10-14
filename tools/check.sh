@@ -1,25 +1,35 @@
 #!/usr/bin/env bash
-# Prüft Schreibfuchs vor jedem Commit: JS-Syntax, Schriftdateien, nichts Privates im öffentlichen Repo.
+# Prüft Schreibfuchs vor jedem Commit: JS-Syntax beider Seiten und des Service Workers, Schriften,
+# Cache-Kern, gleiche Version in sw.js und index.html, nichts Privates im öffentlichen Repo.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 tmp="$(mktemp -d "${TMPDIR:-/tmp}/lernwoerter.XXXXXX")"
 trap 'rm -rf "$tmp"' EXIT
 
 python3 - "$tmp" <<'PY'
-import os, re, sys
-html = open('index.html', encoding='utf-8').read()
-scripts = re.findall(r'<script>([\s\S]*?)</script>', html)
-assert len(scripts) == 1, 'index.html: genau ein <script>-Block erwartet'
-open(os.path.join(sys.argv[1], 'app.js'), 'w', encoding='utf-8').write(scripts[0])
-for f in re.findall(r'url\((fonts/[^)]+)\)', html):
-    assert os.path.isfile(f), f'Schrift fehlt: {f}'
-    print(f'  {f}: {os.path.getsize(f)} Byte')
+import json, os, re, sys
+tmp = sys.argv[1]
+for page in ('index.html', 'werkstatt.html'):
+    html = open(page, encoding='utf-8').read()
+    scripts = re.findall(r'<script>([\s\S]*?)</script>', html)
+    assert len(scripts) == 1, f'{page}: genau ein <script>-Block erwartet'
+    open(os.path.join(tmp, page + '.js'), 'w', encoding='utf-8').write(scripts[0])
+    for f in re.findall(r'url\((fonts/[^)]+)\)', html):
+        assert os.path.isfile(f), f'{page}: Schrift fehlt: {f}'
 for lic in ('fonts/OFL-Andika.txt', 'fonts/OFL-Playwrite.txt'):
     assert os.path.isfile(lic), f'Lizenztext fehlt: {lic}'
-print('  Version', re.search(r"const VERSION = '([^']+)'", html).group(1))
+json.load(open('manifest.webmanifest', encoding='utf-8'))
+sw = open('sw.js', encoding='utf-8').read()
+for f in re.findall(r"'\./([^']+)'", sw):
+    assert os.path.isfile(f), f'sw.js: Datei im Cache-Kern fehlt: {f}'
+cache = re.search(r"CACHE = 'lernwoerter-v([\d.]+)'", sw).group(1)
+shown = re.search(r"const VERSION = '([\d.]+)'", open('index.html', encoding='utf-8').read()).group(1)
+assert cache == shown, f'Version passt nicht: sw.js {cache}, index.html {shown}'
+print(f'  Version {shown} (sw.js und index.html gleich)')
 PY
 
-node --check "$tmp/app.js"
+for js in "$tmp"/*.js; do node --check "$js"; done
+node --check sw.js
 
 # Öffentliches Repo: keine Fotos, keine Sicherungen, kein Entwurfsordner. Erlaubt sind nur die App-Icons.
 if git rev-parse --git-dir >/dev/null 2>&1; then

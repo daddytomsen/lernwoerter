@@ -1,6 +1,6 @@
 # Übergabe an Claude Code – Schreibfuchs
 
-Stand: 14.10.2026 · Werkstatt-Test M0.2 · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
+Stand: 14.10.2026 · `main`: Werkstatt-Test M0.2 (live) · Zweig `m1`: App 0.1 · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
 
 Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei sagt, was entschieden, was fertig und was als Nächstes zu tun ist.
 
@@ -23,7 +23,7 @@ Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei
 
 - **Das Kind ist Linkshänderin.** Linkshänder-Modus ist Standard (Vorlage rechts). Für M2 wichtig: Die linke Hand liegt beim Schreiben auf dem schon Geschriebenen, also Handballen-Sperre und Selbstkontrolle-Anzeige so legen, dass die Hand nichts verdeckt.
 - **Das Kind wird mit Namen angesprochen** (Lob, Begrüßung, Vorlesen). Der Name wird im Elternbereich ins Profil eingetragen und liegt nur im Gerät. Er steht nie im Repo, nicht im Code und nicht in diesen Dateien.
-- **Elternbereich nur über eine Rechenaufgabe, die ein Kind in Klasse 2 nicht lösen kann.** Das 7 × 8 aus dem Konzept reicht nicht: In NRW lernen Kinder das kleine Einmaleins in Klasse 2. Plan für M1: zufällig zweistellig × einstellig mit Ergebnis über 100 (z. B. 17 × 6), Antwort als Zahl eintippen, neue Aufgabe bei jedem Versuch.
+- **Elternbereich nur über eine Rechenaufgabe, die ein Kind in Klasse 2 nicht lösen kann.** Das 7 × 8 aus dem Konzept reicht nicht: In NRW lernen Kinder das kleine Einmaleins in Klasse 2. Umgesetzt in M1: zufällig zweistellig × einstellig mit Ergebnis über 100 (z. B. 17 × 6), Antwort als Zahl eintippen, neue Aufgabe bei jedem Versuch.
 - Stifttest auf dem iPad folgt am Abend des 14.10.
 
 ### Was daraus folgt
@@ -60,9 +60,25 @@ Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei
    6. **Bericht:** „Stimme testen“, dann „Bericht kopieren“ und in Claude einfügen.
 5. Ergebnisse unten ins Testprotokoll, dann Entscheidung: Schrift, Standard-Band, Sterne-Schwellen, Scribble ja/nein (Konzept 5, Stufe 4).
 
-### Danach: M1 Grundgerüst (KONZEPT 12)
+### M1 Grundgerüst (KONZEPT 12) – auf Zweig `m1`, lokal geprüft, nicht auf dem iPad
 
-Projekt, Profile, Elternbereich, manuelle Eingabe, Claude-Import (Anleitung für das Arbeitsblatt-Foto), Wortkarte mit Sprachausgabe, Silben, Silbenkönige. Service Worker mit Versionsnummer an zwei Stellen wie in Voc a Bit. Die Schriftdateien müssen im Cache-Kern stehen.
+Fertig, wenn eine Woche sich anlegen und ansehen lässt: erfüllt (Mac-Browser, Quer- und Hochformat).
+
+- Werkstatt-Test liegt jetzt in `werkstatt.html` (im Elternbereich unter Einstellungen verlinkt), `index.html` ist die App 0.1.
+- **Erster Start:** Eltern tragen Name und „schreibt mit links“ ein, dann wählt das Kind sein Thema (Einhörner, Halloween, Tiere). Das Thema färbt die App. Weitere Kinder im Elternbereich, Auswahl „Wer übt jetzt?“ auf dem Start.
+- **Elternbereich** hinter der Rechenaufgabe: Wochen (Liste, neu mit Foto, neu von Hand, bearbeiten, löschen mit Rückfrage), Einstellungen (Name, links, Schrift, Thema, Kinder, Link zum Werkstatt-Test), Sicherung (speichern über Teilen-Menü, laden aus Datei).
+- **Foto-Import:** Anleitung kopieren → in der Claude-App mit Foto senden → Antwort einfügen → Vorschau aller Wörter → prüfen, Diktattermin (Standard: nächster Freitag), speichern. Mit einer Beispielantwort zum Arbeitsblatt geprüft (10 Wörter, zweites „t“ über `nr`, unbekannte Stelle verworfen).
+- **Wort-Editor:** „der Abend“ eintippen → Vorschläge für Wortart, FRESCH-Art, Silben, Stellen. Silbengrenzen durch Tippen zwischen die Buchstaben, Stellen durch Antippen der Buchstaben und Typ wählen, Tipp-Text und Beispielsatz änderbar.
+- **Kind:** Start mit Begrüßung, Woche mit Diktat-Countdown und Wortchips (unterstrichen in Wortart-Farbe), drei Kacheln. Wortkarte: Wort in Schulschrift, Artikel grau, Wortart-Streifen, Vorlesen von Wort und Satz, Silbenbögen (spricht die Silben langsam), Silbenkönige mit Krone. Station „Silben schwingen“ (Trommel, nach zwei Fehlversuchen Hilfe ohne Stern). Station „Silbenkönige“ (Selbstlaute antippen, Mitlaute wackeln nur). Je gelöstes Wort ein Stern, Ende mit „Geschafft!“.
+- Service Worker und Manifest, Version an zwei Stellen, `tools/check.sh` erweitert.
+
+Offen für M1 auf dem iPad: Ersteinrichtung, Import mit echtem Foto in der Claude-App, Vorlesen (deutsche Stimme), Sicherung über das Teilen-Menü, Offline-Start.
+
+**Zusammenführen:** Nach Thomas' M0-Test (Abend 14.10.) Erkenntnisse übernehmen, dann `m1` nach `main` und pushen. Danach in der Release-Nachricht: App einmal komplett schließen, zweimal öffnen. Die Adresse bleibt gleich, der Werkstatt-Test ist dann unter `/werkstatt.html`.
+
+### Danach: M2 Schreibstationen
+
+Abschreiben, Regenbogenschreiben, Blitzlesen, Merk-Diktat, Selbstkontrolle, Karteikasten. `Pad` und `bewerteSpur()` aus `werkstatt.html` übernehmen, Ergebnisse des iPad-Tests einarbeiten (Schrift, Band, Sterne-Schwellen, Linkshänderin).
 
 ## Nicht ohne Rückfrage
 

@@ -1,0 +1,11 @@
+{
+  "name": "Schreibfuchs – Lernwörter",
+  "short_name": "Schreibfuchs",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FFF6EC",
+  "theme_color": "#FFF6EC"
+}

@@ -3,640 +3,941 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Schreibfuchs – Werkstatt-Test</title>
+<title>Schreibfuchs – Lernwörter</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Schreibfuchs">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#FFF4E8">
+<meta name="theme-color" content="#FFF6EC">
 <meta name="format-detection" content="telephone=no">
 <meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.webmanifest">
 <style>
-/* M0 test page (spikes): pen surface, school ruling, trace scoring, Scribble check, report.
-   Light only on purpose: the writing surface is paper. Fonts ship with the app so tracing works offline. */
+/* Layout: iPad first (landscape, portrait works), one centred column up to 1040px.
+   Children's screens: few words, big targets (≥ 64px), everything can be read aloud.
+   Parents' area: denser forms behind a sum a child in year 2 cannot solve.
+   Identity: school ruling + school font (Playwrite DE Grund), word-class colours as in class
+   (nouns blue, verbs red, adjectives green), accent colour from the child's theme. */
 @font-face{font-family:"Playwrite DE Grund";src:url(fonts/playwrite-de-grund.woff2) format("woff2");font-display:block}
 @font-face{font-family:"Andika";src:url(fonts/andika-latin.woff2) format("woff2");font-display:block}
 :root{
   color-scheme:light;
-  --bg:#FFF4E8; --surface:#FFFFFF; --surface-2:#FCE9D6; --ink:#1F2546; --ink-2:#596084; --line:#EED9C2;
-  --fox:#E8742A; --fox-deep:#B9531A; --good:#2E9E5B; --rule:#8E98BF; --rule-strong:#1F2546; --band:#E6F4DA;
+  --bg:#FFF6EC; --surface:#FFFFFF; --surface-2:#FCEBDD; --ink:#1F2546; --ink-2:#5B6286; --ink-3:#8E94AE; --line:#EED9C2;
+  --accent:#E8742A; --accent-deep:#B9531A; --accent-soft:#FDE3CF; --on-accent:#FFFFFF;
+  --nomen:#2E6FD8; --verb:#E5484D; --adjektiv:#2E9E5B; --andere:#8A90A8;
+  --koenig:#E5484D; --star:#F5B800; --good:#2E9E5B; --good-soft:#DDF3E5; --warn-soft:#FFF1D6;
   --f-ui:-apple-system,system-ui,"Segoe UI",sans-serif;
   --f-school:"Playwrite DE Grund","Andika",system-ui,sans-serif;
+  --r-lg:24px; --r-md:16px;
 }
+body[data-thema="einhorn"]{--accent:#B65FCF;--accent-deep:#86399F;--accent-soft:#F3E2F8;--bg:#FBF4FF;--surface-2:#F1E4F7;--line:#E6D3EE}
+body[data-thema="halloween"]{--accent:#E8742A;--accent-deep:#5E3A99;--accent-soft:#FDE3CF;--bg:#FFF4EA;--surface-2:#EFE6FA;--line:#E9D8EA}
+body[data-thema="tiere"]{--accent:#2E9E5B;--accent-deep:#1F7442;--accent-soft:#DDF3E5;--bg:#F3FAF1;--surface-2:#E3F2E2;--line:#D3E8D2}
+body[data-schrift="andika"]{--f-school:"Andika",system-ui,sans-serif}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 var(--f-ui);
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:18px/1.45 var(--f-ui);
   -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;
   padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
-input,textarea{-webkit-user-select:text;user-select:text}
-.top{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 14px;padding:14px 20px 4px;max-width:1240px;margin:0 auto}
-.top b{font-family:var(--f-school);font-size:26px;color:var(--fox-deep);font-weight:400}
-.top span{color:var(--ink-2)}
-.tabs{display:flex;gap:8px;padding:8px 16px;overflow-x:auto;max-width:1240px;margin:0 auto}
-.tabs button{flex:0 0 auto;min-height:60px;padding:0 20px;border-radius:16px;border:2px solid var(--line);background:var(--surface);font:inherit;font-weight:650;color:var(--ink)}
-.tabs button[aria-selected="true"]{background:var(--fox);border-color:var(--fox);color:#fff}
-main{padding:4px 16px 48px;max-width:1240px;margin:0 auto}
-.card{background:var(--surface);border-radius:20px;padding:16px;margin:10px 0}
-.hint{color:var(--ink-2);margin:0 0 10px}
-.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
-.btn{min-height:60px;min-width:60px;padding:0 22px;border-radius:16px;border:0;background:var(--surface-2);font:inherit;font-weight:650;color:var(--ink)}
-.btn.main{background:var(--fox);color:#fff}
-.btn:active{transform:translateY(1px)}
-#settings{display:flex;flex-wrap:wrap;gap:8px}
-#settings label{display:flex;align-items:center;gap:10px;min-height:60px;padding:0 14px;background:var(--surface);border-radius:14px}
-select{font:inherit;min-height:44px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);padding:0 8px}
-input[type=range]{width:170px;height:44px}
-input[type=checkbox]{width:28px;height:28px;accent-color:var(--fox)}
-.pad{position:relative;width:100%;border-radius:14px;overflow:hidden;border:2px solid var(--line);background:#fff}
-.pad canvas{position:absolute;left:0;top:0;width:100%;display:block}
-.pad .ink{touch-action:none;-webkit-user-select:none;-webkit-touch-callout:none}
-.stats{font-variant-numeric:tabular-nums;color:var(--ink-2);margin-top:8px}
-.dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 18px;font-variant-numeric:tabular-nums}
-.dl dt{color:var(--ink-2)}
-.dl dd{margin:0;font-weight:600}
-.split{display:grid;grid-template-columns:2fr 1fr;gap:14px;align-items:start}
-@media (max-width:820px){.split{grid-template-columns:1fr}}
-.stars{font-size:54px;line-height:1;letter-spacing:6px;color:#F5B800}
-.stars .off{color:#E9DCCB}
-.result{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;min-height:70px}
-.scr{display:grid;grid-template-columns:150px 1fr 1fr;gap:10px;align-items:center;margin:8px 0}
-.scr .wort{font:34px/1 var(--f-school);color:var(--fox-deep)}
-.scr input{width:100%;min-height:76px;font:30px/1.2 "Andika",var(--f-ui);border:2px solid var(--line);border-radius:14px;padding:6px 12px;color:var(--ink);background:#fff}
-.scr .res{grid-column:2 / 4;color:var(--ink-2);min-height:1.4em}
-.scr-head{display:grid;grid-template-columns:150px 1fr 1fr;gap:10px;color:var(--ink-2);font-weight:600}
-@media (max-width:700px){.scr,.scr-head{grid-template-columns:1fr}.scr .res{grid-column:auto}}
-textarea{width:100%;font:15px/1.4 ui-monospace,Menlo,monospace;border:2px solid var(--line);border-radius:14px;padding:10px;color:var(--ink);background:#fff}
-#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:14px;opacity:0;transition:opacity .2s;pointer-events:none}
+input,textarea,select{-webkit-user-select:text;user-select:text;font:inherit;color:var(--ink)}
+button{font:inherit;color:inherit;cursor:pointer}
+.i{width:1.2em;height:1.2em;flex:none}
+#app{max-width:1040px;margin:0 auto;padding:12px 18px 48px}
+
+/* top bar */
+.bar{display:flex;align-items:center;gap:12px;min-height:72px}
+.bar .grow{flex:1;min-width:0}
+.hallo{font:400 32px/1.2 var(--f-school);color:var(--accent-deep);margin:0}
+.fox{width:56px;height:56px;flex:none}
+.sterne{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:22px;background:var(--surface);border-radius:999px;padding:8px 16px;color:var(--ink)}
+.sterne .i{color:var(--star)}
+.rund{width:64px;height:64px;border-radius:50%;border:0;background:var(--surface);display:inline-flex;align-items:center;justify-content:center;font-size:26px;color:var(--accent-deep)}
+.rund.klein{width:52px;height:52px;font-size:22px;color:var(--ink-3)}
+.rund:active,.btn:active,.kachel:active,.chip:active,.tile:active{transform:translateY(1px)}
+
+/* cards and buttons */
+.card{background:var(--surface);border-radius:var(--r-lg);padding:20px;margin:14px 0}
+.card h2{margin:0 0 6px;font-size:22px}
+.leise{color:var(--ink-2)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row.mitte{justify-content:center}
+.btn{min-height:64px;padding:0 24px;border-radius:var(--r-md);border:0;background:var(--surface-2);font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:10px}
+.btn.main{background:var(--accent);color:var(--on-accent)}
+.btn.gut{background:var(--good);color:#fff}
+.btn.klein{min-height:48px;padding:0 16px;font-size:16px}
+.btn.gefahr{background:#FDE4E5;color:#9C2127}
+.btn[disabled],.rund[disabled]{opacity:.35}
+.btn[aria-pressed="true"]{background:var(--accent-soft);box-shadow:inset 0 0 0 3px var(--accent);color:var(--accent-deep)}
+
+/* week card on the start screen */
+.woche-kopf{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
+.diktat{display:inline-flex;align-items:center;gap:8px;background:var(--accent-soft);color:var(--accent-deep);border-radius:999px;padding:6px 14px;font-weight:700}
+.wortliste{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.wortchip{min-height:64px;padding:4px 18px;border-radius:var(--r-md);border:0;background:var(--surface-2);font:400 28px/1.6 var(--f-school);border-bottom:5px solid var(--andere)}
+.wa-nomen{border-bottom-color:var(--nomen)} .wa-verb{border-bottom-color:var(--verb)} .wa-adjektiv{border-bottom-color:var(--adjektiv)}
+.kacheln{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.kachel{min-height:150px;border:0;border-radius:var(--r-lg);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-weight:800;font-size:22px;padding:16px}
+.kachel .i{width:56px;height:56px;color:var(--accent)}
+.kachel small{font-weight:500;font-size:15px;color:var(--ink-2)}
+
+/* word display */
+.wortbuehne{display:flex;flex-direction:column;align-items:center;gap:18px;padding:28px 12px 22px;border-top:10px solid var(--andere);border-radius:var(--r-lg);background:var(--surface);margin:12px 0}
+.wortbuehne.wa-nomen{border-top-color:var(--nomen)} .wortbuehne.wa-verb{border-top-color:var(--verb)} .wortbuehne.wa-adjektiv{border-top-color:var(--adjektiv)}
+.wort{font-family:var(--f-school);font-weight:400;line-height:1.5;white-space:nowrap;padding-bottom:.25em;text-align:center}
+.artikel{color:var(--ink-3);font-size:.62em;margin-right:.18em}
+.silbe{position:relative;display:inline-block}
+.silbe.bogen{margin:0 .05em}
+.silbe.bogen::after{content:"";position:absolute;left:10%;right:10%;bottom:.03em;height:.2em;border:4px solid var(--accent);border-top:0;border-radius:0 0 999px 999px}
+.koenig{color:var(--koenig);position:relative;display:inline-block}
+/* crown heights from the font metrics: baseline ≈ 1.2em below the top of a 1.5em line, x-height .5em, caps .92em */
+.koenig::before{content:"";position:absolute;left:50%;top:.43em;width:.34em;height:.22em;transform:translateX(-50%);background:var(--star);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16'%3E%3Cpath d='M2 15h20l1-12-6 5-5-7-5 7-6-5z'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16'%3E%3Cpath d='M2 15h20l1-12-6 5-5-7-5 7-6-5z'/%3E%3C/svg%3E") center/contain no-repeat}
+.koenig.punkt::before{top:.08em} .koenig.gross::before{top:-.02em}
+.wa-chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 12px;font-size:15px;font-weight:700;color:#fff;background:var(--andere)}
+.wa-chip.wa-nomen{background:var(--nomen)} .wa-chip.wa-verb{background:var(--verb)} .wa-chip.wa-adjektiv{background:var(--adjektiv)}
+.satz{font:400 30px/1.5 var(--f-school);text-align:center;max-width:900px}
+.satz mark{background:var(--accent-soft);color:inherit;border-radius:8px;padding:0 .1em}
+.punkte{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.punkte i{width:14px;height:14px;border-radius:50%;background:var(--line);display:block}
+.punkte i.an{background:var(--accent)}
+.punkte i.ok{background:var(--good)}
+
+/* stations */
+.anleitung{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:var(--r-md);padding:10px 14px;font-weight:600}
+.trommel{width:200px;height:200px;border-radius:50%;border:0;background:radial-gradient(circle at 50% 38%,#fff 0 30%,var(--accent-soft) 31% 100%);box-shadow:inset 0 -10px 0 var(--accent);display:flex;align-items:center;justify-content:center;color:var(--accent-deep)}
+.trommel .i{width:90px;height:90px}
+.trommel.schlag{animation:schlag .16s ease}
+@keyframes schlag{50%{transform:scale(.93)}}
+.schlaege{display:flex;gap:10px;min-height:40px;justify-content:center;align-items:center}
+.schlaege b{width:34px;height:34px;border-radius:50%;background:var(--accent);display:block}
+.tiles{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 4px}
+.tiles .gruppe{display:flex;gap:4px;padding:0 10px}
+.tile{min-width:64px;min-height:84px;padding:0 10px;border-radius:14px;border:2px solid var(--line);background:#fff;font:400 48px/1 var(--f-school);color:var(--ink);position:relative}
+.tile.koenig-ok{border-color:var(--koenig);color:var(--koenig);background:#FFF1F1}
+.tile.koenig-ok::before{content:"";position:absolute;left:50%;top:6px;width:26px;height:17px;transform:translateX(-50%);background:var(--star);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16'%3E%3Cpath d='M2 15h20l1-12-6 5-5-7-5 7-6-5z'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16'%3E%3Cpath d='M2 15h20l1-12-6 5-5-7-5 7-6-5z'/%3E%3C/svg%3E") center/contain no-repeat}
+.tile.wackel{animation:wackel .35s ease}
+@keyframes wackel{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.lob{font:400 40px/1.3 var(--f-school);color:var(--good);text-align:center;margin:0}
+.nochmal{font-weight:700;color:var(--accent-deep);text-align:center;margin:0}
+.gross-stern{font-size:80px;color:var(--star);line-height:1;text-align:center}
+
+/* onboarding */
+.themen{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.thema{border:4px solid transparent;border-radius:var(--r-lg);background:var(--surface);min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-weight:800;font-size:24px}
+.thema svg{width:110px;height:110px}
+.thema[aria-pressed="true"]{border-color:var(--accent)}
+
+/* parents */
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs button{min-height:52px;padding:0 18px;border-radius:14px;border:2px solid var(--line);background:var(--surface);font-weight:700}
+.tabs button[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+label.feld{display:flex;flex-direction:column;gap:6px;font-weight:600;margin:10px 0}
+label.feld input,label.feld select,textarea{min-height:52px;border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:#fff;font-weight:400}
+label.check{display:flex;align-items:center;gap:12px;min-height:52px;font-weight:600}
+label.check input{width:28px;height:28px;accent-color:var(--accent)}
+textarea{width:100%;font:15px/1.4 ui-monospace,Menlo,monospace}
+.liste{display:flex;flex-direction:column;gap:10px}
+.eintrag{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;background:var(--surface-2);border-radius:var(--r-md);padding:10px 14px}
+.eintrag .wort{font-size:34px;padding-bottom:.3em}
+.eintrag .info{flex:1;min-width:180px;font-size:15px;color:var(--ink-2)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:46px;padding:0 14px;border-radius:999px;border:2px solid var(--line);background:#fff;font-weight:600;font-size:16px}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.buchstaben{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:8px 0}
+.bst{min-width:46px;min-height:62px;border:2px solid var(--line);border-radius:10px;background:#fff;font:400 30px/1 var(--f-school)}
+.bst.sel{background:var(--warn-soft);border-color:#E0B23A}
+.bst.mark{box-shadow:inset 0 -8px 0 #FFE066}
+.gap{width:22px;min-height:62px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-weight:800}
+.gap.an{color:var(--accent-deep)}
+.gap.an::before{content:"|";font-size:34px;line-height:1}
+.gap:not(.an)::before{content:"·"}
+.stelle{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;margin:6px 0}
+.stelle b{font:400 26px/1 var(--f-school);background:#FFE066;border-radius:6px;padding:4px 8px}
+.stelle input{min-height:46px;border:2px solid var(--line);border-radius:10px;padding:4px 10px;font:inherit;font-size:16px}
+.ziffern{display:grid;grid-template-columns:repeat(3,88px);gap:10px;justify-content:center}
+.ziffern button{height:72px;border-radius:16px;border:0;background:var(--surface);font-size:30px;font-weight:700}
+.aufgabe{font-size:44px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;margin:8px 0}
+.eingabe{min-width:180px;min-height:64px;border-radius:14px;background:var(--surface);display:inline-flex;align-items:center;justify-content:center;font-size:38px;font-weight:800;font-variant-numeric:tabular-nums;padding:0 16px}
+.fehlerbox{background:#FDE4E5;color:#9C2127;border-radius:12px;padding:10px 14px;margin:10px 0}
+.hinweis{background:var(--warn-soft);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:16px}
+.version{color:var(--ink-3);font-size:14px;margin-top:20px}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;padding:14px 22px;border-radius:16px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;text-align:center;z-index:10}
 #toast.on{opacity:1}
-.debug{display:none}
-.debug-on .debug{display:inline-flex;align-items:center}
+@media (max-width:640px){#app{padding:8px 12px 40px}.hallo{font-size:26px}.kachel{min-height:120px}}
 </style>
 </head>
 <body>
-<header class="top"><b>Schreibfuchs</b><span id="ver">Werkstatt-Test</span></header>
-<nav class="tabs" role="tablist">
-  <button data-tab="stift" role="tab">1 Stift</button>
-  <button data-tab="schreiben" role="tab">2 Schreiben</button>
-  <button data-tab="spur" role="tab">3 Nachspuren</button>
-  <button data-tab="scribble" role="tab">4 Scribble</button>
-  <button data-tab="bericht" role="tab">5 Bericht</button>
-</nav>
-<main>
-  <div id="settings" hidden>
-    <label>Schrift <select data-set="font"><option value="grund">Playwrite DE Grund</option><option value="andika">Andika</option></select></label>
-    <label>Band <input type="range" min="24" max="72" step="2" data-set="band"><span id="band-wert"></span></label>
-    <label>Wort <select data-set="wort" id="wort-wahl"></select></label>
-    <label><input type="checkbox" data-set="lefty"> Linkshänder</label>
-    <label><input type="checkbox" data-set="farbband"> Mittelband farbig</label>
-  </div>
-
-  <section id="t-stift">
-    <div class="split">
-      <div class="card">
-        <p class="hint">Schreib hier mit dem Stift, dann mit dem Finger. Leg beim Schreiben ruhig die Hand ab: Sobald der Stift erkannt ist, zählen Finger auf allen Schreibflächen nicht mehr.</p>
-        <div id="pad-stift"></div>
-        <div class="row">
-          <button class="btn" data-act="stift-leeren">Leeren</button>
-          <button class="btn" data-act="finger-frei">Finger wieder erlauben</button>
-        </div>
-      </div>
-      <div class="card"><dl class="dl" id="stift-live"></dl></div>
-    </div>
-  </section>
-
-  <section id="t-schreiben" hidden>
-    <div class="card">
-      <p class="hint">Wort abschreiben wie im Heft. Probiert Band und Schrift, bis es sich wie das Arbeitsblatt anfühlt.</p>
-      <div id="pad-schreiben"></div>
-      <div class="row">
-        <button class="btn" data-act="undo" data-pad="schreiben">Rückgängig</button>
-        <button class="btn" data-act="neu" data-pad="schreiben">Neu</button>
-        <button class="btn" data-act="sag">Vorlesen</button>
-        <button class="btn main" data-act="weiter">Nächstes Wort</button>
-      </div>
-      <div class="stats" id="schreiben-stats"></div>
-    </div>
-  </section>
-
-  <section id="t-spur" hidden>
-    <div class="card">
-      <p class="hint">Graues Wort nachspuren, dann „Fertig“. Probiert auch absichtlich schlampig: Die Sterne sollen ehrlich sein, aber nicht streng.</p>
-      <div id="pad-spur"></div>
-      <div class="row">
-        <button class="btn" data-act="undo" data-pad="spur">Rückgängig</button>
-        <button class="btn" data-act="neu" data-pad="spur">Neu</button>
-        <button class="btn main" data-act="fertig">Fertig</button>
-        <label class="btn" style="display:inline-flex;align-items:center;gap:10px"><input type="checkbox" id="spur-zeigen"> Bewertung zeigen</label>
-        <button class="btn debug" data-act="sim" data-kind="genau">Test: genau</button>
-        <button class="btn debug" data-act="sim" data-kind="halb">Test: halb</button>
-        <button class="btn debug" data-act="sim" data-kind="daneben">Test: daneben</button>
-        <button class="btn debug" data-act="sim" data-kind="kritzel">Test: Gekritzel</button>
-      </div>
-      <div class="result card" id="spur-ergebnis"></div>
-    </div>
-  </section>
-
-  <section id="t-scribble" hidden>
-    <div class="card">
-      <p class="hint">Prüft, ob das iPad Handschrift heimlich verbessert. Schreib mit dem Stift <b>direkt in die Felder</b>, genau so falsch wie vorgegeben. Voraussetzung: Einstellungen → Apple Pencil → Scribble (deutsch „Kritzeln“) ist an. Links ohne Autokorrektur, rechts mit normalen Einstellungen.</p>
-      <div class="scr-head"><span>Vorgabe</span><span>ohne Korrektur</span><span>normal</span></div>
-      <div id="scribble-liste"></div>
-    </div>
-  </section>
-
-  <section id="t-bericht" hidden>
-    <div class="card">
-      <p class="hint">Wenn alles ausprobiert ist: „Bericht kopieren“ und mir in Claude schicken. Darin stehen nur Messwerte, keine Schrift und keine Namen.</p>
-      <div class="row" style="margin:0 0 10px">
-        <button class="btn main" data-act="kopieren">Bericht kopieren</button>
-        <button class="btn" data-act="stimme">Stimme testen</button>
-      </div>
-      <textarea id="bericht-text" rows="16" readonly></textarea>
-      <p class="hint" style="margin-top:12px">Eigene Beobachtungen (kommen mit in den Bericht):</p>
-      <textarea id="bericht-notiz" rows="5" placeholder="z. B. Strich hinkt hinterher, Hand löst Striche aus, Band 44 passt am besten …"></textarea>
-    </div>
-  </section>
-</main>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-speaker" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 8a5 5 0 0 1 0 8"/><path d="M17.7 5a9 9 0 0 1 0 14"/><path d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a.8 .8 0 0 1 1.5 .5v14a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5"/></g></symbol>
+<symbol id="i-left" viewBox="0 0 24 24"><path d="M15 6l-6 6l6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-right" viewBox="0 0 24 24"><path d="M9 6l6 6l-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l-2 0l9 -9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/></g></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/></g></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"/><path d="M13.5 6.5l4 4"/></g></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"/><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"/></g></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5l10 -10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-cards" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"/><path d="M7 7v-2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-2"/><path d="M7 14h6"/></g></symbol>
+<symbol id="i-drum" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="8" ry="3"/><path d="M4 9v7c0 1.7 3.6 3 8 3s8 -1.3 8 -3v-7"/><path d="M8 11.7v7M16 11.7v7M12 12v7"/><path d="M15 2l-3 5M9 2l3 5"/></g></symbol>
+<symbol id="i-crown" viewBox="0 0 24 24"><path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2"/><path d="M9 13a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/></g></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></g></symbol>
+<symbol id="i-up" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 9l5 -5l5 5"/><path d="M12 4l0 12"/></g></symbol>
+</defs></svg>
+<div id="app"></div>
 <div id="toast" role="status" aria-live="polite"></div>
+<input type="file" id="datei" accept="application/json,.json" hidden>
 <script>
 (function () {
 'use strict';
 
 /* ---------- helpers ---------- */
 const $ = (s, r = document) => r.querySelector(s);
-const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const icon = n => `<svg class="i" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d } catch (e) { return d } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true } catch (e) { return false } }
 };
 let toastTimer = 0;
-function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('on'), 2200) }
-const pct = v => Math.round(v * 100) + ' %';
+function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('on'), 2600) }
+const uid = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const rnd = n => Math.floor(Math.random() * n);
 
-/* ---------- settings ---------- */
-const VERSION = 'M0.2';
-// Words from the first worksheet (NRW basic vocabulary, A words) plus three that test ö, ß and descenders.
-const WOERTER = ['der Abend', 'acht', 'alle', 'alt', 'die Ampel', 'antworten', 'der Apfel', 'der April', 'arbeiten', 'der Arm', 'der Vogel', 'fröhlich', 'groß'];
-const SCRIBBLE = ['Hunt', 'Fogel', 'Fahrad', 'Abent', 'Apel', 'fröhlig', 'alle'];
-const FONTS = { grund: { css: '"Playwrite DE Grund"', name: 'Playwrite DE Grund' }, andika: { css: '"Andika"', name: 'Andika' } };
-const RAINBOW = ['#E5484D', '#E8742A', '#2E9E5B', '#2E6FD8', '#7C4DDB'];
-const LS = 'lernwoerter.m0.v1';
-// The child is left-handed (Thomas, 14.10.): template on the right by default.
-const E = Object.assign({ tab: 'stift', font: 'grund', band: 40, wort: 0, lefty: true, farbband: false }, store.get(LS, {}));
-if (!FONTS[E.font]) E.font = 'grund';
-if (!(E.wort >= 0 && E.wort < WOERTER.length)) E.wort = 0;
-function saveE() { store.set(LS, E) }
-const wort = () => WOERTER[E.wort];
+/* ---------- calendar days (as in Voc a Bit: date arithmetic, never "+24 h") ---------- */
+const DAY = 864e5;
+const p2 = n => String(n).padStart(2, '0');
+function dayStart(t) { const d = new Date(t); d.setHours(0, 0, 0, 0); return d.getTime() }
+function dayShift(t, n) { const d = new Date(dayStart(t)); d.setDate(d.getDate() + n); return d.getTime() }
+function isoDay(t) { const d = new Date(t); return `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}` }
+function parseDay(s) { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); return m ? new Date(+m[1], +m[2] - 1, +m[3]).getTime() : NaN }
+function tageBis(s) { return Math.round((parseDay(s) - dayStart(Date.now())) / DAY) }
+function datumLang(s) { const t = parseDay(s); return isNaN(t) ? '' : new Date(t).toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' }) }
+function naechsterFreitag() { const now = Date.now(), wd = new Date(now).getDay(); return isoDay(dayShift(now, (5 - wd + 7) % 7)) }
 
-/* ---------- measurements for the report ---------- */
-const R = {
-  stift: { types: {}, pmin: 1, pmax: 0, tilt: false, samples: 0, dur: 0, moves: 0, coalesced: 0, lag: 0, lagN: 0, ignored: 0, coalescedApi: false },
-  spur: [], scribble: {}, voices: []
-};
-let penSeen = false, live = null, liveQueued = false;
-const pressureVaries = () => R.stift.pmax - R.stift.pmin > 0.15;
-
-function sample(e, n, kind) {
-  const s = R.stift;
-  if (kind === 'down' || kind === 'ignored') s.types[e.pointerType] = (s.types[e.pointerType] || 0) + 1;
-  if (kind === 'ignored') { s.ignored++; return }
-  if (e.pointerType === 'pen' && kind !== 'up' && e.pressure > 0) { s.pmin = Math.min(s.pmin, e.pressure); s.pmax = Math.max(s.pmax, e.pressure) }
-  if (e.pointerType === 'pen' && (e.tiltX || e.tiltY || (e.altitudeAngle && Math.abs(e.altitudeAngle - Math.PI / 2) > 0.02))) s.tilt = true;
-  s.samples += n;
-  const lag = performance.now() - e.timeStamp;
-  if (kind === 'move' && lag >= 0 && lag < 1000) { s.lag += lag; s.lagN++ }
-  live = { type: e.pointerType, p: e.pressure, tx: e.tiltX, ty: e.tiltY, alt: e.altitudeAngle, az: e.azimuthAngle, w: e.width, h: e.height };
-  if (!liveQueued) { liveQueued = true; requestAnimationFrame(showLive) }
-}
-function showLive() {
-  liveQueued = false;
-  const s = R.stift, l = live || {}, deg = r => r == null ? '–' : Math.round(r * 180 / Math.PI) + '°';
-  const rows = [
-    ['Eingabe jetzt', l.type || '–'],
-    ['Druck jetzt', l.p == null ? '–' : l.p.toFixed(2)],
-    ['Neigung X / Y', l.tx == null ? '–' : `${l.tx}° / ${l.ty}°`],
-    ['Höhenwinkel', deg(l.alt)],
-    ['Azimut', deg(l.az)],
-    ['Kontaktfläche', l.w == null ? '–' : `${Math.round(l.w)} × ${Math.round(l.h)}`],
-    ['Stift-Druck gesamt', s.pmax ? `${s.pmin.toFixed(2)} – ${s.pmax.toFixed(2)} (${pressureVaries() ? 'variabel' : 'konstant'})` : '–'],
-    ['Neigung erkannt', s.tilt ? 'ja' : 'nein'],
-    ['Abtastrate', s.dur > 200 ? `≈ ${Math.round(s.samples / (s.dur / 1000))} Hz` : '–'],
-    ['Zwischenpunkte', s.moves ? (s.coalesced / s.moves).toFixed(1) + ' je Bewegung' + (s.coalescedApi ? '' : ' (keine API)') : '–'],
-    ['Verarbeitung', s.lagN ? `≈ ${(s.lag / s.lagN).toFixed(1)} ms` : '–'],
-    ['Berührungen', Object.entries(s.types).map(([k, v]) => `${k} ${v}`).join(', ') || '–'],
-    ['Finger gesperrt', penSeen ? 'ja (Stift erkannt)' : 'nein'],
-    ['Ignoriert (Hand)', String(s.ignored)]
-  ];
-  $('#stift-live').innerHTML = rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
-}
-
-/* ---------- font metrics ---------- */
-// Font size is chosen so the x-height fills the middle band exactly; ascenders then show how well the font fits the ruling.
-const xCache = {};
-function xRatio(key) {
-  if (xCache[key]) return xCache[key];
-  const c = document.createElement('canvas').getContext('2d');
-  c.font = '200px ' + FONTS[key].css;
-  const a = c.measureText('x').actualBoundingBoxAscent;
-  return (xCache[key] = a > 0 ? a / 200 : 0.5);
-}
-
-/* ---------- writing pad ---------- */
-// Two stacked canvases: bg (ruling + template) and ink (strokes). Strokes are kept as point lists [x, y, pressure] in CSS px.
-function Pad(host, o) {
-  this.o = Object.assign({ lineatur: true, height: 360, mode: 'none', template: '', ghost: '#CDD3E6' }, o);
-  this.wrap = document.createElement('div'); this.wrap.className = 'pad';
-  this.bg = document.createElement('canvas'); this.ink = document.createElement('canvas'); this.ink.className = 'ink';
-  this.wrap.append(this.bg, this.ink); host.append(this.wrap);
-  this.strokes = []; this.cur = null; this.active = null; this.color = '#1F2546'; this.overlay = null;
-  this.band = E.band; this.w = 600; this.h = 200; this.dpr = 1;
-  this.bind();
-}
-Pad.prototype.layout = function () {
-  this.band = E.band;
-  this.w = this.wrap.clientWidth || 600;
-  this.h = this.o.lineatur ? Math.round(this.band * 4.2) : this.o.height;
-  this.dpr = Math.min(3, window.devicePixelRatio || 1);
-  for (const c of [this.bg, this.ink]) { c.width = Math.round(this.w * this.dpr); c.height = Math.round(this.h * this.dpr); c.style.height = this.h + 'px' }
-  this.wrap.style.height = this.h + 'px';
-  this.drawBg(); this.redraw();
-};
-Pad.prototype.lines = function () { const top = this.band * 0.6; return { ober: top, mittel: top + this.band, grund: top + 2 * this.band, unter: top + 3 * this.band } };
-Pad.prototype.tplFont = function () { return (this.band / xRatio(E.font)).toFixed(2) + 'px ' + FONTS[E.font].css };
-Pad.prototype.drawTemplate = function (c, color) {
-  if (!this.o.template || this.o.mode === 'none') return;
-  c.save(); c.font = this.tplFont(); c.textBaseline = 'alphabetic'; c.fillStyle = color;
-  const tw = c.measureText(this.o.template).width, m = this.band * 0.6;
-  const x = this.o.mode === 'vorlage' && E.lefty ? this.w - m - tw : m;
-  c.fillText(this.o.template, x, this.lines().grund);
-  c.restore();
-};
-Pad.prototype.drawBg = function () {
-  const c = this.bg.getContext('2d'); c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
-  c.fillStyle = '#FFFFFF'; c.fillRect(0, 0, this.w, this.h);
-  if (!this.o.lineatur) return;
-  const L = this.lines();
-  if (E.farbband) { c.fillStyle = '#E6F4DA'; c.fillRect(0, L.mittel, this.w, this.band) }
-  c.strokeStyle = '#8E98BF'; c.lineWidth = 1;
-  for (const y of [L.ober, L.mittel, L.unter]) { c.beginPath(); c.moveTo(0, y); c.lineTo(this.w, y); c.stroke() }
-  c.strokeStyle = '#1F2546'; c.lineWidth = 2.4; c.beginPath(); c.moveTo(0, L.grund); c.lineTo(this.w, L.grund); c.stroke();
-  this.drawTemplate(c, this.o.mode === 'spur' ? this.o.ghost : '#1F2546');
-};
-Pad.prototype.ctx = function () { const c = this.ink.getContext('2d'); c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); return c };
-Pad.prototype.baseW = function () { return Math.max(2.5, (this.o.lineatur ? this.band : 40) * 0.11) };
-Pad.prototype.widthAt = function (p, s) { return s.vp ? this.baseW() * (0.55 + 0.9 * p) : this.baseW() };
-Pad.prototype.seg = function (c, a, b, s, col) {
-  c.strokeStyle = col; c.lineCap = 'round'; c.lineJoin = 'round';
-  c.lineWidth = this.widthAt((a[2] + b[2]) / 2, s);
-  c.beginPath(); c.moveTo(a[0], a[1]); c.lineTo(b[0], b[1]); c.stroke();
-};
-Pad.prototype.drawStroke = function (c, s, color) {
-  const col = color || s.color, p = s.pts;
-  if (!p.length) return;
-  if (p.length === 1) { c.fillStyle = col; c.beginPath(); c.arc(p[0][0], p[0][1], this.widthAt(p[0][2], s) / 2, 0, Math.PI * 2); c.fill(); return }
-  for (let i = 1; i < p.length; i++) this.seg(c, p[i - 1], p[i], s, col);
-};
-Pad.prototype.drawStrokes = function (c, color) { for (const s of this.strokes) this.drawStroke(c, s, color) };
-Pad.prototype.redraw = function () {
-  const c = this.ctx(); c.clearRect(0, 0, this.w, this.h);
-  this.drawStrokes(c); if (this.cur) this.drawStroke(c, this.cur);
-  if (this.overlay) drawOverlay(this, this.overlay);
-};
-Pad.prototype.bind = function () {
-  const ink = this.ink, stop = e => { if (e.cancelable) e.preventDefault() };
-  // iOS: without these the long-press magnifier, text selection and Scribble can steal pen strokes from the canvas.
-  ink.addEventListener('touchstart', stop, { passive: false });
-  ink.addEventListener('touchmove', stop, { passive: false });
-  ink.addEventListener('contextmenu', stop);
-  ink.addEventListener('pointerdown', e => this.down(e));
-  ink.addEventListener('pointermove', e => this.move(e));
-  ink.addEventListener('pointerup', e => this.up(e));
-  ink.addEventListener('pointercancel', e => this.up(e));
-};
-Pad.prototype.add = function (e) {
-  const x = e.clientX - this.rect.left, y = e.clientY - this.rect.top;
-  const p = e.pointerType === 'mouse' ? 0.5 : (e.pressure || 0);
-  const pts = this.cur.pts, last = pts[pts.length - 1];
-  if (last && Math.abs(last[0] - x) < 0.3 && Math.abs(last[1] - y) < 0.3) return null;
-  const pt = [x, y, p]; pts.push(pt); return pt;
-};
-Pad.prototype.down = function (e) {
-  if (e.pointerType === 'pen') penSeen = true;
-  if (penSeen && e.pointerType === 'touch') { sample(e, 0, 'ignored'); return }   // palm rejection
-  if (this.active !== null || (e.pointerType === 'mouse' && e.button !== 0)) return;
-  e.preventDefault();
-  this.active = e.pointerId;
-  try { this.ink.setPointerCapture(e.pointerId) } catch (x) { /* capture is optional */ }
-  this.rect = this.ink.getBoundingClientRect();
-  if (this.overlay) { this.overlay = null; this.redraw() }
-  this.cur = { pts: [], color: this.color, type: e.pointerType, vp: e.pointerType === 'pen' && pressureVaries(), t0: e.timeStamp };
-  this.add(e);
-  this.drawStroke(this.ctx(), this.cur);
-  sample(e, 1, 'down');
-};
-Pad.prototype.move = function (e) {
-  if (e.pointerId !== this.active || !this.cur) return;
-  const list = typeof e.getCoalescedEvents === 'function' ? e.getCoalescedEvents() : [];
-  if (list.length) R.stift.coalescedApi = true;
-  const evs = list.length ? list : [e], c = this.ctx();
-  for (const ev of evs) {
-    const a = this.cur.pts[this.cur.pts.length - 1], b = this.add(ev);
-    if (a && b) this.seg(c, a, b, this.cur, this.cur.color);
+/* ---------- words: syllables, syllable kings, tricky spots ---------- */
+// Tokens: vowel groups count as one unit (au, ei, eu, ie, double vowels), as do sch, ch, ck, ph, qu.
+const TOK = /(äu|au|eu|ei|ai|ie|aa|ee|oo|[aeiouyäöü])|(sch|ch|ck|ph|qu|[^aeiouyäöü])/gi;
+function tokens(s) { const out = []; let m; TOK.lastIndex = 0; while ((m = TOK.exec(s))) out.push({ t: m[0], v: !!m[1], i: m.index }); return out }
+// Simple school rule: one consonant goes to the next syllable (Ro-se, Zu-cker), of several only the last (Lam-pe, Ap-fel, Fahr-rad).
+function silbenVorschlag(wort) {
+  const T = tokens(wort), vi = [];
+  T.forEach((t, k) => { if (t.v) vi.push(k) });
+  if (vi.length < 2) return [wort];
+  const cuts = [];
+  for (let k = 0; k < vi.length - 1; k++) {
+    const a = vi[k], b = vi[k + 1], n = b - a - 1;
+    cuts.push(T[n === 0 ? b : n === 1 ? a + 1 : b - 1].i);
   }
-  R.stift.moves++; R.stift.coalesced += evs.length;
-  sample(e, evs.length, 'move');
+  return schneide(wort, cuts);
+}
+function schneide(wort, cuts) {
+  const c = [...new Set(cuts)].filter(x => x > 0 && x < wort.length).sort((a, b) => a - b), out = [];
+  let von = 0;
+  for (const x of c) { out.push(wort.slice(von, x)); von = x }
+  out.push(wort.slice(von));
+  return out;
+}
+const TYPEN = ['verlaengern', 'ableiten', 'ie', 'doppel', 'ck', 'tz', 'h', 'sp', 'st', 'merk'];
+const TYP_NAME = { verlaengern: 'verlängern', ableiten: 'ableiten', ie: 'ie', doppel: 'Doppelmitlaut', ck: 'ck', tz: 'tz', h: 'Dehnungs-h', sp: 'sp am Anfang', st: 'st am Anfang', merk: 'Merkstelle' };
+const TIPP = {
+  verlaengern: 'Verlängern, dann hörst du es', ableiten: 'Ableiten: verwandtes Wort mit a', ie: 'Langes i: ie',
+  doppel: 'Kurzer Selbstlaut: doppelter Mitlaut', ck: 'Nach kurzem Selbstlaut: ck', tz: 'Nach kurzem Selbstlaut: tz',
+  h: 'Merkwort mit h', sp: 'Am Anfang: sp, gesprochen schp', st: 'Am Anfang: st, gesprochen scht', merk: 'Merkwort: genau anschauen'
 };
-Pad.prototype.up = function (e) {
-  if (e.pointerId !== this.active) return;
-  this.active = null;
-  const s = this.cur; this.cur = null;
-  if (s && s.pts.length) { s.dur = Math.max(0, e.timeStamp - s.t0); R.stift.dur += s.dur; this.strokes.push(s) }
-  sample(e, 0, 'up');
-  if (this.onChange) this.onChange();
-};
-Pad.prototype.undo = function () { this.strokes.pop(); this.overlay = null; this.redraw(); if (this.onChange) this.onChange() };
-Pad.prototype.clear = function () { this.strokes = []; this.overlay = null; this.redraw(); if (this.onChange) this.onChange() };
+function stellenVorschlag(wort) {
+  const T = tokens(wort), low = wort.toLowerCase(), out = [];
+  const add = (von, bis, typ, tipp) => { if (!out.some(s => s.von < bis && von < s.bis)) out.push({ von, bis, typ, tipp: tipp || TIPP[typ] }) };
+  if (/^sp/.test(low)) add(0, 2, 'sp'); else if (/^st/.test(low)) add(0, 2, 'st');
+  T.forEach((t, k) => {
+    const x = t.t.toLowerCase(), nx = T[k + 1], nn = T[k + 2];
+    if (t.v) {
+      if (x === 'ie') add(t.i, t.i + 2, 'ie');
+      else if (x === 'aa' || x === 'ee' || x === 'oo') add(t.i, t.i + 2, 'merk', 'Merkwort: doppelter Selbstlaut');
+      else if (x === 'ä' || x === 'äu') add(t.i, t.i + x.length, 'ableiten', 'Ableiten: verwandtes Wort mit ' + (x === 'ä' ? 'a' : 'au'));
+      if (nx && nx.t.toLowerCase() === 'h' && nn && !nn.v && /^[lmnr]$/i.test(nn.t)) add(nx.i, nx.i + 1, 'h');
+    } else if (x === 'ck') add(t.i, t.i + 2, 'ck');
+    else if (x === 't' && nx && nx.t.toLowerCase() === 'z') add(t.i, t.i + 2, 'tz');
+    else if (nx && nx.t.toLowerCase() === x && /^[bdfglmnprst]$/.test(x) && k > 0 && T[k - 1].v) add(t.i, t.i + 2, 'doppel');
+    else if (x === 'v') add(t.i, t.i + 1, 'merk', 'Merkwort mit v');
+    else if (x === 'ß') add(t.i, t.i + 1, 'merk', 'Merkwort mit ß');
+  });
+  const last = T[T.length - 1];
+  if (last && !last.v && /^[dbg]$/i.test(last.t)) add(last.i, last.i + 1, 'verlaengern');
+  return out.sort((a, b) => a.von - b.von);
+}
+function artVorschlag(stellen) {
+  if (stellen.some(s => s.typ === 'merk' || s.typ === 'h')) return 'merk';
+  return stellen.length ? 'nachdenk' : 'mitsprech';
+}
+function rateWortart(wort, artikel) {
+  if (artikel) return 'nomen';
+  if (/^[a-zäöüß]/.test(wort) && /(en|ern|eln)$/.test(wort)) return 'verb';
+  return 'andere';
+}
+const WORTARTEN = ['nomen', 'verb', 'adjektiv', 'andere'];
+const WA_NAME = { nomen: 'Nomen', verb: 'Verb', adjektiv: 'Adjektiv', andere: 'anderes Wort' };
+const ARTEN = ['mitsprech', 'nachdenk', 'merk'];
+const ART_NAME = { mitsprech: 'Mitsprechwort', nachdenk: 'Nachdenkwort', merk: 'Merkwort' };
 
-/* ---------- stroke storage ---------- */
-// Ramer-Douglas-Peucker: keeps the shape, drops points closer than eps to the simplified line.
-function rdp(pts, eps) {
-  if (pts.length < 3) return pts.slice();
-  const keep = new Uint8Array(pts.length), stack = [[0, pts.length - 1]];
-  keep[0] = keep[pts.length - 1] = 1;
-  while (stack.length) {
-    const [a, b] = stack.pop(), [ax, ay] = pts[a], [bx, by] = pts[b], dx = bx - ax, dy = by - ay, L = Math.hypot(dx, dy);
-    let md = 0, mi = -1;
-    for (let i = a + 1; i < b; i++) {
-      const d = L < 1e-6 ? Math.hypot(pts[i][0] - ax, pts[i][1] - ay) : Math.abs(dy * pts[i][0] - dx * pts[i][1] + bx * ay - by * ax) / L;
-      if (d > md) { md = d; mi = i }
+// "der Abend" → { artikel: "der", wort: "Abend" }; nouns get a capital letter.
+function zerlege(text) {
+  let wort = String(text || '').replace(/\s+/g, ' ').trim(), artikel = '';
+  const m = wort.match(/^(der|die|das)\s+(.+)$/i);
+  if (m) { artikel = m[1].toLowerCase(); wort = m[2].trim() }
+  if (artikel && wort) wort = wort.charAt(0).toUpperCase() + wort.slice(1);
+  return { artikel, wort };
+}
+function neuesWort(text) {
+  const { artikel, wort } = zerlege(text), stellen = stellenVorschlag(wort);
+  return { wort, artikel, wortart: rateWortart(wort, artikel), art: artVorschlag(stellen), silben: silbenVorschlag(wort), stellen, satz: '' };
+}
+const wortKey = w => ((w.artikel ? w.artikel + ' ' : '') + w.wort).toLowerCase();
+const vollWort = w => (w.artikel ? w.artikel + ' ' : '') + w.wort;
+
+/* ---------- import from Claude (worksheet photo → JSON) ---------- */
+function importPrompt() {
+  return `Du bekommst ein Foto von einem Lernwörter-Arbeitsblatt einer 2. Klasse (Grundschule, NRW). Lies alle Lernwörter aus und gib sie als JSON zurück.
+
+Format:
+{"titel": "Lernwörter 1", "woerter": [
+  {"wort": "Abend", "artikel": "der", "wortart": "nomen", "art": "nachdenk",
+   "silben": ["A", "bend"],
+   "stellen": [{"zeichen": "d", "typ": "verlaengern", "tipp": "Verlängern: die Abende"}],
+   "satz": "Am Abend lese ich ein Buch."}
+]}
+
+Regeln:
+- "titel": die Überschrift des Blatts, sonst "Lernwörter".
+- "wort": genau wie auf dem Blatt, aber ohne Artikel. Nomen groß.
+- "artikel": "der", "die" oder "das" bei Nomen, sonst "".
+- "wortart": "nomen", "verb", "adjektiv" oder "andere".
+- "art" nach FRESCH: "mitsprech" (schreibt sich, wie man deutlich spricht), "nachdenk" (eine Regel hilft: verlängern, ableiten, Doppelmitlaut, ck, tz, ie, sp/st am Anfang), "merk" (keine Regel: Dehnungs-h, v, ß, doppelter Selbstlaut, ä ohne verwandtes Wort mit a).
+- "silben": die Silben wie beim Silbenschwingen in der Grundschule. Zusammengesetzt ergeben sie genau "wort".
+- "stellen": die schwierigen Stellen. "zeichen" sind die Buchstaben genau wie im Wort (z. B. "d", "ie", "ck", "tz", "ll", "h", "Sp", "St", "ä", "v"). "typ" ist einer von: verlaengern, ableiten, ie, doppel, ck, tz, h, sp, st, merk. "tipp" ist ein kurzer Hinweis für ein Kind (höchstens 8 Wörter). Kommt dieselbe Buchstabenfolge mehrmals vor, gib mit "nr": 2 an, die wievielte gemeint ist. Wörter ohne schwierige Stelle bekommen [].
+- "satz": ein kurzer Beispielsatz mit dem Wort für ein Kind in Klasse 2, höchstens 8 Wörter, ohne Namen.
+- Durchgestrichene oder unleserliche Wörter weglassen.
+
+Gib nur das JSON in einem \`\`\`json-Block aus, ohne weiteren Text.`;
+}
+function stelleAus(wort, s) {
+  if (!s || typeof s !== 'object') return null;
+  const typ = TYPEN.includes(s.typ) ? s.typ : 'merk', tipp = String(s.tipp || TIPP[typ]).slice(0, 80);
+  if (Number.isInteger(s.von) && Number.isInteger(s.bis) && s.von >= 0 && s.bis <= wort.length && s.von < s.bis) return { von: s.von, bis: s.bis, typ, tipp };
+  const z = String(s.zeichen || ''), n = Math.max(1, parseInt(s.nr, 10) || 1);
+  if (!z) return null;
+  const find = (hay, needle) => { let idx = -1; for (let k = 0; k < n; k++) { idx = hay.indexOf(needle, idx + 1); if (idx < 0) break } return idx };
+  let idx = find(wort, z);
+  if (idx < 0) idx = find(wort.toLowerCase(), z.toLowerCase());
+  return idx < 0 ? null : { von: idx, bis: idx + z.length, typ, tipp };
+}
+function wortAusImport(x) {
+  if (!x || typeof x !== 'object') return null;
+  const z = zerlege((x.artikel ? x.artikel + ' ' : '') + String(x.wort || x.word || ''));
+  if (!z.wort) return null;
+  const artikel = ['der', 'die', 'das'].includes(String(x.artikel || z.artikel).toLowerCase()) ? String(x.artikel || z.artikel).toLowerCase() : '';
+  const wort = artikel ? z.wort.charAt(0).toUpperCase() + z.wort.slice(1) : z.wort;
+  const silben = Array.isArray(x.silben) && x.silben.map(String).join('') === wort ? x.silben.map(String) : silbenVorschlag(wort);
+  const stellen = Array.isArray(x.stellen) ? x.stellen.map(s => stelleAus(wort, s)).filter(Boolean).sort((a, b) => a.von - b.von) : stellenVorschlag(wort);
+  return {
+    wort, artikel,
+    wortart: WORTARTEN.includes(x.wortart) ? x.wortart : rateWortart(wort, artikel),
+    art: ARTEN.includes(x.art) ? x.art : artVorschlag(stellen),
+    silben, stellen, satz: String(x.satz || '').trim().slice(0, 140)
+  };
+}
+function parseImport(text) {
+  let t = String(text || '').trim();
+  const block = t.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (block) t = block[1];
+  const i = t.indexOf('{'), a = t.indexOf('[');
+  const start = i < 0 ? a : a < 0 ? i : Math.min(i, a);
+  if (start < 0) throw new Error('Ich finde kein JSON in der Antwort.');
+  const end = Math.max(t.lastIndexOf('}'), t.lastIndexOf(']'));
+  let o;
+  try { o = JSON.parse(t.slice(start, end + 1)) } catch (e) { throw new Error('Die Antwort ist kein gültiges JSON. Bitte ganz kopieren.') }
+  const liste = Array.isArray(o) ? o : (o.woerter || o.words || []);
+  const woerter = liste.map(wortAusImport).filter(Boolean);
+  if (!woerter.length) throw new Error('In der Antwort stehen keine Wörter.');
+  return { titel: String(Array.isArray(o) ? '' : o.titel || '').trim().slice(0, 60), woerter };
+}
+
+/* ---------- state & persistence ---------- */
+const VERSION = '0.1';
+const LS_PROF = 'lernwoerter.profile.v1', lsDaten = id => `lernwoerter.daten.${id}.v1`;
+const S = { view: 'start', prof: store.get(LS_PROF, null), D: null };
+const leereDaten = () => ({ v: 1, woerter: {}, wochen: [], stand: { sterne: 0, tage: {} } });
+function aktiv() { const P = S.prof; return (P && P.liste.find(p => p.id === P.aktiv)) || null }
+function ladeDaten() {
+  const p = aktiv(), d = p ? store.get(lsDaten(p.id), null) : null;
+  S.D = Object.assign(leereDaten(), d || {});
+  S.D.stand = Object.assign({ sterne: 0, tage: {} }, S.D.stand);
+}
+function saveProf() { if (!store.set(LS_PROF, S.prof)) toast('Speichern hat nicht geklappt. Ist der Speicher voll?') }
+function saveDaten() { const p = aktiv(); if (p && !store.set(lsDaten(p.id), S.D)) toast('Speichern hat nicht geklappt. Ist der Speicher voll?') }
+function wendeProfilAn() {
+  const p = aktiv();
+  document.body.dataset.thema = (p && p.thema) || '';
+  document.body.dataset.schrift = (p && p.schrift) || 'grund';
+}
+function sternPlus() {
+  const st = S.D.stand, heute = isoDay(Date.now());
+  st.sterne++; st.tage[heute] = (st.tage[heute] || 0) + 1;
+  saveDaten();
+}
+// The week shown to the child: the next dictation from today on, otherwise the latest one.
+function aktuelleWoche() {
+  const w = S.D.wochen.slice().sort((a, b) => (a.diktat || '').localeCompare(b.diktat || ''));
+  return w.find(k => tageBis(k.diktat) >= 0) || w[w.length - 1] || null;
+}
+const wochenWoerter = k => (k ? k.woerter.map(id => S.D.woerter[id]).filter(Boolean) : []);
+
+/* ---------- sound & speech (iOS rules from Voc a Bit) ---------- */
+let actx = null, unlocked = false;
+function ensureCtx() {
+  try {
+    if (!actx) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; actx = new AC() }
+    if (actx.state !== 'running') actx.resume();
+    return actx;
+  } catch (e) { return null }
+}
+function unlockAudio() {
+  try { if (navigator.audioSession && navigator.audioSession.type !== 'playback') navigator.audioSession.type = 'playback' } catch (e) {}
+  const c = ensureCtx();
+  if (unlocked || !c) return;
+  unlocked = true;
+  try { const b = c.createBuffer(1, 1, 22050), s = c.createBufferSource(); s.buffer = b; s.connect(c.destination); s.start(0) } catch (e) {}
+  try { if ('speechSynthesis' in window) { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u) } } catch (e) {}
+}
+['touchend', 'click', 'keydown'].forEach(ev => document.addEventListener(ev, unlockAudio, { capture: true, passive: true }));
+function tone(seq) {
+  const c = ensureCtx(); if (!c) return;
+  try {
+    const t0 = c.currentTime + 0.03;
+    for (const [f, st, dur, type, vol] of seq) {
+      const o = c.createOscillator(), g = c.createGain();
+      o.type = type || 'triangle'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t0 + st);
+      g.gain.exponentialRampToValueAtTime(vol || 0.2, t0 + st + 0.015);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + st + dur);
+      o.connect(g); g.connect(c.destination); o.start(t0 + st); o.stop(t0 + st + dur + 0.05);
     }
-    if (md > eps) { keep[mi] = 1; stack.push([a, mi], [mi, b]) }
-  }
-  return pts.filter((_, i) => keep[i]);
+  } catch (e) {}
 }
-// Stored form: coordinates in hundredths of a band, so a stroke survives a change of band height.
-function pack(pad) {
-  return pad.strokes.map(s => rdp(s.pts, pad.band * 0.02).map(p => [Math.round(p[0] / pad.band * 100), Math.round(p[1] / pad.band * 100)]));
-}
-function showSchreibStats() {
-  const p = pads.schreiben, raw = p.strokes.reduce((n, s) => n + s.pts.length, 0);
-  const packed = pack(p), simp = packed.reduce((n, s) => n + s.length, 0), bytes = JSON.stringify(packed).length;
-  $('#schreiben-stats').textContent = p.strokes.length
-    ? `Striche ${p.strokes.length} · Punkte ${raw} → ${simp} vereinfacht · gespeichert ≈ ${(bytes / 1024).toFixed(1).replace('.', ',')} KB`
-    : 'Noch nichts geschrieben.';
-}
-
-/* ---------- trace scoring ---------- */
-// Template and ink are rasterised on a coarse grid; a distance field per mask answers
-// "how far is this cell from the other mask". Precision = ink near the template, coverage = template near the ink.
-function maskFrom(W, H, cell, draw) {
-  const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
-  const c = cv.getContext('2d', { willReadFrequently: true });
-  c.setTransform(1 / cell, 0, 0, 1 / cell, 0, 0); draw(c);
-  const d = c.getImageData(0, 0, W, H).data, m = new Uint8Array(W * H);
-  for (let i = 0; i < m.length; i++) m[i] = d[i * 4 + 3] > 96 ? 1 : 0;
-  return m;
-}
-function distField(m, W, H) {   // two-pass chamfer distance, in cells
-  const d = new Float32Array(W * H), D = Math.SQRT2;
-  for (let i = 0; i < d.length; i++) d[i] = m[i] ? 0 : 1e9;
-  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
-    const i = y * W + x; let v = d[i];
-    if (x > 0) v = Math.min(v, d[i - 1] + 1);
-    if (y > 0) { v = Math.min(v, d[i - W] + 1); if (x > 0) v = Math.min(v, d[i - W - 1] + D); if (x < W - 1) v = Math.min(v, d[i - W + 1] + D) }
-    d[i] = v;
-  }
-  for (let y = H - 1; y >= 0; y--) for (let x = W - 1; x >= 0; x--) {
-    const i = y * W + x; let v = d[i];
-    if (x < W - 1) v = Math.min(v, d[i + 1] + 1);
-    if (y < H - 1) { v = Math.min(v, d[i + W] + 1); if (x < W - 1) v = Math.min(v, d[i + W + 1] + D); if (x > 0) v = Math.min(v, d[i + W - 1] + D) }
-    d[i] = v;
-  }
-  return d;
-}
-// Tolerance 0.15 band: in synthetic tests (M0) a shaky trace kept ≥ 73 % / 92 %, scribbles and offset traces stayed ≤ 48 % / 62 %.
-function bewerteSpur(pad, tolBand = 0.15) {
-  const cell = Math.max(2, Math.round(pad.band / 12)), W = Math.ceil(pad.w / cell), H = Math.ceil(pad.h / cell);
-  const tpl = maskFrom(W, H, cell, c => pad.drawTemplate(c, '#000'));
-  const ink = maskFrom(W, H, cell, c => pad.drawStrokes(c, '#000'));
-  const dT = distField(tpl, W, H), dI = distField(ink, W, H), tol = pad.band * tolBand / cell;
-  let nI = 0, okI = 0, nT = 0, okT = 0;
-  const far = [], miss = [];
-  for (let i = 0; i < W * H; i++) {
-    if (ink[i]) { nI++; if (dT[i] <= tol) okI++; else far.push(i) }
-    if (tpl[i]) { nT++; if (dI[i] <= tol) okT++; else miss.push(i) }
-  }
-  return { cell, W, leer: !nI, praezision: nI ? okI / nI : 0, abdeckung: nT ? okT / nT : 0, menge: nT ? nI / nT : 0, far, miss };
-}
-function drawOverlay(pad, r) {
-  const c = pad.ctx(), dot = (i, col) => { c.fillStyle = col; c.fillRect((i % r.W) * r.cell, Math.floor(i / r.W) * r.cell, r.cell, r.cell) };
-  for (const i of r.miss) dot(i, 'rgba(232,116,42,.55)');   // template not reached
-  for (const i of r.far) dot(i, 'rgba(229,72,77,.7)');      // ink off the template
-}
-
-/* Turns the two trace measures (0…1) into stars. Every attempt earns at least one star: this app never fails a child. */
-// The weaker of the two measures counts: a clean but half-finished trace and a complete scribble both stay at one star.
-// Synthetic M0 values: exact 1.00 → 3, slightly shaky 0.91 → 3, very shaky 0.73 → 2, half, offset, scribble ≤ 0.49 → 1.
-function sterneFuerSpur(praezision, abdeckung) {
-  const schwach = Math.min(praezision, abdeckung);
-  if (schwach >= 0.85) return 3;
-  if (schwach >= 0.65) return 2;
-  return 1;
-}
-
-let spurVersuch = 0;
-function fertig() {
-  const p = pads.spur, r = bewerteSpur(p), box = $('#spur-ergebnis');
-  if (r.leer) { box.innerHTML = '<span class="hint">Noch nichts nachgespurt.</span>'; return }
-  const n = Math.max(1, Math.min(3, Math.round(Number(sterneFuerSpur(r.praezision, r.abdeckung)) || 1)));
-  p.overlay = $('#spur-zeigen').checked ? r : null; p.lastResult = r; p.redraw();
-  box.innerHTML = `<span class="stars">${'★'.repeat(n)}<span class="off">${'★'.repeat(3 - n)}</span></span>
-    <span>Genauigkeit <b>${pct(r.praezision)}</b><br>Abdeckung <b>${pct(r.abdeckung)}</b></span>
-    <button class="btn" data-act="nochmal">Nochmal in neuer Farbe</button>`;
-  R.spur.push({ font: FONTS[E.font].name, band: E.band, wort: wort(), p: r.praezision, a: r.abdeckung, m: r.menge, sterne: n });
-}
-function nochmal() {
-  spurVersuch++; pads.spur.color = RAINBOW[spurVersuch % RAINBOW.length];
-  pads.spur.clear(); $('#spur-ergebnis').innerHTML = '';
-}
-// Debug only (?debug): synthetic traces to check the scoring without a pen.
-function simulate(kind) {
-  const p = pads.spur, cell = 2, W = Math.ceil(p.w / cell), H = Math.ceil(p.h / cell);
-  const m = maskFrom(W, H, cell, c => p.drawTemplate(c, '#000'));
-  let x0 = W, x1 = 0, y0 = H, y1 = 0;
-  for (let i = 0; i < m.length; i++) if (m[i]) { const x = i % W, y = (i / W) | 0; x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y) }
-  const S = (pts) => ({ pts: pts.map(([x, y]) => [x, y, 0.5]), color: p.color, type: 'sim', vp: false });
-  const strokes = [];
-  if (kind === 'kritzel') {
-    const pts = [];
-    for (let x = x0 * cell, k = 0; x <= x1 * cell; x += p.band * 0.4, k++) pts.push([x, (k % 2 ? y1 : y0) * cell]);
-    strokes.push(S(pts));
-  } else {
-    const dy = kind === 'daneben' ? p.band * 0.6 : 0, xmax = kind === 'halb' ? (x0 + x1) / 2 : x1;
-    for (let y = y0; y <= y1; y += 3) {
-      let run = -1;
-      for (let x = x0; x <= xmax + 1; x++) {
-        const on = x <= xmax && m[y * W + x];
-        if (on && run < 0) run = x;
-        if (!on && run >= 0) { strokes.push(S([[run * cell, y * cell + dy], [(x - 1) * cell + 0.5, y * cell + dy]])); run = -1 }
-      }
-    }
-  }
-  p.strokes = strokes; p.overlay = null; p.redraw();
-}
-
-/* ---------- Scribble check ---------- */
-function buildScribble() {
-  $('#scribble-liste').innerHTML = SCRIBBLE.map((w, i) => `
-    <div class="scr" data-i="${i}">
-      <span class="wort">${esc(w)}</span>
-      <input data-scr="a" data-i="${i}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="${esc(w)} ohne Korrektur">
-      <input data-scr="b" data-i="${i}" aria-label="${esc(w)} normal">
-      <span class="res" id="scr-res-${i}"></span>
-    </div>`).join('');
-}
-function checkScribble(i) {
-  const w = SCRIBBLE[i], a = $(`[data-scr="a"][data-i="${i}"]`).value.trim(), b = $(`[data-scr="b"][data-i="${i}"]`).value.trim();
-  // Capitals count: in German a lower-case noun is a spelling mistake, so "hunt" for "Hunt" is a change.
-  const say = v => !v ? '–' : v === w ? `„${v}“ wie geschrieben` : v.toLowerCase() === w.toLowerCase() ? `„${v}“ nur Groß/klein anders` : `„${v}“ verändert`;
-  R.scribble[w] = { a, b };
-  $('#scr-res-' + i).textContent = `ohne Korrektur: ${say(a)} · normal: ${say(b)}`;
-}
-
-/* ---------- speech ---------- */
-// Same iOS rule as Voc a Bit: speak synchronously inside the tap handler.
+const SFX = {
+  ok: () => tone([[659.25, 0, .12], [987.77, .09, .24]]),
+  sanft: () => tone([[392, 0, .18, 'sine', .12], [349.23, .14, .22, 'sine', .1]]),   // "try again", never harsh
+  trommel: () => tone([[110, 0, .16, 'sine', .35], [220, 0, .05, 'triangle', .08]]),
+  krone: () => tone([[880, 0, .1, 'sine'], [1174.66, .08, .16, 'sine']]),
+  fertig: () => tone([[523.25, 0, .16], [659.25, .13, .16], [783.99, .26, .16], [1046.5, .39, .42]])
+};
 let deVoice = null;
 function pickVoice() {
   try {
     const vs = speechSynthesis.getVoices() || [];
-    R.voices = vs.filter(v => /^de/i.test(v.lang)).map(v => `${v.name} (${v.lang}${v.localService ? ', lokal' : ''})`);
     deVoice = vs.find(v => /de[-_]DE/i.test(v.lang) && v.localService) || vs.find(v => /^de/i.test(v.lang)) || null;
-  } catch (e) { /* no speech on this device */ }
+  } catch (e) {}
 }
 try { if ('speechSynthesis' in window) { pickVoice(); if ('onvoiceschanged' in speechSynthesis) speechSynthesis.onvoiceschanged = pickVoice } } catch (e) {}
-function say(t) {
+// Must run synchronously inside the tap handler, otherwise iOS keeps quiet.
+function say(t, rate) {
   try {
     if (!('speechSynthesis' in window) || !t) return;
     const ss = speechSynthesis, u = new SpeechSynthesisUtterance(t);
-    u.lang = deVoice ? deVoice.lang : 'de-DE'; u.rate = 0.85; if (deVoice) u.voice = deVoice;
+    u.lang = deVoice ? deVoice.lang : 'de-DE'; u.rate = rate || 0.85; u.volume = 1;
+    if (deVoice) u.voice = deVoice;
     if (ss.speaking || ss.pending) { ss.cancel(); setTimeout(() => ss.speak(u), 80) } else ss.speak(u);
   } catch (e) {}
 }
 
-/* ---------- report ---------- */
-function report() {
-  const s = R.stift, now = new Date();
-  const L = [];
-  L.push(`Schreibfuchs Werkstatt-Test ${VERSION}, ${now.toLocaleString('de-DE')}`);
-  L.push(`Gerät: ${navigator.userAgent}`);
-  L.push(`Bildschirm: ${screen.width}×${screen.height}, Fenster ${innerWidth}×${innerHeight}, dpr ${window.devicePixelRatio}, Home-Bildschirm: ${navigator.standalone ? 'ja' : 'nein'}`);
-  L.push(`Stift: Berührungen ${Object.entries(s.types).map(([k, v]) => `${k} ${v}`).join(', ') || 'keine'}`);
-  L.push(`  Druck ${s.pmax ? `${s.pmin.toFixed(2)}–${s.pmax.toFixed(2)} (${pressureVaries() ? 'variabel' : 'konstant'})` : 'nicht gemessen'}, Neigung ${s.tilt ? 'ja' : 'nein'}`);
-  L.push(`  Abtastrate ${s.dur > 200 ? '≈ ' + Math.round(s.samples / (s.dur / 1000)) + ' Hz' : 'nicht gemessen'}, Zwischenpunkte ${s.moves ? (s.coalesced / s.moves).toFixed(1) : '–'} (API ${s.coalescedApi ? 'ja' : 'nein'}), Verarbeitung ${s.lagN ? (s.lag / s.lagN).toFixed(1) + ' ms' : '–'}`);
-  L.push(`  ignorierte Finger/Hand: ${s.ignored}`);
-  L.push(`Einstellung: ${FONTS[E.font].name}, Band ${E.band} px, Linkshänder ${E.lefty ? 'ja' : 'nein'}, Mittelband farbig ${E.farbband ? 'ja' : 'nein'}`);
-  L.push('Nachspuren:');
-  if (!R.spur.length) L.push('  –');
-  for (const r of R.spur) L.push(`  ${r.wort} (${r.font}, Band ${r.band}): Genauigkeit ${pct(r.p)}, Abdeckung ${pct(r.a)}, Tinte ${r.m.toFixed(2)}×, ${r.sterne} Sterne`);
-  L.push('Scribble (ohne Korrektur | normal):');
-  const sc = Object.entries(R.scribble);
-  if (!sc.length) L.push('  –');
-  const mark = (v, w) => !v || v === w ? '' : v.toLowerCase() === w.toLowerCase() ? ' GROSS/KLEIN' : ' VERÄNDERT';
-  for (const [w, v] of sc) L.push(`  ${w}: „${v.a || '–'}“${mark(v.a, w)} | „${v.b || '–'}“${mark(v.b, w)}`);
-  L.push(`Deutsche Stimmen: ${R.voices.join('; ') || 'keine gefunden'}`);
-  const n = $('#bericht-notiz').value.trim();
-  if (n) L.push('Notizen: ' + n);
-  return L.join('\n');
+/* ---------- files (backup) ---------- */
+// Same as Voc a Bit: share sheet first ("In Dateien sichern"), <a download> fails in home-screen apps.
+function downloadFile(name, text) {
+  try {
+    if (navigator.share && navigator.canShare && typeof File === 'function') {
+      const file = new File([text], name, { type: 'application/json' });
+      if (navigator.canShare({ files: [file] })) {
+        return navigator.share({ files: [file], title: name }).then(() => 'shared', e => { if (e && e.name === 'AbortError') return 'aborted'; throw e });
+      }
+    }
+  } catch (e) { /* fall back to a download */ }
+  const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
+  const a = document.createElement('a'); a.href = url; a.download = name; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  return Promise.resolve('download');
 }
-function fillReport() { $('#bericht-text').value = report() }
-function copyReport() {
-  fillReport();
-  const ta = $('#bericht-text'), t = ta.value, ok = () => toast('Bericht kopiert');
+function copyText(t, ok) {
   const fallback = () => {
-    ta.removeAttribute('readonly'); ta.focus(); ta.select();
-    try { document.execCommand('copy') ? ok() : toast('Bitte Text markieren und kopieren') } catch (e) { toast('Bitte Text markieren und kopieren') }
-    ta.setAttribute('readonly', '');
+    const ta = document.createElement('textarea'); ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    let done = false; try { done = document.execCommand('copy') } catch (e) {}
+    ta.remove(); toast(done ? ok : 'Kopieren ging nicht. Bitte von Hand markieren.');
   };
-  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, fallback); else fallback();
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(() => toast(ok), fallback); else fallback();
 }
 
-/* ---------- views ---------- */
-const pads = {};
-function syncSettings() {
-  $$('[data-set]').forEach(el => { const k = el.dataset.set; if (el.type === 'checkbox') el.checked = !!E[k]; else el.value = String(E[k]) });
-  $('#band-wert').textContent = E.band + ' px';
+/* ---------- pictures ---------- */
+const FOX = `<svg class="fox" viewBox="0 0 64 64" aria-hidden="true"><path d="M6 6l16 14h20L58 6l-3 28c-3 14-12 22-23 24C21 56 12 48 9 34z" fill="#E8742A"/><path d="M6 6l9 18M58 6l-9 18" stroke="#B9531A" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M12 34c6 2 12 8 20 24-11-2-19-9-20-24zM52 34c-6 2-12 8-20 24 11-2 19-9 20-24z" fill="#FFF"/><circle cx="23" cy="32" r="3.2" fill="#1F2546"/><circle cx="41" cy="32" r="3.2" fill="#1F2546"/><path d="M28 47h8l-4 5z" fill="#1F2546"/></svg>`;
+const THEMEN = {
+  einhorn: { name: 'Einhörner', bild: `<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M14 74a36 36 0 0 1 72 0" fill="none" stroke="#E5484D" stroke-width="6"/><path d="M22 74a28 28 0 0 1 56 0" fill="none" stroke="#F5B800" stroke-width="6"/><path d="M30 74a20 20 0 0 1 40 0" fill="none" stroke="#2E9E5B" stroke-width="6"/><path d="M38 74a12 12 0 0 1 24 0" fill="none" stroke="#2E6FD8" stroke-width="6"/><path d="M50 8l10 46H40z" fill="#F7C9E8" stroke="#B65FCF" stroke-width="3" stroke-linejoin="round"/><path d="M43 40l14-4M45 30l11-3M47 20l7-2" stroke="#B65FCF" stroke-width="3" stroke-linecap="round"/><path d="M20 22l2 5 5 2-5 2-2 5-2-5-5-2 5-2zM80 30l2 4 4 2-4 2-2 4-2-4-4-2 4-2z" fill="#F5B800"/></svg>` },
+  halloween: { name: 'Halloween', bild: `<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 22c3-8 9-12 14-12" stroke="#2E9E5B" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="34" cy="58" rx="20" ry="30" fill="#E8742A"/><ellipse cx="66" cy="58" rx="20" ry="30" fill="#E8742A"/><ellipse cx="50" cy="58" rx="20" ry="32" fill="#F28C38"/><path d="M36 50l6-6 6 6zM52 50l6-6 6 6z" fill="#5E3A99"/><path d="M36 66c8 8 20 8 28 0" stroke="#5E3A99" stroke-width="5" fill="none" stroke-linecap="round"/></svg>` },
+  tiere: { name: 'Tiere', bild: `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="#2E9E5B"><ellipse cx="50" cy="66" rx="22" ry="18"/><ellipse cx="24" cy="42" rx="9" ry="12"/><ellipse cx="40" cy="26" rx="9" ry="12"/><ellipse cx="60" cy="26" rx="9" ry="12"/><ellipse cx="76" cy="42" rx="9" ry="12"/></g></svg>` }
+};
+
+/* ---------- views: child ---------- */
+function topBar(links, titel) {
+  return `<div class="bar">${links}<div class="grow">${titel || ''}</div><span class="sterne">${icon('star')}${S.D.stand.sterne}</span></div>`;
 }
-function layoutVisible() {
-  pads.schreiben.o.template = pads.spur.o.template = wort();
-  for (const k of Object.keys(pads)) if (!$('#t-' + k).hidden) pads[k].layout();
-  if (!$('#t-schreiben').hidden) showSchreibStats();
+const homeBtn = `<button class="rund" data-act="home" aria-label="Zum Start">${icon('home')}</button>`;
+const kronenKlasse = t => /^[A-ZÄÖÜ]/.test(t) ? ' gross' : /[äöüi]/.test(t) ? ' punkt' : '';
+function wortHtml(w, o = {}) {
+  const teile = (o.boegen ? w.silben : [w.wort]).map(s => `<span class="silbe${o.boegen ? ' bogen' : ''}">${o.koenige ? tokens(s).map(t => t.v ? `<span class="koenig${kronenKlasse(t.t)}">${esc(t.t)}</span>` : esc(t.t)).join('') : esc(s)}</span>`).join('');
+  const len = vollWort(w).length, px = o.px || Math.max(48, Math.min(120, Math.floor(1000 / (len * 0.62))));
+  const size = o.px ? `${px}px` : `min(${px}px, ${(150 / Math.max(len, 4)).toFixed(1)}vw)`;
+  return `<span class="wort" style="font-size:${size}">${w.artikel ? `<span class="artikel">${esc(w.artikel)}</span>` : ''}${teile}</span>`;
 }
-function showTab(t) {
-  E.tab = t; saveE();
-  $$('.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === t)));
-  $$('main > section').forEach(s => { s.hidden = s.id !== 't-' + t });
-  $('#settings').hidden = !(t === 'schreiben' || t === 'spur');
-  if (t === 'bericht') fillReport();
-  if (t === 'stift') showLive();
-  layoutVisible();
+function punkte(n, i, ok) { let h = ''; for (let k = 0; k < n; k++) h += `<i class="${ok && ok.has(k) ? 'ok' : k === i ? 'an' : ''}"></i>`; return `<div class="punkte">${h}</div>` }
+
+function viewStart() {
+  const p = aktiv(), k = aktuelleWoche(), ws = wochenWoerter(k), n = S.prof.liste.length;
+  let woche;
+  if (!k) {
+    woche = `<div class="card"><h2>Noch keine Lernwörter</h2><p class="leise">Mama oder Papa legen sie im Elternbereich an (Zahnrad oben rechts).</p></div>`;
+  } else {
+    const t = tageBis(k.diktat);
+    const wann = t === 0 ? 'Diktat ist heute!' : t === 1 ? 'Diktat ist morgen' : t > 1 ? `Diktat in ${t} Tagen` : 'Diktat war ' + datumLang(k.diktat);
+    woche = `<div class="card"><div class="woche-kopf"><h2>${esc(k.titel || 'Lernwörter')}</h2><span class="diktat">${esc(wann)}</span></div>
+      <div class="wortliste">${ws.map((w, i) => `<button class="wortchip wa-${w.wortart}" data-act="karte" data-i="${i}">${esc(vollWort(w))}</button>`).join('')}</div></div>
+      <div class="kacheln">
+        <button class="kachel" data-act="karte" data-i="0">${icon('cards')}Wortkarten<small>ansehen und anhören</small></button>
+        <button class="kachel" data-act="station" data-typ="silben">${icon('drum')}Silben schwingen<small>für jede Silbe trommeln</small></button>
+        <button class="kachel" data-act="station" data-typ="koenige">${icon('crown')}Silbenkönige<small>alle Könige finden</small></button>
+      </div>`;
+  }
+  return `<div class="bar">${FOX}<div class="grow"><p class="hallo">Hallo, ${esc(p.name)}!</p>${n > 1 ? `<button class="btn klein" data-act="wer">Nicht ${esc(p.name)}?</button>` : ''}</div>
+      <button class="rund klein" data-act="hallo" aria-label="Vorlesen">${icon('speaker')}</button>
+      <span class="sterne">${icon('star')}${S.D.stand.sterne}</span>
+      <button class="rund klein" data-act="eltern" aria-label="Elternbereich">${icon('gear')}</button></div>${woche}`;
 }
-function clearWritingPads() { pads.schreiben.clear(); pads.spur.clear(); $('#spur-ergebnis').innerHTML = '' }
+
+function viewKarte() {
+  const ws = wochenWoerter(aktuelleWoche()), K = S.k;
+  if (!ws.length) { S.view = 'start'; return viewStart() }
+  K.i = Math.max(0, Math.min(ws.length - 1, K.i));
+  const w = ws[K.i];
+  const satz = K.satz && w.satz ? `<p class="satz">${markiere(w.satz, w.wort)}</p>` : '';
+  return `${topBar(homeBtn, punkte(ws.length, K.i))}
+    <div class="wortbuehne wa-${w.wortart}">
+      <span class="wa-chip wa-${w.wortart}">${WA_NAME[w.wortart]}</span>
+      ${wortHtml(w, { boegen: K.boegen, koenige: K.koenige })}
+      ${satz}
+      <div class="row mitte">
+        <button class="btn main" data-act="sag-wort">${icon('speaker')}Wort</button>
+        ${w.satz ? `<button class="btn" data-act="sag-satz">${icon('speaker')}Satz</button>` : ''}
+        <button class="btn" data-act="boegen" aria-pressed="${K.boegen}">Silbenbögen</button>
+        <button class="btn" data-act="koenige" aria-pressed="${K.koenige}">${icon('crown')}Silbenkönige</button>
+      </div>
+    </div>
+    <div class="row mitte">
+      <button class="rund" data-act="karte-zurueck" aria-label="Wort davor" ${K.i === 0 ? 'disabled' : ''}>${icon('left')}</button>
+      <button class="rund" data-act="karte-vor" aria-label="Nächstes Wort" ${K.i === ws.length - 1 ? 'disabled' : ''}>${icon('right')}</button>
+    </div>`;
+}
+function markiere(satz, wort) {
+  const i = satz.toLowerCase().indexOf(wort.toLowerCase());
+  return i < 0 ? esc(satz) : esc(satz.slice(0, i)) + '<mark>' + esc(satz.slice(i, i + wort.length)) + '</mark>' + esc(satz.slice(i + wort.length));
+}
+
+const ANLEITUNG = {
+  silben: 'Sprich das Wort und schwing die Silben. Tippe für jede Silbe einmal auf die Trommel. Dann tippe auf Fertig.',
+  koenige: 'Finde die Silbenkönige. Tippe auf alle Selbstlaute: a, e, i, o, u, ä, ö, ü und au, ei, eu, ie.'
+};
+function viewStation() {
+  const st = S.st, ws = st.ws;
+  if (st.ende) {
+    return `${topBar(homeBtn)}<div class="card" style="text-align:center"><div class="gross-stern">${icon('star')}</div>
+      <p class="lob">Geschafft!</p><p class="leise">${st.sterne} ${st.sterne === 1 ? 'Stern' : 'Sterne'} gesammelt</p>
+      <div class="row mitte"><button class="btn main" data-act="home">${icon('home')}Zum Start</button></div></div>`;
+  }
+  const w = ws[st.i], kopf = `${topBar(homeBtn, punkte(ws.length, st.i, st.ok))}
+    <div class="anleitung"><button class="rund klein" data-act="anleitung" aria-label="Anleitung vorlesen">${icon('speaker')}</button><span>${esc(ANLEITUNG[st.typ])}</span></div>`;
+  const weiter = `<button class="btn main" data-act="st-weiter">${st.i === ws.length - 1 ? 'Fertig' : 'Weiter'}${icon('right')}</button>`;
+  if (st.typ === 'silben') {
+    const geloest = st.status === 'ok' || st.status === 'hilfe';
+    return `${kopf}<div class="wortbuehne wa-${w.wortart}">
+      ${wortHtml(w, { boegen: geloest })}
+      <button class="btn" data-act="sag-wort">${icon('speaker')}Anhören</button>
+      ${st.status === 'ok' ? `<p class="lob">Super, ${w.silben.length} ${w.silben.length === 1 ? 'Silbe' : 'Silben'}!</p>${weiter}`
+      : st.status === 'hilfe' ? `<p class="nochmal">So sind die Silben. Schwing sie einmal mit!</p>${weiter}`
+      : `<button class="trommel" data-act="trommel" aria-label="Trommel">${icon('drum')}</button>
+         <div class="schlaege">${'<b></b>'.repeat(st.taps)}</div>
+         ${st.status === 'nochmal' ? '<p class="nochmal">Nochmal probieren! Sprich ganz langsam.</p>' : ''}
+         <div class="row mitte"><button class="btn" data-act="taps-neu">Von vorn</button><button class="btn main" data-act="taps-fertig" ${st.taps ? '' : 'disabled'}>${icon('check')}Fertig</button></div>`}
+    </div>`;
+  }
+  // koenige: tiles per syllable, vowel groups are one tile
+  let k = 0;
+  const gruppen = w.silben.map(s => `<span class="gruppe">${tokens(s).map(t => {
+    const idx = k++, ok = st.gefunden.has(idx);
+    return `<button class="tile${ok ? ' koenig-ok' : ''}${st.wackel === idx ? ' wackel' : ''}" data-act="tile" data-k="${idx}" data-v="${t.v ? 1 : 0}">${esc(t.t)}</button>`;
+  }).join('')}</span>`).join('');
+  return `${kopf}<div class="wortbuehne wa-${w.wortart}">
+    <div class="tiles">${gruppen}</div>
+    <button class="btn" data-act="sag-wort">${icon('speaker')}Anhören</button>
+    ${st.status === 'ok' ? `<p class="lob">Alle Könige gefunden!</p>${weiter}` : ''}
+  </div>`;
+}
+
+/* ---------- views: first start ---------- */
+function viewOnboard() {
+  const o = S.ob;
+  if (o.schritt === 1) {
+    return `<div class="bar">${FOX}<div class="grow"><p class="hallo">Schreibfuchs</p></div></div>
+      <div class="card"><h2>Für Eltern: ein Kind anlegen</h2>
+      <p class="leise">Der Name bleibt nur auf diesem iPad. Die App spricht das Kind damit an.</p>
+      <label class="feld">Name des Kindes<input data-in="ob-name" value="${esc(o.name)}" autocomplete="off" autocorrect="off" spellcheck="false" maxlength="24"></label>
+      <label class="check"><input type="checkbox" data-ch="ob-lefty" ${o.lefty ? 'checked' : ''}> schreibt mit links</label>
+      <div class="row">${S.prof && S.prof.liste.length ? '<button class="btn" data-act="ob-abbruch">Abbrechen</button>' : ''}<button class="btn main" data-act="ob-weiter">Weiter${icon('right')}</button></div></div>`;
+  }
+  return `<div class="bar">${FOX}<div class="grow"><p class="hallo">Hallo, ${esc(o.name)}!</p></div>
+      <button class="rund klein" data-act="ob-frage" aria-label="Vorlesen">${icon('speaker')}</button></div>
+    <div class="card"><h2>Was magst du am liebsten?</h2><p class="leise">Danach sehen deine Sticker aus.</p>
+    <div class="themen">${Object.entries(THEMEN).map(([id, t]) => `<button class="thema" data-act="ob-thema" data-thema="${id}">${t.bild}${esc(t.name)}</button>`).join('')}</div></div>`;
+}
+function viewWer() {
+  return `<div class="bar">${FOX}<div class="grow"><p class="hallo">Wer übt jetzt?</p></div></div>
+    <div class="themen">${S.prof.liste.map(p => `<button class="thema" data-act="wer-wahl" data-id="${p.id}">${(THEMEN[p.thema] || THEMEN.tiere).bild}${esc(p.name)}</button>`).join('')}</div>`;
+}
+
+/* ---------- views: parents ---------- */
+// Gate: two-digit × one-digit with a result over 100. Year 2 in NRW already knows the times tables up to 10 × 10.
+function neueAufgabe() { let a, b; do { a = 12 + rnd(18); b = 4 + rnd(6) } while (a * b <= 100); S.gate = { a, b, ein: '', falsch: false } }
+function viewGate() {
+  const g = S.gate;
+  return `<div class="bar"><button class="rund" data-act="home" aria-label="Zurück">${icon('left')}</button><div class="grow"><h2 style="margin:0">Elternbereich</h2></div></div>
+    <div class="card" style="text-align:center"><p class="leise">Bitte diese Aufgabe lösen:</p>
+    <p class="aufgabe">${g.a} × ${g.b} = ?</p>
+    <p><span class="eingabe">${esc(g.ein) || '&nbsp;'}</span></p>
+    ${g.falsch ? '<p class="nochmal">Das war es nicht. Hier ist eine neue Aufgabe.</p>' : ''}
+    <div class="ziffern">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(z => `<button data-act="ziffer" data-z="${z}">${z}</button>`).join('')}
+      <button data-act="ziffer-weg" aria-label="Löschen">⌫</button><button data-act="ziffer" data-z="0">0</button><button data-act="gate-ok" aria-label="Bestätigen" style="background:var(--accent);color:#fff">${icon('check')}</button></div></div>`;
+}
+function viewEltern() {
+  const tab = S.etab || 'wochen', p = aktiv();
+  const tabs = [['wochen', 'Wochen'], ['einstellungen', 'Einstellungen'], ['sicherung', 'Sicherung']]
+    .map(([id, n]) => `<button data-act="etab" data-tab="${id}" aria-selected="${tab === id}">${n}</button>`).join('');
+  let body = '';
+  if (tab === 'wochen') {
+    const wochen = S.D.wochen.slice().sort((a, b) => (b.diktat || '').localeCompare(a.diktat || ''));
+    body = `<div class="row"><button class="btn main" data-act="import">${icon('camera')}Neue Woche mit Foto</button><button class="btn" data-act="woche-neu">${icon('plus')}Neue Woche von Hand</button></div>
+      <div class="liste" style="margin-top:14px">${wochen.map(k => `<div class="eintrag"><div class="info"><b style="color:var(--ink);font-size:18px">${esc(k.titel)}</b><br>Diktat ${esc(datumLang(k.diktat))} · ${k.woerter.length} Wörter</div>
+        <button class="btn klein" data-act="woche-edit" data-id="${k.id}">${icon('edit')}Bearbeiten</button></div>`).join('') || '<p class="leise">Noch keine Woche angelegt.</p>'}</div>`;
+  } else if (tab === 'einstellungen') {
+    body = `<label class="feld">Name des Kindes<input data-in="p-name" value="${esc(p.name)}" autocomplete="off" autocorrect="off" spellcheck="false" maxlength="24"></label>
+      <label class="check"><input type="checkbox" data-ch="p-lefty" ${p.lefty ? 'checked' : ''}> schreibt mit links (Vorlage beim Schreiben rechts)</label>
+      <label class="feld">Schulschrift<select data-ch="p-schrift"><option value="grund" ${p.schrift !== 'andika' ? 'selected' : ''}>Grundschrift (Playwrite DE Grund)</option><option value="andika" ${p.schrift === 'andika' ? 'selected' : ''}>Druckschrift (Andika)</option></select></label>
+      <p style="font-weight:600;margin:14px 0 6px">Thema</p>
+      <div class="chips">${Object.entries(THEMEN).map(([id, t]) => `<button class="chip" data-act="p-thema" data-thema="${id}" aria-pressed="${p.thema === id}">${esc(t.name)}</button>`).join('')}</div>
+      <p style="font-weight:600;margin:18px 0 6px">Kinder auf diesem iPad</p>
+      <div class="chips">${S.prof.liste.map(x => `<span class="chip" aria-pressed="${x.id === p.id}">${esc(x.name)}</span>`).join('')}<button class="chip" data-act="kind-neu">${icon('plus')} Kind anlegen</button></div>
+      <p style="margin-top:18px"><a href="werkstatt.html">Werkstatt-Test (Stift und Lineatur prüfen)</a></p>`;
+  } else {
+    body = `<p class="leise">Lernstand und Wörter liegen nur auf diesem iPad. Die App vom Home-Bildschirm und Safari haben getrennte Speicher. Die App nie vom Home-Bildschirm löschen, sonst ist alles weg. Vor Updates eine Sicherung speichern.</p>
+      <div class="row"><button class="btn main" data-act="sichern">${icon('down')}Sicherung speichern</button><button class="btn" data-act="laden">${icon('up')}Sicherung laden</button></div>`;
+  }
+  return `<div class="bar"><div class="grow"><h2 style="margin:0">Elternbereich · ${esc(p.name)}</h2></div><button class="btn main" data-act="home">${icon('check')}Fertig</button></div>
+    <div class="tabs">${tabs}</div><div class="card">${body}</div><p class="version">Schreibfuchs · Version ${VERSION}</p>`;
+}
+function viewImport() {
+  return `<div class="bar"><button class="rund" data-act="eltern-zurueck" aria-label="Zurück">${icon('left')}</button><div class="grow"><h2 style="margin:0">Neue Woche mit Foto</h2></div></div>
+    <div class="card">
+      <p><b>1.</b> Anleitung kopieren:</p><button class="btn main" data-act="prompt-kopieren">${icon('copy')}Anleitung kopieren</button>
+      <p><b>2.</b> In der Claude-App ein Foto vom Arbeitsblatt anhängen, die Anleitung einfügen und senden. Das Foto bleibt bei Claude, die App speichert es nicht.</p>
+      <p><b>3.</b> Claudes Antwort ganz kopieren und hier einfügen:</p>
+      <textarea id="import-text" rows="8" data-in="import" placeholder="Antwort von Claude hier einfügen …">${esc(S.importText || '')}</textarea>
+      ${S.importFehler ? `<div class="fehlerbox">${esc(S.importFehler)}</div>` : ''}
+      <div class="row" style="margin-top:10px"><button class="btn main" data-act="import-pruefen">${icon('check')}Wörter prüfen</button></div>
+    </div>`;
+}
+function wortZeile(w, i) {
+  const st = w.stellen.map(s => `<b>${esc(w.wort.slice(s.von, s.bis))}</b> ${esc(TYP_NAME[s.typ])}`).join(', ');
+  return `<div class="eintrag">${wortHtml(w, { boegen: true, px: 34 })}
+    <div class="info"><span class="wa-chip wa-${w.wortart}">${WA_NAME[w.wortart]}</span> ${ART_NAME[w.art]}${st ? ' · ' + st : ''}${w.satz ? '<br>„' + esc(w.satz) + '“' : ''}</div>
+    <button class="btn klein" data-act="wort-edit" data-i="${i}">${icon('edit')}</button>
+    <button class="btn klein" data-act="wort-weg" data-i="${i}" aria-label="Entfernen">${icon('x')}</button></div>`;
+}
+function viewWoche() {
+  const e = S.entwurf;
+  return `<div class="bar"><button class="rund" data-act="eltern-zurueck" aria-label="Zurück">${icon('left')}</button><div class="grow"><h2 style="margin:0">${e.id ? 'Woche bearbeiten' : 'Neue Woche'}</h2></div>
+      <button class="btn main" data-act="woche-speichern">${icon('check')}Speichern</button></div>
+    <div class="card">
+      <label class="feld">Titel<input data-in="e-titel" value="${esc(e.titel)}" maxlength="60"></label>
+      <label class="feld">Diktat am<input type="date" data-in="e-diktat" value="${esc(e.diktat)}"></label>
+      ${S.importInfo ? `<div class="hinweis">${esc(S.importInfo)}</div>` : ''}
+      <div class="liste">${e.woerter.map(wortZeile).join('') || '<p class="leise">Noch keine Wörter.</p>'}</div>
+      <div class="row" style="margin-top:12px"><button class="btn" data-act="wort-neu">${icon('plus')}Wort hinzufügen</button>
+      ${e.id ? (S.loeschenFrage ? '<button class="btn gefahr" data-act="woche-loeschen-ja">Wirklich löschen?</button>' : '<button class="btn gefahr" data-act="woche-loeschen">Woche löschen</button>') : ''}</div>
+    </div>`;
+}
+function viewWortEdit() {
+  const e = S.wedit;
+  return `<div class="bar"><button class="rund" data-act="wedit-abbruch" aria-label="Abbrechen">${icon('left')}</button><div class="grow"><h2 style="margin:0">${e.i < 0 ? 'Wort hinzufügen' : 'Wort bearbeiten'}</h2></div>
+      <button class="btn main" data-act="wedit-ok">${icon('check')}Übernehmen</button></div>
+    <div class="card">
+      <label class="feld">Wort (Nomen mit Artikel, z. B. „der Abend“)<input id="wedit-wort" data-in="w-text" value="${esc(vollWort(e.w))}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></label>
+      <p class="leise" style="font-size:15px;margin:0">Silben, Stellen und Wortart schlägt die App beim Tippen vor. Bitte prüfen.</p>
+      <div id="wedit-teil">${weditTeil()}</div>
+    </div>`;
+}
+function weditTeil() {
+  const w = S.wedit.w, sel = S.wedit.sel;
+  if (!w.wort) return '';
+  const cuts = new Set(); let pos = 0;
+  w.silben.slice(0, -1).forEach(s => { pos += s.length; cuts.add(pos) });
+  const marked = j => w.stellen.some(s => j >= s.von && j < s.bis);
+  let bst = '';
+  for (let j = 0; j < w.wort.length; j++) {
+    if (j > 0) bst += `<button class="gap${cuts.has(j) ? ' an' : ''}" data-act="w-gap" data-j="${j}" aria-label="Silbengrenze"></button>`;
+    const inSel = sel && j >= sel.von && j < sel.bis;
+    bst += `<button class="bst${inSel ? ' sel' : ''}${marked(j) ? ' mark' : ''}" data-act="w-bst" data-j="${j}">${esc(w.wort[j])}</button>`;
+  }
+  return `<div style="margin:12px 0">${wortHtml(w, { boegen: true, koenige: true, px: 56 })}</div>
+    <p style="font-weight:600;margin:10px 0 4px">Wortart</p>
+    <div class="chips">${WORTARTEN.map(x => `<button class="chip" data-act="w-wortart" data-x="${x}" aria-pressed="${w.wortart === x}">${WA_NAME[x]}</button>`).join('')}</div>
+    <p style="font-weight:600;margin:14px 0 4px">Wortart nach FRESCH</p>
+    <div class="chips">${ARTEN.map(x => `<button class="chip" data-act="w-art" data-x="${x}" aria-pressed="${w.art === x}">${ART_NAME[x]}</button>`).join('')}</div>
+    <p style="font-weight:600;margin:14px 0 0">Silben und schwierige Stellen</p>
+    <p class="leise" style="font-size:15px;margin:2px 0">Zwischen die Buchstaben tippen setzt oder löscht eine Silbengrenze. Buchstaben antippen wählt eine Stelle aus.</p>
+    <div class="buchstaben">${bst}</div>
+    ${sel ? `<div class="chips">${TYPEN.map(t => `<button class="chip" data-act="w-stelle-neu" data-typ="${t}">${esc(TYP_NAME[t])}</button>`).join('')}<button class="chip" data-act="w-sel-weg">Auswahl aufheben</button></div>` : ''}
+    ${w.stellen.map((s, k) => `<div class="stelle"><b>${esc(w.wort.slice(s.von, s.bis))}</b><input data-in="w-tipp" data-k="${k}" value="${esc(s.tipp)}" aria-label="Tipp für ${esc(TYP_NAME[s.typ])}"><button class="btn klein" data-act="w-stelle-weg" data-k="${k}" aria-label="Stelle entfernen">${icon('x')}</button></div>`).join('')}
+    <label class="feld">Beispielsatz<input data-in="w-satz" value="${esc(w.satz)}" maxlength="140"></label>
+    <button class="btn" data-act="w-vorlesen">${icon('speaker')}Vorlesen</button>`;
+}
+
+/* ---------- render ---------- */
+const VIEWS = { start: viewStart, karte: viewKarte, station: viewStation, onboard: viewOnboard, wer: viewWer, gate: viewGate, eltern: viewEltern, import: viewImport, woche: viewWoche, wedit: viewWortEdit };
+function render() {
+  if (!aktiv() && S.view !== 'onboard') { S.ob = S.ob || { schritt: 1, name: '', lefty: false }; S.view = 'onboard' }
+  $('#app').innerHTML = VIEWS[S.view]();
+  window.scrollTo(0, 0);
+}
+function renderTeil() { const el = $('#wedit-teil'); if (el) el.innerHTML = weditTeil() }
+
+/* ---------- actions ---------- */
+function startStation(typ) {
+  const ws = wochenWoerter(aktuelleWoche());
+  if (!ws.length) return;
+  S.st = { typ, ws, i: 0, taps: 0, fehler: 0, status: '', gefunden: new Set(), wackel: -1, ok: new Set(), sterne: 0 };
+  S.view = 'station'; render();
+  say(ANLEITUNG[typ]);
+}
+function stationGeloest() {
+  const st = S.st;
+  st.status = 'ok'; st.ok.add(st.i); st.sterne++; sternPlus(); SFX.ok();
+}
+function speichereEntwurf() {
+  const e = S.entwurf;
+  if (!e.woerter.length) { toast('Noch keine Wörter in dieser Woche'); return }
+  if (isNaN(parseDay(e.diktat))) { toast('Bitte einen Diktattermin wählen'); return }
+  // Same word (article + word) keeps its id, so its learning progress follows it into new weeks.
+  const ids = [...new Set(e.woerter.map(w => {
+    const key = wortKey(w);
+    const id = (w.id && S.D.woerter[w.id] && wortKey(S.D.woerter[w.id]) === key) ? w.id
+      : Object.keys(S.D.woerter).find(k => wortKey(S.D.woerter[k]) === key) || uid('w');
+    S.D.woerter[id] = Object.assign({}, w, { id });
+    return id;
+  }))];
+  const titel = e.titel.trim() || 'Lernwörter';
+  if (e.id) Object.assign(S.D.wochen.find(k => k.id === e.id), { titel, diktat: e.diktat, woerter: ids });
+  else S.D.wochen.push({ id: uid('k'), titel, diktat: e.diktat, woerter: ids, fehlerwoerter: [], angelegt: isoDay(Date.now()) });
+  saveDaten(); S.view = 'eltern'; S.etab = 'wochen'; S.importInfo = ''; render(); toast('Woche gespeichert');
+}
+function sicherungSpeichern() {
+  const data = { app: 'lernwoerter', v: 1, exported: new Date().toISOString(), profile: S.prof, daten: {} };
+  S.prof.liste.forEach(p => { data.daten[p.id] = p.id === aktiv().id ? S.D : store.get(lsDaten(p.id), leereDaten()) });
+  downloadFile(`schreibfuchs-sicherung-${isoDay(Date.now())}.json`, JSON.stringify(data))
+    .then(r => { if (r !== 'aborted') toast('Sicherung gespeichert') }, () => toast('Speichern ging nicht'));
+}
+function sicherungLaden(text) {
+  let o;
+  try { o = JSON.parse(text) } catch (e) { toast('Das ist keine Schreibfuchs-Sicherung'); return }
+  if (!o || o.app !== 'lernwoerter' || !o.profile || !Array.isArray(o.profile.liste) || !o.daten) { toast('Das ist keine Schreibfuchs-Sicherung'); return }
+  if (!confirm('Sicherung laden? Der jetzige Stand auf diesem iPad wird ersetzt.')) return;
+  S.prof = o.profile; saveProf();
+  for (const p of S.prof.liste) store.set(lsDaten(p.id), o.daten[p.id] || leereDaten());
+  ladeDaten(); wendeProfilAn(); S.view = 'eltern'; render(); toast('Sicherung geladen');
+}
+function stationWort() { return S.st.ws[S.st.i] }
+function kartenWort() { return wochenWoerter(aktuelleWoche())[S.k.i] }
+
+const ACT = {
+  home: () => { S.view = 'start'; render() },
+  hallo: () => say(`Hallo ${aktiv().name}! Schön, dass du da bist.`),
+  wer: () => { S.view = 'wer'; render() },
+  'wer-wahl': el => { S.prof.aktiv = el.dataset.id; saveProf(); ladeDaten(); wendeProfilAn(); S.view = 'start'; render(); say(`Hallo ${aktiv().name}!`) },
+  karte: el => { S.k = { i: Number(el.dataset.i) || 0, boegen: false, koenige: false, satz: false }; S.view = 'karte'; render(); const w = kartenWort(); if (w) say(vollWort(w)) },
+  'karte-vor': () => { S.k.i++; S.k.satz = false; render(); const w = kartenWort(); if (w) say(vollWort(w)) },
+  'karte-zurueck': () => { S.k.i--; S.k.satz = false; render(); const w = kartenWort(); if (w) say(vollWort(w)) },
+  'sag-wort': () => { const w = S.view === 'station' ? stationWort() : kartenWort(); if (w) say(vollWort(w)) },
+  'sag-satz': () => { const w = kartenWort(); S.k.satz = true; render(); if (w) say(w.satz) },
+  boegen: () => { const w = kartenWort(); S.k.boegen = !S.k.boegen; render(); if (S.k.boegen && w) say(w.silben.join(' - '), 0.6) },
+  koenige: () => { S.k.koenige = !S.k.koenige; render() },
+  station: el => startStation(el.dataset.typ),
+  anleitung: () => say(ANLEITUNG[S.st.typ]),
+  trommel: el => { S.st.taps++; SFX.trommel(); el.classList.remove('schlag'); void el.offsetWidth; el.classList.add('schlag'); $('.schlaege').innerHTML = '<b></b>'.repeat(S.st.taps); $('[data-act="taps-fertig"]').disabled = false },
+  'taps-neu': () => { S.st.taps = 0; S.st.status = ''; render() },
+  'taps-fertig': () => {
+    const st = S.st, w = stationWort();
+    if (st.taps === w.silben.length) { stationGeloest(); render(); say(w.silben.join(' - '), 0.6) }
+    else if (++st.fehler >= 2) { st.status = 'hilfe'; render(); SFX.sanft(); say(w.silben.join(' - '), 0.6) }
+    else { st.status = 'nochmal'; st.taps = 0; render(); SFX.sanft(); say('Nochmal probieren!') }
+  },
+  tile: el => {
+    const st = S.st, k = Number(el.dataset.k);
+    if (st.status === 'ok') return;
+    if (el.dataset.v === '1') {
+      if (st.gefunden.has(k)) return;
+      st.gefunden.add(k); st.wackel = -1; SFX.krone();
+      const total = stationWort().silben.reduce((n, s) => n + tokens(s).filter(t => t.v).length, 0);
+      if (st.gefunden.size >= total) { stationGeloest(); render(); say('Alle Könige gefunden!') } else render();
+    } else { st.wackel = k; SFX.sanft(); render() }
+  },
+  'st-weiter': () => {
+    const st = S.st;
+    if (st.i >= st.ws.length - 1) { st.ende = true; render(); SFX.fertig(); say(`Geschafft! Toll gemacht, ${aktiv().name}!`); return }
+    st.i++; st.taps = 0; st.fehler = 0; st.status = ''; st.gefunden = new Set(); st.wackel = -1;
+    render(); say(vollWort(stationWort()));
+  },
+  // first start
+  'ob-weiter': () => {
+    const n = (S.ob.name || '').trim();
+    if (!n) { toast('Bitte einen Namen eintragen'); return }
+    S.ob.name = n; S.ob.schritt = 2; render();
+    say(`Hallo ${n}! Was magst du am liebsten? Einhörner, Halloween oder Tiere?`);
+  },
+  'ob-frage': () => say(`Hallo ${S.ob.name}! Was magst du am liebsten? Einhörner, Halloween oder Tiere?`),
+  'ob-abbruch': () => { S.ob = null; S.view = 'eltern'; render() },
+  'ob-thema': el => {
+    const p = { id: uid('p'), name: S.ob.name, lefty: !!S.ob.lefty, schrift: 'grund', thema: el.dataset.thema, band: 40 };
+    S.prof = S.prof || { aktiv: p.id, liste: [] };
+    S.prof.liste.push(p); S.prof.aktiv = p.id; saveProf();
+    S.ob = null; ladeDaten(); saveDaten(); wendeProfilAn(); S.view = 'start'; render();
+    SFX.fertig(); say(`Super! ${THEMEN[p.thema].name}! Los geht's.`);
+  },
+  // parents
+  eltern: () => { neueAufgabe(); S.view = 'gate'; render() },
+  ziffer: el => { const g = S.gate; if (g.ein.length < 4) g.ein += el.dataset.z; g.falsch = false; render() },
+  'ziffer-weg': () => { S.gate.ein = S.gate.ein.slice(0, -1); render() },
+  'gate-ok': () => {
+    const g = S.gate;
+    if (Number(g.ein) === g.a * g.b) { S.view = 'eltern'; S.etab = S.etab || 'wochen'; render() }
+    else { neueAufgabe(); S.gate.falsch = true; render() }
+  },
+  etab: el => { S.etab = el.dataset.tab; render() },
+  'eltern-zurueck': () => { S.view = 'eltern'; S.importInfo = ''; S.loeschenFrage = false; render() },
+  'kind-neu': () => { S.ob = { schritt: 1, name: '', lefty: false }; S.view = 'onboard'; render() },
+  'p-thema': el => { aktiv().thema = el.dataset.thema; saveProf(); wendeProfilAn(); render() },
+  import: () => { S.importText = ''; S.importFehler = ''; S.view = 'import'; render() },
+  'prompt-kopieren': () => copyText(importPrompt(), 'Anleitung kopiert'),
+  'import-pruefen': () => {
+    try {
+      const r = parseImport($('#import-text').value);
+      S.entwurf = { id: null, titel: r.titel || `Lernwörter ${S.D.wochen.length + 1}`, diktat: naechsterFreitag(), woerter: r.woerter };
+      S.importInfo = `${r.woerter.length} Wörter erkannt. Bitte jedes Wort prüfen, dann Diktattermin wählen und speichern.`;
+      S.importFehler = ''; S.view = 'woche'; render();
+    } catch (e) { S.importFehler = e.message; render() }
+  },
+  'woche-neu': () => { S.entwurf = { id: null, titel: `Lernwörter ${S.D.wochen.length + 1}`, diktat: naechsterFreitag(), woerter: [] }; S.importInfo = ''; S.loeschenFrage = false; S.view = 'woche'; render() },
+  'woche-edit': el => {
+    const k = S.D.wochen.find(x => x.id === el.dataset.id); if (!k) return;
+    S.entwurf = { id: k.id, titel: k.titel, diktat: k.diktat, woerter: wochenWoerter(k).map(w => JSON.parse(JSON.stringify(w))) };
+    S.importInfo = ''; S.loeschenFrage = false; S.view = 'woche'; render();
+  },
+  'woche-speichern': speichereEntwurf,
+  'woche-loeschen': () => { S.loeschenFrage = true; render() },
+  'woche-loeschen-ja': () => { S.D.wochen = S.D.wochen.filter(k => k.id !== S.entwurf.id); saveDaten(); S.loeschenFrage = false; S.view = 'eltern'; render(); toast('Woche gelöscht') },
+  'wort-neu': () => { S.wedit = { i: -1, w: neuesWort(''), sel: null }; S.view = 'wedit'; render(); const f = $('#wedit-wort'); if (f) f.focus() },
+  'wort-edit': el => { const i = Number(el.dataset.i); S.wedit = { i, w: JSON.parse(JSON.stringify(S.entwurf.woerter[i])), sel: null }; S.view = 'wedit'; render() },
+  'wort-weg': el => { S.entwurf.woerter.splice(Number(el.dataset.i), 1); render() },
+  'wedit-abbruch': () => { S.view = 'woche'; render() },
+  'wedit-ok': () => {
+    const e = S.wedit;
+    if (!e.w.wort) { toast('Bitte ein Wort eintragen'); return }
+    if (e.i < 0) S.entwurf.woerter.push(e.w); else S.entwurf.woerter[e.i] = e.w;
+    S.view = 'woche'; render();
+  },
+  'w-wortart': el => { S.wedit.w.wortart = el.dataset.x; renderTeil() },
+  'w-art': el => { S.wedit.w.art = el.dataset.x; renderTeil() },
+  'w-gap': el => {
+    const w = S.wedit.w, j = Number(el.dataset.j), cuts = new Set(); let pos = 0;
+    w.silben.slice(0, -1).forEach(s => { pos += s.length; cuts.add(pos) });
+    if (cuts.has(j)) cuts.delete(j); else cuts.add(j);
+    w.silben = schneide(w.wort, [...cuts]); renderTeil();
+  },
+  'w-bst': el => {
+    const e = S.wedit, j = Number(el.dataset.j);
+    if (!e.sel) e.sel = { von: j, bis: j + 1 };
+    else if (j + 1 === e.sel.von || j === e.sel.bis) e.sel = { von: Math.min(e.sel.von, j), bis: Math.max(e.sel.bis, j + 1) };
+    else e.sel = { von: j, bis: j + 1 };
+    renderTeil();
+  },
+  'w-sel-weg': () => { S.wedit.sel = null; renderTeil() },
+  'w-stelle-neu': el => {
+    const e = S.wedit, typ = el.dataset.typ;
+    e.w.stellen = e.w.stellen.filter(s => !(s.von < e.sel.bis && e.sel.von < s.bis));
+    e.w.stellen.push({ von: e.sel.von, bis: e.sel.bis, typ, tipp: TIPP[typ] });
+    e.w.stellen.sort((a, b) => a.von - b.von); e.sel = null; renderTeil();
+  },
+  'w-stelle-weg': el => { S.wedit.w.stellen.splice(Number(el.dataset.k), 1); renderTeil() },
+  'w-vorlesen': () => { const w = S.wedit.w; say(vollWort(w) + (w.satz ? '. ' + w.satz : '')) },
+  sichern: sicherungSpeichern,
+  laden: () => $('#datei').click()
+};
+const IN = {
+  'ob-name': el => { S.ob.name = el.value },
+  'p-name': el => { const n = el.value.trim(); if (n) { aktiv().name = n; saveProf() } },
+  import: el => { S.importText = el.value },
+  'e-titel': el => { S.entwurf.titel = el.value },
+  'e-diktat': el => { S.entwurf.diktat = el.value },
+  'w-text': el => { const satz = S.wedit.w.satz; S.wedit.w = neuesWort(el.value); S.wedit.w.satz = satz; S.wedit.sel = null; renderTeil() },
+  'w-tipp': el => { const s = S.wedit.w.stellen[Number(el.dataset.k)]; if (s) s.tipp = el.value.slice(0, 80) },
+  'w-satz': el => { S.wedit.w.satz = el.value.slice(0, 140) }
+};
+const CH = {
+  'ob-lefty': el => { S.ob.lefty = el.checked },
+  'p-lefty': el => { aktiv().lefty = el.checked; saveProf() },
+  'p-schrift': el => { aktiv().schrift = el.value; saveProf(); wendeProfilAn() }
+};
 
 /* ---------- events ---------- */
-const ACT = {
-  'stift-leeren': () => pads.stift.clear(),
-  'finger-frei': () => { penSeen = false; showLive(); toast('Finger sind wieder erlaubt') },
-  undo: el => pads[el.dataset.pad].undo(),
-  neu: el => { pads[el.dataset.pad].clear(); if (el.dataset.pad === 'spur') $('#spur-ergebnis').innerHTML = '' },
-  sag: () => say(wort()),
-  weiter: () => { E.wort = (E.wort + 1) % WOERTER.length; saveE(); syncSettings(); clearWritingPads(); layoutVisible(); say(wort()) },
-  fertig,
-  nochmal,
-  sim: el => simulate(el.dataset.kind),
-  kopieren: copyReport,
-  stimme: () => { pickVoice(); say('der Abend. Am Abend lese ich ein Buch.'); setTimeout(fillReport, 300) }
-};
 document.addEventListener('click', e => {
-  const tab = e.target.closest('[data-tab]');
-  if (tab) { showTab(tab.dataset.tab); return }
   const el = e.target.closest('[data-act]');
-  if (el && ACT[el.dataset.act]) ACT[el.dataset.act](el);
+  if (el && !el.disabled && ACT[el.dataset.act]) ACT[el.dataset.act](el);
 });
-document.addEventListener('input', e => {
-  const el = e.target;
-  if (el.dataset.set) {
-    const k = el.dataset.set;
-    E[k] = el.type === 'checkbox' ? el.checked : (k === 'font' ? el.value : Number(el.value));
-    saveE(); syncSettings();
-    if (k === 'band' || k === 'wort' || k === 'font') clearWritingPads();
-    layoutVisible();
-  } else if (el.dataset.scr) checkScribble(Number(el.dataset.i));
-  else if (el.id === 'bericht-notiz') fillReport();
+document.addEventListener('input', e => { const el = e.target; if (el.dataset.in && IN[el.dataset.in]) IN[el.dataset.in](el) });
+document.addEventListener('change', e => { const el = e.target; if (el.dataset.ch && CH[el.dataset.ch]) CH[el.dataset.ch](el) });
+$('#datei').addEventListener('change', e => {
+  const f = e.target.files && e.target.files[0]; e.target.value = '';
+  if (!f) return;
+  const r = new FileReader(); r.onload = () => sicherungLaden(String(r.result)); r.readAsText(f);
 });
-document.addEventListener('change', e => {
-  if (e.target.dataset.scr) checkScribble(Number(e.target.dataset.i));
-  if (e.target.id === 'spur-zeigen') { const p = pads.spur; p.overlay = e.target.checked && p.lastResult && p.strokes.length ? p.lastResult : null; p.redraw() }
-});
-let resizeTimer = 0;
-window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(layoutVisible, 120) });
 
 /* ---------- boot ---------- */
-function boot() {
-  $('#ver').textContent = 'Werkstatt-Test · Version ' + VERSION;
-  if (/[?&]debug\b/.test(location.search)) { document.body.classList.add('debug-on'); window.m0 = { pads, bewerteSpur, simulate, E } }
-  $('#wort-wahl').innerHTML = WOERTER.map((w, i) => `<option value="${i}">${esc(w)}</option>`).join('');
-  pads.stift = new Pad($('#pad-stift'), { lineatur: false, height: 380 });
-  pads.schreiben = new Pad($('#pad-schreiben'), { mode: 'vorlage' });
-  pads.spur = new Pad($('#pad-spur'), { mode: 'spur' });
-  pads.spur.color = RAINBOW[0];
-  pads.schreiben.onChange = showSchreibStats;
-  buildScribble(); syncSettings(); showTab(E.tab);
-}
-// Template metrics need the real fonts, so wait for both before the first layout.
-const loads = Object.values(FONTS).map(f => document.fonts && document.fonts.load ? document.fonts.load('40px ' + f.css, 'xAbäß') : Promise.resolve());
-Promise.all(loads).then(boot, boot);
+ladeDaten(); wendeProfilAn();
+if (aktiv()) S.view = 'start';
+const fonts = document.fonts && document.fonts.load ? Promise.all([document.fonts.load('40px "Playwrite DE Grund"', 'Abä'), document.fonts.load('40px "Andika"', 'Abä')]) : Promise.resolve();
+fonts.then(render, render);
+if ('serviceWorker' in navigator && location.protocol === 'https:') { try { navigator.serviceWorker.register('sw.js') } catch (e) {} }
+// Debug hook for local checks only (?debug), never needed by the app.
+if (/[?&]debug\b/.test(location.search)) window.sf = { S, parseImport, silbenVorschlag, stellenVorschlag, neuesWort, tokens, render };
 })();
 </script>
 </body>
