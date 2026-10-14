@@ -178,7 +178,7 @@ function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add
 const pct = v => Math.round(v * 100) + ' %';
 
 /* ---------- settings ---------- */
-const VERSION = 'M0.2';
+const VERSION = 'M0.3';
 // Words from the first worksheet (NRW basic vocabulary, A words) plus three that test ö, ß and descenders.
 const WOERTER = ['der Abend', 'acht', 'alle', 'alt', 'die Ampel', 'antworten', 'der Apfel', 'der April', 'arbeiten', 'der Arm', 'der Vogel', 'fröhlich', 'groß'];
 const SCRIBBLE = ['Hunt', 'Fogel', 'Fahrad', 'Abent', 'Apel', 'fröhlig', 'alle'];
@@ -186,7 +186,7 @@ const FONTS = { grund: { css: '"Playwrite DE Grund"', name: 'Playwrite DE Grund'
 const RAINBOW = ['#E5484D', '#E8742A', '#2E9E5B', '#2E6FD8', '#7C4DDB'];
 const LS = 'lernwoerter.m0.v1';
 // The child is left-handed (Thomas, 14.10.): template on the right by default.
-const E = Object.assign({ tab: 'stift', font: 'grund', band: 40, wort: 0, lefty: true, farbband: false }, store.get(LS, {}));
+const E = Object.assign({ tab: 'stift', font: 'grund', band: 56, wort: 0, lefty: true, farbband: false }, store.get(LS, {}));
 if (!FONTS[E.font]) E.font = 'grund';
 if (!(E.wort >= 0 && E.wort < WOERTER.length)) E.wort = 0;
 function saveE() { store.set(LS, E) }

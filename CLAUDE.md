@@ -32,8 +32,8 @@ Repo und interne Schlüssel heißen neutral `lernwoerter` (Speicher `lernwoerter
 
 Bei jeder Änderung an `index.html`, `werkstatt.html` oder den Schriften **beide Versionsnummern gleichzeitig** hochzählen, sonst bekommt das iPad die alte Fassung aus dem Cache:
 
-- `sw.js`: `const CACHE = 'lernwoerter-v0.6';`
-- `index.html`: `const VERSION = '0.6';` (sichtbar im Elternbereich)
+- `sw.js`: `const CACHE = 'lernwoerter-v0.7';`
+- `index.html`: `const VERSION = '0.7';` (sichtbar im Elternbereich)
 
 `tools/check.sh` bricht ab, wenn sie nicht übereinstimmen. Nach jedem Update muss die Home-Bildschirm-App komplett geschlossen und zweimal geöffnet werden. Das gehört in jede Release-Nachricht an Thomas.
 
@@ -101,7 +101,7 @@ Einstellungen enthalten die Linienhöhe (28–72 px) mit einer Probe-Schreibflä
 
 ## Schrift und Lineatur
 
-- Lineatur wie auf dem Arbeitsblatt der Schule gemessen: vier Linien, drei gleich hohe Bänder, Grundlinie fett, kein farbiges Mittelband (abschaltbar vorhanden).
+- Lineatur wie auf dem Arbeitsblatt der Schule gemessen: vier Linien, drei gleich hohe Bänder, Grundlinie fett, kein farbiges Mittelband (abschaltbar vorhanden). Standard-Bandhöhe `STANDARD_BAND = 56` (am iPad gewählt), passt mit Selbstkontrolle ohne Scrollen ins Querformat (1180 × 788).
 - Die Vorlage wird so groß gesetzt, dass die x-Höhe genau das Mittelband füllt (`xRatio()` in `werkstatt.html`). Playwrite DE Grund passt dazu fast genau (Oberlänge 1,87, Unterlänge 0,87 Bänder), Andika nicht (1,54 / 0,47).
 - Kronen der Silbenkönige: Höhe nach Buchstabenart (`kronenKlasse()`: klein, mit Punkt [äöüi], groß), berechnet aus den Schriftmaßen bei Zeilenhöhe 1,5.
 - Die Playwrite-DE-Familie hat auch LA, VA und SAS (verbundene Schriften in NRW). Ein späterer Wechsel ist nur eine weitere Schriftdatei.

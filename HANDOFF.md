@@ -1,6 +1,6 @@
 # Übergabe an Claude Code – Schreibfuchs
 
-Stand: 14.10.2026 · **App 0.6 live** auf `main` (M1–M6 zusammengeführt am 14.10. auf Wunsch von Thomas, vor dem M0-Test) · Werkstatt-Test unter `/werkstatt.html` · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
+Stand: 14.10.2026 · **App 0.7 live** (Linienhöhe 56 aus dem M0-Test) auf `main` (M1–M6 zusammengeführt am 14.10. auf Wunsch von Thomas, vor dem M0-Test) · Werkstatt-Test unter `/werkstatt.html` · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
 
 Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei sagt, was entschieden, was fertig und was als Nächstes zu tun ist.
 
@@ -9,12 +9,12 @@ Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei
 | # | Frage (KONZEPT 11) | Entscheidung |
 |---|---|---|
 | 1 | Für wen? | Nur die Familie. Profile für Geschwister vorsehen, Namen nur im Gerät. |
-| 2 | Schrift | NRW. Druckschrift. Im Test: **Playwrite DE Grund** (passt zur Lineatur) gegen Andika. Der M0-Test entscheidet. |
+| 2 | Schrift | NRW. **Playwrite DE Grund** (im M0-Test am iPad bestätigt, 14.10.). Andika bleibt in den Einstellungen wählbar. |
 | 3 | Plattform | Web-App wie Voc a Bit. |
-| 4 | Kontrolle beim freien Schreiben | Selbstkontrolle plus Eltern-Durchsicht. Scribble wird in M0 nur gemessen. |
+| 4 | Kontrolle beim freien Schreiben | Selbstkontrolle plus Eltern-Durchsicht. **Scribble verworfen** (M0-Test 14.10.: liest die Handschrift falsch, „Hunt“→„Unt“, „Fogel“→„Focuel“, „Abent“→„Abert“). Eine native Hülle mit Apples Texterkennung (KONZEPT 10, Phase 2) nur bei echtem Bedarf. |
 | 5 | Name | **Schreibfuchs** (keine gleichnamige Lern-App gefunden, keine Markenrecherche). |
 | 6 | Belohnungsthemen | **Einhörner, Halloween, Tiere**, Auswahl beim ersten Start. Halloween kindgerecht (freundliches Gespenst, Kürbis, Fledermaus, kein Grusel). |
-| 7 | Lineatur | Wie das Arbeitsblatt: vier Linien, drei gleich hohe Bänder, Grundlinie fett, kein farbiges Mittelband (abschaltbar). Bandhöhe einstellbar. |
+| 7 | Lineatur | Wie das Arbeitsblatt: vier Linien, drei gleich hohe Bänder, Grundlinie fett, kein farbiges Mittelband (abschaltbar). **Standard-Bandhöhe 56 px** (am iPad gewählt, `STANDARD_BAND`), je Kind einstellbar. |
 | 8 | Repo | Öffentlich, `daddytomsen/lernwoerter`, GitHub Pages, gleiche Regeln wie Voc a Bit. |
 | 9 | Gerät | iPad Air M1 (5. Generation) mit Eingabestift eines Drittherstellers (Amazon ASIN B0DC44B473, „Stift für iPad Pro Air Mini 2018–2026“, laut Händler kompatibel mit iPad Air 3.–6. Gen). |
 | 10 | Arbeitsblatt | „Lernwörter 1“: der Abend, acht, alle, alt, die Ampel, antworten, der Apfel, der April, arbeiten, der Arm. Foto lokal in `entwurf/`. |
@@ -58,7 +58,7 @@ Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei
    4. **Nachspuren:** drei Wörter sauber, eins absichtlich schlampig, eins gekritzelt. Passen die Sterne zum Gefühl?
    5. **Scribble:** Einstellungen → Apple Pencil → Scribble („Kritzeln“) an, dann die falschen Wörter mit dem Stift in beide Spalten schreiben.
    6. **Bericht:** „Stimme testen“, dann „Bericht kopieren“ und in Claude einfügen.
-5. Ergebnisse unten ins Testprotokoll, dann Entscheidung: Schrift, Standard-Band, Sterne-Schwellen, Scribble ja/nein (Konzept 5, Stufe 4).
+5. ~~Ergebnisse ins Testprotokoll, Entscheidungen~~ erledigt 14.10. (Bericht 16:33): Schrift Playwrite DE Grund, Band 56, Sterne-Schwellen bestätigt, Scribble verworfen. Umgesetzt als 0.7. Offen: ob die Handballen-Sperre greift (Bericht: 0 ignorierte Berührungen, vermutlich filtert iPadOS die Hand schon selbst).
 
 ### M1 Grundgerüst (KONZEPT 12) – auf Zweig `m1`, lokal geprüft, nicht auf dem iPad
 
@@ -205,4 +205,4 @@ Ergebnisse ins Testprotokoll unten. Fehler und Wünsche an Claude Code.
 
 | Datum | Gerät / iPadOS | Ergebnis |
 |---|---|---|
-| | | |
+| 14.10.2026 | iPad Air M1, Dritthersteller-Stift, Home-Bildschirm, Werkstatt-Test M0.2 | Stift als `pen` erkannt (70 Berührungen), Neigung ja, Druck konstant 0,12 (kein Drucksensor, feste Strichbreite greift), Abtastrate ≈ 281 Hz, 3,9 Zwischenpunkte je Bewegung, Verarbeitung 3,8 ms. Nachspuren „alt“: schlampig 43 %/85 % → 1 Stern, sauber 98 %/100 % → 3 Sterne (Schwellen passen). Gewählt: Playwrite DE Grund, Band 56. Scribble liest falsch (Hunt→Unt, Fogel→Focuel, Fahrad→Farad, Abent→Abert, fröhlig→Gröihlig, nur Apel richtig) → verworfen. Deutsche Stimme Anna vorhanden. Handballen: 0 ignoriert. |

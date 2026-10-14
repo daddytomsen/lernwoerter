@@ -536,7 +536,7 @@ function parseImport(text) {
 }
 
 /* ---------- state & persistence ---------- */
-const VERSION = '0.6';
+const VERSION = '0.7';
 const LS_PROF = 'lernwoerter.profile.v1', lsDaten = id => `lernwoerter.daten.${id}.v1`;
 const S = { view: 'start', prof: store.get(LS_PROF, null), D: null };
 const leererStand = () => ({ sterne: 0, tage: {}, w: {}, rot: {}, plan: {}, zaehler: {}, abzeichen: {}, sticker: {}, heute: null });
@@ -748,6 +748,8 @@ function speichereVersuch(v) {
 /* ---------- writing pad (from werkstatt.html, M0) ---------- */
 // Two stacked canvases: bg (ruling + template) and ink. Strokes are point lists [x, y, pressure] in CSS px.
 const FONTS = { grund: '"Playwrite DE Grund"', andika: '"Andika"' };
+// Line height (middle band) chosen on the iPad in the M0 test (14.10.2026): 56 px. Adjustable per child in the settings.
+const STANDARD_BAND = 56;
 const xCache = {};
 function xRatio(key) {   // x-height per px of font size; the template's x-height fills the middle band
   if (xCache[key]) return xCache[key];
@@ -771,7 +773,7 @@ function Pad(o) {
 }
 Pad.prototype.layout = function () {
   const p = aktiv() || {};
-  this.band = p.band || 40; this.font = FONTS[p.schrift] ? p.schrift : 'grund'; this.lefty = !!p.lefty;
+  this.band = p.band || STANDARD_BAND; this.font = FONTS[p.schrift] ? p.schrift : 'grund'; this.lefty = !!p.lefty;
   this.w = this.wrap.clientWidth || 600; this.h = Math.round(this.band * 4.2);
   this.dpr = Math.min(3, window.devicePixelRatio || 1);
   for (const c of [this.bg, this.ink]) { c.width = Math.round(this.w * this.dpr); c.height = Math.round(this.h * this.dpr); c.style.height = this.h + 'px' }
@@ -1789,7 +1791,7 @@ function viewEltern() {
     body = `<label class="feld">Name des Kindes<input data-in="p-name" value="${esc(p.name)}" autocomplete="off" autocorrect="off" spellcheck="false" maxlength="24"></label>
       <label class="check"><input type="checkbox" data-ch="p-lefty" ${p.lefty ? 'checked' : ''}> schreibt mit links (Vorlage beim Schreiben rechts)</label>
       <label class="feld">Schulschrift<select data-ch="p-schrift"><option value="grund" ${p.schrift !== 'andika' ? 'selected' : ''}>Grundschrift (Playwrite DE Grund)</option><option value="andika" ${p.schrift === 'andika' ? 'selected' : ''}>Druckschrift (Andika)</option></select></label>
-      <label class="feld">Linienhöhe beim Schreiben: <span id="band-wert">${p.band || 40} px</span><input type="range" min="28" max="72" step="2" data-in="p-band" value="${p.band || 40}"></label>
+      <label class="feld">Linienhöhe beim Schreiben: <span id="band-wert">${p.band || STANDARD_BAND} px</span><input type="range" min="28" max="72" step="2" data-in="p-band" value="${p.band || STANDARD_BAND}"></label>
       <div data-pad-host></div>
       <p class="leise" style="font-size:15px;margin:6px 0 0">Zum Ausprobieren darf man hier schreiben. So sehen Lineatur und Vorlage in den Schreibstationen aus.</p>
       <p style="font-weight:600;margin:14px 0 6px">Thema</p>
@@ -2134,7 +2136,7 @@ const ACT = {
   'ob-frage': () => say(`Hallo ${S.ob.name}! Was magst du am liebsten? Einhörner, Halloween oder Tiere?`),
   'ob-abbruch': () => { S.ob = null; S.view = 'eltern'; render() },
   'ob-thema': el => {
-    const p = { id: uid('p'), name: S.ob.name, lefty: !!S.ob.lefty, schrift: 'grund', thema: el.dataset.thema, band: 40 };
+    const p = { id: uid('p'), name: S.ob.name, lefty: !!S.ob.lefty, schrift: 'grund', thema: el.dataset.thema, band: STANDARD_BAND };
     S.prof = S.prof || { aktiv: p.id, liste: [] };
     S.prof.liste.push(p); S.prof.aktiv = p.id; saveProf();
     S.ob = null; ladeDaten(); saveDaten(); wendeProfilAn(); S.view = 'start'; render();
@@ -2214,7 +2216,7 @@ const ACT = {
 const IN = {
   'ob-name': el => { S.ob.name = el.value },
   'p-name': el => { const n = el.value.trim(); if (n) { aktiv().name = n; saveProf() } },
-  'p-band': el => { aktiv().band = Number(el.value) || 40; saveProf(); $('#band-wert').textContent = aktiv().band + ' px'; if (S.vorschau) S.vorschau.layout() },
+  'p-band': el => { aktiv().band = Number(el.value) || STANDARD_BAND; saveProf(); $('#band-wert').textContent = aktiv().band + ' px'; if (S.vorschau) S.vorschau.layout() },
   import: el => { S.importText = el.value },
   'e-titel': el => { S.entwurf.titel = el.value },
   'e-diktat': el => { S.entwurf.diktat = el.value },
