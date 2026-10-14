@@ -11,7 +11,7 @@ Repo und interne Schlüssel heißen neutral `lernwoerter` (Speicher `lernwoerter
 - **Oberfläche Deutsch**, Du-Form, für ein Kind: wenig Text, große Ziele (mindestens 64 px), alles vorlesbar.
 - **Handschrift bleibt Kern:** Wo geschrieben wird, wird mit Stift oder Finger geschrieben, nie getippt. Belohnung ohne Druck, keine roten Kreuze, Fehler heißen „Nochmal probieren“ mit sanftem Ton.
 - **Lernstand nur im Gerät.** Nichts verschicken, keine Analytics, keine Cookies.
-- **Repo ist öffentlich:** keine Namen von Kindern (auch nicht in Code, Tests, Commits, HANDOFF), keine Fotos, keine Schreibproben, keine Sicherungen. `entwurf/` ist lokal und ignoriert. Der Name des Kindes wird nur in der App im Elternbereich eingetragen.
+- **Repo ist öffentlich:** keine Namen von Kindern (auch nicht in Code, Tests, Commits, HANDOFF), keine Fotos, keine Schreibproben, keine Sicherungen. `entwurf/` ist lokal und ignoriert. Der Name des Kindes wird nur in der App im Elternbereich eingetragen. `tools/check.sh` bricht ab, wenn ein Name aus `tools/namen.local.txt` (lokal, von Git ignoriert, ein Name je Zeile) in einer Repo-Datei steht. Fehlt die Datei auf einem neuen Rechner, Thomas nach den Namen fragen.
 - Vor jedem Commit `tools/check.sh`.
 
 ## Dateien
@@ -23,7 +23,7 @@ Repo und interne Schlüssel heißen neutral `lernwoerter` (Speicher `lernwoerter
 | `sw.js` | Service Worker: Seiten network-first, Schriften und Rest cache-first, Kern im Cache beim Installieren |
 | `manifest.webmanifest` | Home-Bildschirm (Icons folgen in M6) |
 | `fonts/` | `playwrite-de-grund.woff2`, `andika-latin.woff2` (Google-Fonts-Ausgaben) und die OFL-Lizenztexte |
-| `tools/check.sh` | JS-Syntax beider Seiten und `sw.js`, Schriften, Cache-Kern vorhanden, gleiche Version, keine privaten Dateien |
+| `tools/check.sh` | JS-Syntax beider Seiten und `sw.js`, Schriften, Cache-Kern vorhanden, gleiche Version, keine privaten Dateien, keine Kindernamen |
 | `KONZEPT.md` | Auftrag (pädagogische Grundlage, Stationen, Fahrplan) |
 | `entwurf/` | lokal: Foto des ersten Arbeitsblatts (`Lernwörter 1`), nie ins Repo |
 

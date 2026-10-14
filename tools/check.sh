@@ -37,5 +37,10 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
     | grep -Ei '\.(jpe?g|png|heic|webp|gif)$|sicherung|^entwurf/|^fotos/' \
     | grep -Ev '^(apple-touch-icon|icon-192|icon-512)\.png$' || true)"
   if [ -n "$bad" ]; then echo "Private Dateien würden ins Repo gehen:"; echo "$bad"; exit 1; fi
+  # Names of the children live only in tools/namen.local.txt (ignored by git, one name per line).
+  if [ -s tools/namen.local.txt ]; then
+    treffer="$(git ls-files --cached --others --exclude-standard -z | xargs -0 grep -liwFf tools/namen.local.txt 2>/dev/null || true)"
+    if [ -n "$treffer" ]; then echo "Ein Kindername steht in diesen Dateien:"; echo "$treffer"; exit 1; fi
+  fi
 fi
 echo "  ok"
