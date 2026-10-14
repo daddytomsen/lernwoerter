@@ -321,6 +321,9 @@ textarea{width:100%;font:15px/1.4 ui-monospace,Menlo,monospace}
 .fehlerbox{background:#FDE4E5;color:#9C2127;border-radius:12px;padding:10px 14px;margin:10px 0}
 .hinweis{background:var(--warn-soft);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:16px}
 .version{color:var(--ink-3);font-size:14px;margin-top:20px}
+.angebot{background:var(--good-soft);border-radius:var(--r-md);padding:12px 14px;margin-bottom:14px}
+.angebot h3{margin:0 0 8px;display:flex;align-items:center;gap:8px}
+.angebot .eintrag{background:#fff;margin-top:8px}
 .hilfe{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
 .hilfe li{line-height:1.45}
 #toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;padding:14px 22px;border-radius:16px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;text-align:center;z-index:10}
@@ -540,17 +543,18 @@ function parseImport(text) {
 }
 
 /* ---------- state & persistence ---------- */
-const VERSION = '0.8';
+const VERSION = '0.9';
 const LS_PROF = 'lernwoerter.profile.v1', lsDaten = id => `lernwoerter.daten.${id}.v1`;
 const S = { view: 'start', prof: store.get(LS_PROF, null), D: null };
 const leererStand = () => ({ sterne: 0, tage: {}, w: {}, rot: {}, plan: {}, zaehler: {}, abzeichen: {}, sticker: {}, heute: null });
-const leereDaten = () => ({ v: 1, woerter: {}, wochen: [], diktate: [], stand: leererStand() });
+const leereDaten = () => ({ v: 1, woerter: {}, wochen: [], diktate: [], geladen: {}, stand: leererStand() });
 function aktiv() { const P = S.prof; return (P && P.liste.find(p => p.id === P.aktiv)) || null }
 function ladeDaten() {
   const p = aktiv(), d = p ? store.get(lsDaten(p.id), null) : null;
   S.D = Object.assign(leereDaten(), d || {});
   S.D.stand = Object.assign(leererStand(), S.D.stand);   // older data lacks w/rot (0.1), plan (0.3), rewards (0.4)
   if (!Array.isArray(S.D.diktate)) S.D.diktate = [];
+  if (!S.D.geladen || typeof S.D.geladen !== 'object') S.D.geladen = {};
 }
 function saveProf() { if (!store.set(LS_PROF, S.prof)) toast('Speichern hat nicht geklappt. Ist der Speicher voll?') }
 function saveDaten() { const p = aktiv(); if (p && !store.set(lsDaten(p.id), S.D)) toast('Speichern hat nicht geklappt. Ist der Speicher voll?') }
@@ -1665,7 +1669,13 @@ function viewSchulDiktat() {
       <p style="font-weight:700;margin:16px 0 0">${ws.length - f.size} von ${ws.length} richtig</p></div>`;
 }
 function schulDiktatSpeichern() {
-  const k = S.D.wochen.find(x => x.id === S.sd.id), falsch = [...S.sd.falsch], alt = k.schulDiktat ? k.schulDiktat.falsch : null;
+  const k = S.D.wochen.find(x => x.id === S.sd.id), falsch = [...S.sd.falsch];
+  schulDiktatAnwenden(k, falsch);
+  saveDaten(); S.view = 'eltern'; S.etab = 'wochen'; render();
+  toast(falsch.length ? `${falsch.length} Fehlerwörter gemerkt` : 'Alles richtig, toll!');
+}
+function schulDiktatAnwenden(k, falsch) {
+  const alt = k.schulDiktat ? k.schulDiktat.falsch : null;
   if (!alt) k.woerter.forEach(id => bewerte(id, !falsch.includes(id), []));
   else falsch.filter(id => !alt.includes(id)).forEach(id => bewerte(id, false, []));
   const vorher = alt || [], wiederRichtig = vorher.filter(id => !falsch.includes(id));
@@ -1676,8 +1686,43 @@ function schulDiktatSpeichern() {
   k.schulDiktat = { datum: heute(), falsch };
   const eintrag = { id: 's' + k.id, woche: k.id, datum: k.diktat || heute(), ergebnis: k.woerter.map(id => ({ wort: id, ok: !falsch.includes(id), fehler: [] })), pokal: null, quelle: 'schule' };
   S.D.diktate = S.D.diktate.filter(d => d.id !== eintrag.id).concat([eintrag]);
-  saveDaten(); S.view = 'eltern'; S.etab = 'wochen'; render();
-  toast(falsch.length ? `${falsch.length} Fehlerwörter gemerkt` : 'Alles richtig, toll!');
+}
+
+/* ---------- weeks from the repo (wochen/ folder next to this page) ---------- */
+// Claude Code puts the school's weekly lists into wochen/ (index.json + one file per week, same format as the photo
+// import). Parents take a week over with one tap and only check the dictation date. rev counts corrections:
+// a higher rev is offered again as an update and keeps the learning progress (same words keep their ids).
+function holeAngebot() {
+  S.angebot = 'lade';
+  fetch('wochen/index.json', { cache: 'no-store' })
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json() })
+    .then(o => { S.angebot = (o.wochen || []).filter(x => x && x.id && x.datei && (S.D.geladen[x.id] || 0) < (x.rev || 1)) },
+      () => { S.angebot = 'offline' })
+    .then(() => { if (S.view === 'eltern' && (S.etab || 'wochen') === 'wochen') render() });
+}
+function angebotHtml() {
+  if (S.angebot === undefined) { holeAngebot(); return '<p class="leise">Suche neue Wochen …</p>' }
+  if (S.angebot === 'lade') return '<p class="leise">Suche neue Wochen …</p>';
+  if (S.angebot === 'offline') return '<p class="leise">Neue Wochen aus dem Netz gibt es nur mit Internet.</p>';
+  if (!S.angebot.length) return '';
+  return `<div class="angebot"><h3>${icon('down')} Neue Wochen bereit</h3>${S.angebot.map(x => {
+    const da = S.D.wochen.some(k => k.quelle === x.id);
+    return `<div class="eintrag"><div class="info"><b style="color:var(--ink);font-size:18px">${esc(x.titel)}</b>${x.hinweis ? '<br>' + esc(x.hinweis) : ''}</div>
+      <button class="btn klein main" data-act="angebot" data-id="${esc(x.id)}">${da ? 'Aktualisieren' : 'Übernehmen'}</button></div>`;
+  }).join('')}</div>`;
+}
+function uebernehmen(id) {
+  const x = Array.isArray(S.angebot) && S.angebot.find(a => a.id === id);
+  if (!x) return;
+  fetch('wochen/' + x.datei, { cache: 'no-store' }).then(r => { if (!r.ok) throw new Error(r.status); return r.text() }).then(text => {
+    const r = parseImport(text), alt = S.D.wochen.find(k => k.quelle === x.id);
+    S.entwurf = alt
+      ? { id: alt.id, titel: r.titel || alt.titel, diktat: alt.diktat, woerter: r.woerter, fehlerwoerter: (alt.fehlerwoerter || []).slice(), quelle: { id: x.id, rev: x.rev || 1 } }
+      : { id: null, titel: r.titel || x.titel, diktat: x.diktat || naechsterFreitag(), woerter: r.woerter, quelle: { id: x.id, rev: x.rev || 1, schulFalsch: x.schulDiktatFalsch || null } };
+    S.importInfo = alt ? `Neue Fassung mit ${r.woerter.length} Wörtern. Der Lernstand bleibt erhalten. Speichern übernimmt sie.`
+      : `${r.woerter.length} Wörter geladen. ${x.diktat ? 'Der Diktattermin stammt vom Arbeitsblatt.' : 'Bitte den Diktattermin prüfen.'}${x.schulDiktatFalsch ? ` Beim Speichern wird das Schul-Diktat eingetragen (${x.schulDiktatFalsch.length} Fehler).` : ''}`;
+    S.loeschenFrage = false; S.view = 'woche'; render();
+  }).catch(() => toast('Laden ging nicht. Ist das iPad online?'));
 }
 
 /* ---------- parents: help (M6) ---------- */
@@ -1708,6 +1753,7 @@ function viewHilfe() {
     + abschnitt('Neue Woche', [
       '„Wochen“ → „Neue Woche mit Foto“ → Anleitung kopieren → in der Claude-App mit dem Foto vom Arbeitsblatt senden → Antwort einfügen → prüfen, Diktattermin wählen, speichern.',
       'Fehlerwörter aus dem letzten Diktat kommen automatisch dazu.',
+      'Neue Wochen von Claude Code erscheinen unter „Wochen“ oben als „Neue Wochen bereit“: „Übernehmen“, Diktattermin prüfen, speichern. Dafür muss das iPad online sein.',
       'Nach dem Diktat in der Schule: „Wochen“ → bei der Woche „Schul-Diktat“ → die falschen Wörter antippen → Speichern. Sie kommen als Fehlerwörter in die nächste Woche.']);
 }
 
@@ -1830,7 +1876,7 @@ function viewEltern() {
   let body = '';
   if (tab === 'wochen') {
     const wochen = S.D.wochen.slice().sort((a, b) => (b.diktat || '').localeCompare(a.diktat || ''));
-    body = `<div class="row"><button class="btn main" data-act="import">${icon('camera')}Neue Woche mit Foto</button><button class="btn" data-act="woche-neu">${icon('plus')}Neue Woche von Hand</button></div>
+    body = `${angebotHtml()}<div class="row"><button class="btn main" data-act="import">${icon('camera')}Neue Woche mit Foto</button><button class="btn" data-act="woche-neu">${icon('plus')}Neue Woche von Hand</button></div>
       <div class="liste" style="margin-top:14px">${wochen.map(k => `<div class="eintrag"><div class="info"><b style="color:var(--ink);font-size:18px">${esc(k.titel)}</b><br>Diktat ${esc(datumLang(k.diktat))} · ${k.woerter.length} Wörter</div>
         <button class="btn klein" data-act="schuldiktat" data-id="${k.id}">${icon('trophy')}${k.schulDiktat ? `Schul-Diktat ${k.woerter.length - k.schulDiktat.falsch.length}/${k.woerter.length}` : 'Schul-Diktat'}</button>
         <button class="btn klein" data-act="woche-edit" data-id="${k.id}">${icon('edit')}Bearbeiten</button></div>`).join('') || '<p class="leise">Noch keine Woche angelegt.</p>'}</div>`;
@@ -2028,6 +2074,14 @@ function speichereEntwurf() {
   // A new week picks up the open mistakes of the dictation before it.
   const vorher = nachbarWoche(k, -1);
   if (!e.id && vorher) uebertrageFehler(vorher);
+  if (e.quelle) {
+    S.D.geladen[e.quelle.id] = e.quelle.rev; k.quelle = e.quelle.id;
+    if (Array.isArray(S.angebot)) S.angebot = S.angebot.filter(a => a.id !== e.quelle.id);
+    if (e.quelle.schulFalsch && !k.schulDiktat) {
+      const finde = t => k.woerter.find(id => { const w = S.D.woerter[id], x = String(t).toLowerCase(); return w.wort.toLowerCase() === x || vollWort(w).toLowerCase() === x });
+      schulDiktatAnwenden(k, e.quelle.schulFalsch.map(finde).filter(Boolean));
+    }
+  }
   saveDaten(); S.view = 'eltern'; S.etab = 'wochen'; S.importInfo = ''; render(); toast('Woche gespeichert');
 }
 // Backup = profiles + all learning data. Writing attempts (IndexedDB) stay on the device on purpose: they are only for review.
@@ -2201,10 +2255,11 @@ const ACT = {
   'ziffer-weg': () => { S.gate.ein = S.gate.ein.slice(0, -1); render() },
   'gate-ok': () => {
     const g = S.gate;
-    if (Number(g.ein) === g.a * g.b) { S.view = 'eltern'; S.etab = S.etab || 'wochen'; S.versuche = null; render() }
+    if (Number(g.ein) === g.a * g.b) { S.view = 'eltern'; S.etab = S.etab || 'wochen'; S.versuche = null; S.angebot = undefined; render() }
     else { neueAufgabe(); S.gate.falsch = true; render() }
   },
-  etab: el => { S.etab = el.dataset.tab; if (S.etab === 'durchsicht') S.versuche = null; render() },
+  etab: el => { S.etab = el.dataset.tab; if (S.etab === 'durchsicht') S.versuche = null; if (S.etab === 'wochen') S.angebot = undefined; render() },
+  angebot: el => uebernehmen(el.dataset.id),
   urteil: el => { const v = (S.versuche || []).find(x => String(x.id) === el.dataset.id); if (v) urteilen(v, el.dataset.u) },
   'eltern-zurueck': () => { S.view = 'eltern'; S.importInfo = ''; S.loeschenFrage = false; render() },
   'kind-neu': () => { S.ob = { schritt: 1, name: '', lefty: false }; S.view = 'onboard'; render() },
@@ -2309,7 +2364,7 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || /[?&]sw\b
 let resizeTimer = 0;
 window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { const p = aktuellesPad(); if (p && p.wrap.isConnected) p.layout() }, 150) });
 // Debug hook for local checks only (?debug): state, word functions, Karteikasten, and a day shift for "tomorrow".
-if (/[?&]debug\b/.test(location.search)) window.sf = { S, parseImport, silbenVorschlag, stellenVorschlag, neuesWort, tokens, render, bewerte, rundeAusDemKopf, bewerteSpur, tag: n => { zeitVersatz = n; return heute() }, alternative, ablenker, poolFuer, planStart, tagIndexHeute, stufe, pruefeAbzeichen, neuerSticker, sicherungsText, sicherungLaden };
+if (/[?&]debug\b/.test(location.search)) window.sf = { S, parseImport, silbenVorschlag, stellenVorschlag, neuesWort, tokens, render, bewerte, rundeAusDemKopf, bewerteSpur, tag: n => { zeitVersatz = n; return heute() }, alternative, ablenker, poolFuer, planStart, tagIndexHeute, holeAngebot, uebernehmen, stufe, pruefeAbzeichen, neuerSticker, sicherungsText, sicherungLaden };
 })();
 </script>
 </body>

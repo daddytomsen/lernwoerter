@@ -1,6 +1,6 @@
 # Übergabe an Claude Code – Schreibfuchs
 
-Stand: 14.10.2026 · **App 0.8 live** (an die Schule angeglichen) auf `main` (M1–M6 zusammengeführt am 14.10. auf Wunsch von Thomas, vor dem M0-Test) · Werkstatt-Test unter `/werkstatt.html` · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
+Stand: 14.10.2026 · **App 0.9 live** (an die Schule angeglichen, Wochen aus dem Repo übernehmen) auf `main` (M1–M6 zusammengeführt am 14.10. auf Wunsch von Thomas, vor dem M0-Test) · Werkstatt-Test unter `/werkstatt.html` · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
 
 Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei sagt, was entschieden, was fertig und was als Nächstes zu tun ist.
 
@@ -201,6 +201,13 @@ Aus dem Schulmaterial (Wochenblätter, Anlauttabelle, Diktat, Artikel-Blatt; Fot
 - Drei Wochen als fertige Import-Texte in `~/Downloads/schreibfuchs-transfer/wochen-import.md` (AB 4 mit den drei echten Diktatfehlern als Stolperstellen, „der, die, das“, „hat, haben“ nur 1–7).
 - Geprüft im Browser: Import beider Wochen über die Oberfläche, Schul-Diktat AB 4 12/15 → um, lesen, Baum als Fehlerwörter der Folgewoche und Fach 1, Korrektur nimmt „lesen“ wieder heraus; Optik von Häuschen, Königsbuchstaben, Stolperstellen.
 - **Offen:** Farben. Artikel-Blatt der Schule: der blau, die rot, das grün. App: Wortarten Nomen blau, Verb rot, Adjektiv grün (aus dem Konzept). Thomas klärt, wie die Schule die Wortarten färbt. Empfehlung bei Unklarheit: Artikel nach Schulblatt färben, Wortarten-Kisten mit Symbolen statt Farben.
+
+### 0.9 – Neue Wochen laden (14.10.2026 abends, Wunsch Thomas)
+
+Thomas erwartete, dass die von Claude erstellten Wochen von selbst in der App erscheinen. Jetzt: Wochen liegen in `wochen/` im Repo, der Reiter „Wochen“ im Elternbereich zeigt „Neue Wochen bereit“ mit „Übernehmen“. Arbeitsablauf in CLAUDE.md („Neue Wochen aus Fotos“).
+- Im Repo: „der, die, das“ (15), „hat, haben“ (erst 7, Rest folgt als rev 2), „AB 4“ (15, Diktat 12.10. mit Schul-Diktat um, lesen, Baum).
+- Geprüft im Browser: Angebot nach der Rechenaufgabe, AB 4 übernommen mit Termin und Schul-Diktat 12/15, „der, die, das“ übernommen → Fehlerwörter um, lesen, Baum; Aktualisierung (rev 2 mit einem Wort mehr) behält Ids und Lernstand, keine doppelte Woche.
+- **Offen:** die aktuelle Schulwoche (vermutlich AB 5) fehlt noch, Fotos von Thomas; Wörter 8–15 von „hat, haben“.
 
 ## Nicht ohne Rückfrage
 

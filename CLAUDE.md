@@ -24,6 +24,7 @@ Repo und interne Schlüssel heißen neutral `lernwoerter` (Speicher `lernwoerter
 | `manifest.webmanifest` | Home-Bildschirm, Icons 192/512 (auch maskable) |
 | `icon.svg`, `apple-touch-icon.png` (180), `icon-192.png`, `icon-512.png` | App-Icon: Fuchs über Schul-Lineatur mit Stift. `icon.svg` ist die Quelle; PNGs im Browser per Canvas gerendert, randlos und ohne Alphakanal (iOS füllt Transparenz schwarz) |
 | `fonts/` | `playwrite-de-grund.woff2`, `andika-latin.woff2` (Google-Fonts-Ausgaben) und die OFL-Lizenztexte |
+| `wochen/index.json`, `wochen/*.json` | Lernwörter-Wochen der Schule zum Übernehmen in der App („Neue Wochen bereit“), siehe unten |
 | `tools/check.sh` | JS-Syntax beider Seiten und `sw.js`, Schriften, Cache-Kern vorhanden, gleiche Version, keine privaten Dateien, keine Kindernamen |
 | `KONZEPT.md` | Auftrag (pädagogische Grundlage, Stationen, Fahrplan) |
 | `entwurf/` | lokal: Foto des ersten Arbeitsblatts (`Lernwörter 1`), nie ins Repo |
@@ -32,10 +33,10 @@ Repo und interne Schlüssel heißen neutral `lernwoerter` (Speicher `lernwoerter
 
 Bei jeder Änderung an `index.html`, `werkstatt.html` oder den Schriften **beide Versionsnummern gleichzeitig** hochzählen, sonst bekommt das iPad die alte Fassung aus dem Cache:
 
-- `sw.js`: `const CACHE = 'lernwoerter-v0.8';`
-- `index.html`: `const VERSION = '0.8';` (sichtbar im Elternbereich)
+- `sw.js`: `const CACHE = 'lernwoerter-v0.9';`
+- `index.html`: `const VERSION = '0.9';` (sichtbar im Elternbereich)
 
-`tools/check.sh` bricht ab, wenn sie nicht übereinstimmen. Nach jedem Update muss die Home-Bildschirm-App komplett geschlossen und zweimal geöffnet werden. Das gehört in jede Release-Nachricht an Thomas.
+`tools/check.sh` bricht ab, wenn sie nicht übereinstimmen. Neue oder korrigierte Wochen in `wochen/` brauchen **keinen** neuen Release (der Service Worker holt `wochen/` immer zuerst aus dem Netz). Nach jedem Update muss die Home-Bildschirm-App komplett geschlossen und zweimal geöffnet werden. Das gehört in jede Release-Nachricht an Thomas.
 
 ## Aufbau von `index.html`
 
@@ -85,10 +86,20 @@ Abschnitte im Skript (Kommentare `/* ---------- … ---------- */`):
 
 `?debug` setzt `window.sf` (Zustand und Wortfunktionen) für lokale Prüfungen.
 
+## Neue Wochen aus Fotos (Arbeitsablauf für Claude Code)
+
+Thomas schickt Fotos der Wochenblätter (oft zwei Fotos je Woche: Wörter 1–7 und 8–15). Daraus:
+1. `wochen/<id>.json` im Import-Format anlegen: `{ "titel", "woerter": [{ wort, artikel, wortart, art, silben, stellen: [{ zeichen, typ, tipp }], satz }] }`. Wörter genau wie auf dem Blatt; Nomen mit Artikel, wie sie im Diktat geschrieben werden. Stolperstellen nach FRESCH, echte Fehler aus Schul-Diktaten als eigene Stolperstelle mit passendem Tipp. Sätze höchstens 8 Wörter, ohne Namen.
+2. Eintrag in `wochen/index.json`: `{ id, titel, datei, rev: 1, hinweis, diktat? (JJJJ-MM-TT, wenn bekannt), schulDiktatFalsch? (Wörter, wenn das Schul-Diktat schon geschrieben ist) }`.
+3. Korrektur oder Ergänzung einer schon übernommenen Woche: Datei ändern, `rev` hochzählen. Die App bietet „Aktualisieren“ an; gleiche Wörter behalten ihre Id und den Lernstand.
+4. `tools/check.sh` (prüft Silben, Stellen, Schul-Diktat-Wörter), committen, pushen. Thomas: Elternbereich → Wochen → „Übernehmen“ → Diktattermin prüfen → Speichern.
+
+In der App: `holeAngebot()` lädt beim Öffnen des Reiters „Wochen“ `wochen/index.json` (`cache: 'no-store'`), zeigt Wochen mit höherem `rev` als `D.geladen[id]`; `uebernehmen()` öffnet den Wochen-Editor (bei schon übernommener Woche mit deren Id, Termin und Fehlerwörtern). `speichereEntwurf()` merkt `D.geladen[id] = rev`, `woche.quelle = id` und trägt `schulDiktatFalsch` über `schulDiktatAnwenden()` ein.
+
 ## Datenmodell
 
 - **Profile** `localStorage['lernwoerter.profile.v1']`: `{ aktiv, liste: [{ id, name, lefty, schrift: grund|andika, thema: einhorn|halloween|tiere, band }] }`.
-- **Daten je Kind** `localStorage['lernwoerter.daten.<profil-id>.v1']`: `{ v: 1, woerter: { id: Wort }, wochen: [Woche], stand: { sterne, tage: { JJJJ-MM-TT: sterne }, w: { wortId: Karte }, rot: { station: index } } }`.
+- **Daten je Kind** `localStorage['lernwoerter.daten.<profil-id>.v1']`: `{ v: 1, woerter: { id: Wort }, wochen: [Woche], diktate: [Diktat], geladen: { wochen-id: rev }, stand: { sterne, tage: { JJJJ-MM-TT: sterne }, w: { wortId: Karte }, rot: { station: index } } }`.
 - **Karte** (Lernstand je Wort): `{ fach: 0–5, faellig: "JJJJ-MM-TT", richtig, falsch, zuletzt: "JJJJ-MM-TT", letztes: ok|falsch, fehlerstellen: { "a0".. (Artikel) / "0".. (Wort): anzahl } }`.
 - **Wort:** `{ id, wort, artikel, wortart: nomen|verb|adjektiv|andere, art: mitsprech|nachdenk|merk, silben: ["A","bend"], stellen: [{ von, bis, typ, tipp }], satz }`. Ids sind fest, der Lernstand hängt daran. Gleiches Wort (Artikel + Wort, ohne Groß/klein) behält beim Speichern einer Woche seine Id.
 - **Woche:** `{ id, titel, diktat: "JJJJ-MM-TT", woerter: [ids], fehlerwoerter: [ids aus dem Vorwochen-Diktat], diktatFehler: [ids], angelegt }`.

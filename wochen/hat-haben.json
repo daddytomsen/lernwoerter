@@ -1,0 +1,104 @@
+{
+ "titel": "Lernwörter hat, haben",
+ "woerter": [
+  {
+   "wort": "hat",
+   "artikel": "",
+   "wortart": "verb",
+   "art": "mitsprech",
+   "silben": [
+    "hat"
+   ],
+   "stellen": [],
+   "satz": "Sie hat einen Hund."
+  },
+  {
+   "wort": "haben",
+   "artikel": "",
+   "wortart": "verb",
+   "art": "mitsprech",
+   "silben": [
+    "ha",
+    "ben"
+   ],
+   "stellen": [],
+   "satz": "Wir haben heute Sport."
+  },
+  {
+   "wort": "Bild",
+   "artikel": "das",
+   "wortart": "nomen",
+   "art": "nachdenk",
+   "silben": [
+    "Bild"
+   ],
+   "stellen": [
+    {
+     "zeichen": "d",
+     "typ": "verlaengern",
+     "tipp": "Verlängern: die Bil-der"
+    }
+   ],
+   "satz": "Das Bild hängt an der Wand."
+  },
+  {
+   "wort": "Schere",
+   "artikel": "die",
+   "wortart": "nomen",
+   "art": "mitsprech",
+   "silben": [
+    "Sche",
+    "re"
+   ],
+   "stellen": [],
+   "satz": "Die Schere ist spitz."
+  },
+  {
+   "wort": "Klasse",
+   "artikel": "die",
+   "wortart": "nomen",
+   "art": "nachdenk",
+   "silben": [
+    "Klas",
+    "se"
+   ],
+   "stellen": [
+    {
+     "zeichen": "ss",
+     "typ": "doppel",
+     "tipp": "Kurzes a: doppeltes s"
+    }
+   ],
+   "satz": "Unsere Klasse macht einen Ausflug."
+  },
+  {
+   "wort": "schreiben",
+   "artikel": "",
+   "wortart": "verb",
+   "art": "mitsprech",
+   "silben": [
+    "schrei",
+    "ben"
+   ],
+   "stellen": [],
+   "satz": "Wir schreiben ein Diktat."
+  },
+  {
+   "wort": "dann",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "nachdenk",
+   "silben": [
+    "dann"
+   ],
+   "stellen": [
+    {
+     "zeichen": "nn",
+     "typ": "doppel",
+     "tipp": "Kurzes a: doppeltes n"
+    }
+   ],
+   "satz": "Erst essen wir, dann spielen wir."
+  }
+ ]
+}

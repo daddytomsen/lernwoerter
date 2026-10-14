@@ -1,5 +1,5 @@
 // Schreibfuchs service worker: lets the app start without internet and picks up new versions on the next launch.
-const CACHE = 'lernwoerter-v0.8';
+const CACHE = 'lernwoerter-v0.9';
 const CORE = ['./', './index.html', './werkstatt.html', './manifest.webmanifest',
   './fonts/playwrite-de-grund.woff2', './fonts/andika-latin.woff2',
   './apple-touch-icon.png', './icon-192.png', './icon-512.png'];
@@ -30,8 +30,8 @@ self.addEventListener('fetch', event => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  // Pages: network first, so updates arrive; offline the cached copy.
-  if (req.mode === 'navigate' || url.pathname.endsWith('.html')) {
+  // Pages and weekly word lists: network first, so updates and new weeks arrive; offline the cached copy.
+  if (req.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.includes('/wochen/')) {
     event.respondWith(
       fetch(req).then(res => store(req, res)).catch(() =>
         caches.match(req, { ignoreSearch: true }).then(hit => hit || caches.match('./index.html'))

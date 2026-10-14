@@ -1,0 +1,31 @@
+{
+ "wochen": [
+  {
+   "id": "der-die-das",
+   "titel": "Lernwörter der, die, das",
+   "datei": "der-die-das.json",
+   "rev": 1,
+   "hinweis": "15 Wörter (der, die, das … alte). Schon geübte Woche? Dann ein Diktatdatum aus der Vergangenheit wählen."
+  },
+  {
+   "id": "hat-haben",
+   "titel": "Lernwörter hat, haben",
+   "datei": "hat-haben.json",
+   "rev": 1,
+   "hinweis": "Erst 7 Wörter (hat … dann), die Wörter 8–15 folgen als Aktualisierung."
+  },
+  {
+   "id": "ab4",
+   "titel": "Lernwörter AB 4",
+   "datei": "ab4.json",
+   "rev": 1,
+   "diktat": "2026-10-12",
+   "hinweis": "15 Wörter (als … Bäume). Diktat in der Schule am 12.10.: 12 von 15 richtig, um, lesen und Baum werden Fehlerwörter.",
+   "schulDiktatFalsch": [
+    "um",
+    "lesen",
+    "der Baum"
+   ]
+  }
+ ]
+}

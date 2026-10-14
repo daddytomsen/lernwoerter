@@ -26,6 +26,22 @@ cache = re.search(r"CACHE = 'lernwoerter-v([\d.]+)'", sw).group(1)
 shown = re.search(r"const VERSION = '([\d.]+)'", open('index.html', encoding='utf-8').read()).group(1)
 assert cache == shown, f'Version passt nicht: sw.js {cache}, index.html {shown}'
 print(f'  Version {shown} (sw.js und index.html gleich)')
+# Weekly word lists for "Neue Wochen laden"
+if os.path.isdir('wochen'):
+    idx = json.load(open('wochen/index.json', encoding='utf-8'))['wochen']
+    ids = [x['id'] for x in idx]
+    assert len(ids) == len(set(ids)), 'wochen/index.json: doppelte id'
+    for x in idx:
+        wk = json.load(open('wochen/' + x['datei'], encoding='utf-8'))
+        for w in wk['woerter']:
+            assert w.get('wort'), f"{x['datei']}: Wort fehlt"
+            if w.get('silben'):
+                assert ''.join(w['silben']) == w['wort'], f"{x['datei']}: Silben ergeben nicht {w['wort']}"
+            for st in w.get('stellen', []):
+                assert st['zeichen'] in w['wort'], f"{x['datei']}: Stelle {st['zeichen']} nicht in {w['wort']}"
+        for t in x.get('schulDiktatFalsch', []):
+            assert any(t.lower() in (w['wort'].lower(), (w.get('artikel', '') + ' ' + w['wort']).strip().lower()) for w in wk['woerter']), f"{x['datei']}: Schul-Diktat-Wort {t} fehlt"
+        print(f"  wochen/{x['datei']}: {len(wk['woerter'])} Wörter, rev {x.get('rev', 1)}")
 PY
 
 for js in "$tmp"/*.js; do node --check "$js"; done

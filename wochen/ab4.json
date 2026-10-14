@@ -1,0 +1,213 @@
+{
+ "titel": "Lernwörter AB 4",
+ "woerter": [
+  {
+   "wort": "als",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "mitsprech",
+   "silben": [
+    "als"
+   ],
+   "stellen": [],
+   "satz": "Ich bin größer als du."
+  },
+  {
+   "wort": "es",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "mitsprech",
+   "silben": [
+    "es"
+   ],
+   "stellen": [],
+   "satz": "Es regnet heute."
+  },
+  {
+   "wort": "um",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "mitsprech",
+   "silben": [
+    "um"
+   ],
+   "stellen": [
+    {
+     "zeichen": "u",
+     "typ": "merk",
+     "tipp": "Sprich deutlich: u wie Uhu"
+    }
+   ],
+   "satz": "Wir treffen uns um drei Uhr."
+  },
+  {
+   "wort": "oft",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "mitsprech",
+   "silben": [
+    "oft"
+   ],
+   "stellen": [],
+   "satz": "Ich lese oft ein Buch."
+  },
+  {
+   "wort": "nun",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "mitsprech",
+   "silben": [
+    "nun"
+   ],
+   "stellen": [],
+   "satz": "Nun gehen wir nach Hause."
+  },
+  {
+   "wort": "fast",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "mitsprech",
+   "silben": [
+    "fast"
+   ],
+   "stellen": [],
+   "satz": "Ich bin fast fertig."
+  },
+  {
+   "wort": "Frau",
+   "artikel": "die",
+   "wortart": "nomen",
+   "art": "mitsprech",
+   "silben": [
+    "Frau"
+   ],
+   "stellen": [],
+   "satz": "Die Frau liest die Zeitung."
+  },
+  {
+   "wort": "Mann",
+   "artikel": "der",
+   "wortart": "nomen",
+   "art": "nachdenk",
+   "silben": [
+    "Mann"
+   ],
+   "stellen": [
+    {
+     "zeichen": "nn",
+     "typ": "doppel",
+     "tipp": "Verlängern: die Män-ner"
+    }
+   ],
+   "satz": "Der Mann fährt mit dem Rad."
+  },
+  {
+   "wort": "Kind",
+   "artikel": "das",
+   "wortart": "nomen",
+   "art": "nachdenk",
+   "silben": [
+    "Kind"
+   ],
+   "stellen": [
+    {
+     "zeichen": "d",
+     "typ": "verlaengern",
+     "tipp": "Verlängern: die Kin-der"
+    }
+   ],
+   "satz": "Das Kind spielt im Garten."
+  },
+  {
+   "wort": "September",
+   "artikel": "",
+   "wortart": "nomen",
+   "art": "mitsprech",
+   "silben": [
+    "Sep",
+    "tem",
+    "ber"
+   ],
+   "stellen": [],
+   "satz": "Im September beginnt die Schule."
+  },
+  {
+   "wort": "Oktober",
+   "artikel": "",
+   "wortart": "nomen",
+   "art": "mitsprech",
+   "silben": [
+    "Ok",
+    "to",
+    "ber"
+   ],
+   "stellen": [],
+   "satz": "Im Oktober fallen die Blätter."
+  },
+  {
+   "wort": "lesen",
+   "artikel": "",
+   "wortart": "verb",
+   "art": "mitsprech",
+   "silben": [
+    "le",
+    "sen"
+   ],
+   "stellen": [
+    {
+     "zeichen": "l",
+     "typ": "merk",
+     "tipp": "Verben schreibt man klein"
+    }
+   ],
+   "satz": "Ich kann schon gut lesen."
+  },
+  {
+   "wort": "rechnen",
+   "artikel": "",
+   "wortart": "verb",
+   "art": "mitsprech",
+   "silben": [
+    "rech",
+    "nen"
+   ],
+   "stellen": [],
+   "satz": "In Mathe rechnen wir viel."
+  },
+  {
+   "wort": "Baum",
+   "artikel": "der",
+   "wortart": "nomen",
+   "art": "nachdenk",
+   "silben": [
+    "Baum"
+   ],
+   "stellen": [
+    {
+     "zeichen": "m",
+     "typ": "merk",
+     "tipp": "Nach au nur ein m"
+    }
+   ],
+   "satz": "Der Baum ist sehr hoch."
+  },
+  {
+   "wort": "Bäume",
+   "artikel": "die",
+   "wortart": "nomen",
+   "art": "nachdenk",
+   "silben": [
+    "Bäu",
+    "me"
+   ],
+   "stellen": [
+    {
+     "zeichen": "äu",
+     "typ": "ableiten",
+     "tipp": "Ableiten: der Baum"
+    }
+   ],
+   "satz": "Im Wald stehen viele Bäume."
+  }
+ ]
+}

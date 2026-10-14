@@ -1,0 +1,204 @@
+{
+ "titel": "Lernwörter der, die, das",
+ "woerter": [
+  {
+   "wort": "der",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "mitsprech",
+   "silben": [
+    "der"
+   ],
+   "stellen": [],
+   "satz": "Der Hund bellt laut."
+  },
+  {
+   "wort": "die",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "nachdenk",
+   "silben": [
+    "die"
+   ],
+   "stellen": [
+    {
+     "zeichen": "ie",
+     "typ": "ie",
+     "tipp": "Langes i: ie"
+    }
+   ],
+   "satz": "Die Katze schläft."
+  },
+  {
+   "wort": "das",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "mitsprech",
+   "silben": [
+    "das"
+   ],
+   "stellen": [],
+   "satz": "Das Pferd ist braun."
+  },
+  {
+   "wort": "ein",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "mitsprech",
+   "silben": [
+    "ein"
+   ],
+   "stellen": [],
+   "satz": "Ein Vogel singt."
+  },
+  {
+   "wort": "eine",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "mitsprech",
+   "silben": [
+    "ei",
+    "ne"
+   ],
+   "stellen": [],
+   "satz": "Eine Maus ist klein."
+  },
+  {
+   "wort": "und",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "merk",
+   "silben": [
+    "und"
+   ],
+   "stellen": [
+    {
+     "zeichen": "d",
+     "typ": "merk",
+     "tipp": "Merkwort: und mit d"
+    }
+   ],
+   "satz": "Ich esse Brot und Käse."
+  },
+  {
+   "wort": "aber",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "mitsprech",
+   "silben": [
+    "a",
+    "ber"
+   ],
+   "stellen": [],
+   "satz": "Ich bin müde, aber froh."
+  },
+  {
+   "wort": "heute",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "mitsprech",
+   "silben": [
+    "heu",
+    "te"
+   ],
+   "stellen": [],
+   "satz": "Heute scheint die Sonne."
+  },
+  {
+   "wort": "morgen",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "mitsprech",
+   "silben": [
+    "mor",
+    "gen"
+   ],
+   "stellen": [],
+   "satz": "Morgen gehen wir in den Zoo."
+  },
+  {
+   "wort": "Menschen",
+   "artikel": "",
+   "wortart": "nomen",
+   "art": "mitsprech",
+   "silben": [
+    "Men",
+    "schen"
+   ],
+   "stellen": [],
+   "satz": "Viele Menschen wohnen in der Stadt."
+  },
+  {
+   "wort": "Tiere",
+   "artikel": "",
+   "wortart": "nomen",
+   "art": "nachdenk",
+   "silben": [
+    "Tie",
+    "re"
+   ],
+   "stellen": [
+    {
+     "zeichen": "ie",
+     "typ": "ie",
+     "tipp": "Langes i: ie"
+    }
+   ],
+   "satz": "Im Zoo leben viele Tiere."
+  },
+  {
+   "wort": "Pflanzen",
+   "artikel": "",
+   "wortart": "nomen",
+   "art": "mitsprech",
+   "silben": [
+    "Pflan",
+    "zen"
+   ],
+   "stellen": [],
+   "satz": "Pflanzen brauchen Wasser."
+  },
+  {
+   "wort": "Dinge",
+   "artikel": "",
+   "wortart": "nomen",
+   "art": "mitsprech",
+   "silben": [
+    "Din",
+    "ge"
+   ],
+   "stellen": [],
+   "satz": "In der Kiste liegen viele Dinge."
+  },
+  {
+   "wort": "immer",
+   "artikel": "",
+   "wortart": "andere",
+   "art": "nachdenk",
+   "silben": [
+    "im",
+    "mer"
+   ],
+   "stellen": [
+    {
+     "zeichen": "mm",
+     "typ": "doppel",
+     "tipp": "Kurzes i: doppeltes m"
+    }
+   ],
+   "satz": "Ich putze immer meine Zähne."
+  },
+  {
+   "wort": "alte",
+   "artikel": "",
+   "wortart": "adjektiv",
+   "art": "mitsprech",
+   "silben": [
+    "al",
+    "te"
+   ],
+   "stellen": [],
+   "satz": "Das alte Haus ist groß."
+  }
+ ]
+}
