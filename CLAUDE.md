@@ -33,8 +33,8 @@ Repo und interne Schlüssel heißen neutral `lernwoerter` (Speicher `lernwoerter
 
 Bei jeder Änderung an `index.html`, `werkstatt.html` oder den Schriften **beide Versionsnummern gleichzeitig** hochzählen, sonst bekommt das iPad die alte Fassung aus dem Cache:
 
-- `sw.js`: `const CACHE = 'lernwoerter-v0.9';`
-- `index.html`: `const VERSION = '0.9';` (sichtbar im Elternbereich)
+- `sw.js`: `const CACHE = 'lernwoerter-v0.10';`
+- `index.html`: `const VERSION = '0.10';` (sichtbar im Elternbereich)
 
 `tools/check.sh` bricht ab, wenn sie nicht übereinstimmen. Neue oder korrigierte Wochen in `wochen/` brauchen **keinen** neuen Release (der Service Worker holt `wochen/` immer zuerst aus dem Netz). Nach jedem Update muss die Home-Bildschirm-App komplett geschlossen und zweimal geöffnet werden. Das gehört in jede Release-Nachricht an Thomas.
 
@@ -133,6 +133,8 @@ Einstellungen enthalten die Linienhöhe (28–72 px) mit einer Probe-Schreibflä
 ## Nachspur-Bewertung
 
 `bewerteSpur(pad)`: Vorlage und Tinte werden auf ein grobes Raster gezeichnet (Zelle ≈ Band/12), je Maske ein Abstandsfeld (Chamfer, zwei Durchläufe). Genauigkeit = Anteil Tinte nahe der Vorlage, Abdeckung = Anteil Vorlage nahe der Tinte, Toleranz 0,15 Band. Synthetische Tests (`werkstatt.html?debug`): genau 100/100, zittrig ≥ 73/92, daneben und Gekritzel ≤ 48/62. `sterneFuerSpur()`: der schwächere Wert zählt, ≥ 0,85 → 3, ≥ 0,65 → 2, sonst 1 Stern. Echte Werte vom iPad stehen in `HANDOFF.md`.
+
+In der App liefert `bewerteSpur` zusätzlich `ok` (seit 0.10): Genauigkeit ≥ 0,5, Abdeckung ≥ 0,6, schwächster Buchstabe ≥ 0,3 (Abdeckung je Buchstabenkasten, Toleranz 0,2 Band) und Oberlängen-Jaccard ≥ 0,35. Nur ein Durchgang mit `ok` zählt im Regenbogen. Beim freien Schreiben prüft `laengePasst(pad, text)` nur die Breite (0,6–2,2 der Wortbreite); unplausibles „Alles richtig“ → zweiter Blick → Versuch `auffaellig`, Karteikasten erst nach dem Elternurteil in der Durchsicht (`urteilen`). Gleich geformte Wörter erkennt das alles nicht.
 
 ## Lokal testen
 

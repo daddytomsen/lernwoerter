@@ -224,6 +224,8 @@ canvas.versuch{width:100%;display:block;border:2px solid var(--line);border-radi
 .tag7.fertig{background:var(--good-soft)}
 .tag7 .i{color:var(--good)}
 .versuch-eintrag{background:var(--surface-2);border-radius:var(--r-md);padding:12px 14px}
+.versuch-eintrag.ansehen{background:#FFF1D6;box-shadow:inset 0 0 0 2px #E0B23A}
+.ansehen-chip{background:#E0B23A;color:#fff;font-weight:800;font-size:13px;border-radius:999px;padding:2px 10px}
 .v-kopf{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
 .v-kopf .leise{font-size:15px}
 @media (max-width:640px){.tag{min-width:56px}.tag .punkt{width:52px;height:52px}.tag small{display:none}.weglinie{margin-bottom:26px}}
@@ -543,7 +545,7 @@ function parseImport(text) {
 }
 
 /* ---------- state & persistence ---------- */
-const VERSION = '0.9';
+const VERSION = '0.10';
 const LS_PROF = 'lernwoerter.profile.v1', lsDaten = id => `lernwoerter.daten.${id}.v1`;
 const S = { view: 'start', prof: store.get(LS_PROF, null), D: null };
 const leererStand = () => ({ sterne: 0, tage: {}, w: {}, rot: {}, plan: {}, zaehler: {}, abzeichen: {}, sticker: {}, heute: null });
@@ -940,13 +942,48 @@ function bewerteSpur(pad, nurPass, tolBand = 0.15) {
   const cell = Math.max(2, Math.round(pad.band / 12)), W = Math.ceil(pad.w / cell), H = Math.ceil(pad.h / cell);
   const tpl = maskFrom(W, H, cell, c => pad.drawTemplate(c, '#000'));
   const ink = maskFrom(W, H, cell, c => pad.drawStrokes(c, '#000', nurPass));
-  const dT = distField(tpl, W, H), dI = distField(ink, W, H), tol = pad.band * tolBand / cell;
+  const dT = distField(tpl, W, H), dI = distField(ink, W, H), tol = pad.band * tolBand / cell, tolB = pad.band * 0.2 / cell;
+  // Letter boxes of the grey word: every single letter must have been traced, not just "ink somewhere near the word".
+  const mc = document.createElement('canvas').getContext('2d'); mc.font = pad.tplFont();
+  const t = pad.o.template, x0 = pad.o.mode === 'spur' ? hausEnde(pad.band) : 0;
+  const boxen = [...t].map((ch, i) => ch === ' ' ? null : [x0 + mc.measureText(t.slice(0, i)).width, x0 + mc.measureText(t.slice(0, i + 1)).width, 0, 0]).filter(Boolean);
   let nI = 0, okI = 0, nT = 0, okT = 0;
   for (let i = 0; i < W * H; i++) {
     if (ink[i]) { nI++; if (dT[i] <= tol) okI++ }
-    if (tpl[i]) { nT++; if (dI[i] <= tol) okT++ }
+    if (tpl[i]) {
+      nT++; if (dI[i] <= tol) okT++;
+      const x = (i % W + 0.5) * cell, b = boxen.find(bx => x >= bx[0] && x < bx[1]);
+      if (b) { b[2]++; if (dI[i] <= tolB) b[3]++ }
+    }
   }
-  return { leer: !nI, praezision: nI ? okI / nI : 0, abdeckung: nT ? okT / nT : 0 };
+  const praezision = nI ? okI / nI : 0, abdeckung = nT ? okT / nT : 0;
+  const buchstaben = boxen.map(b => (b[2] ? b[3] / b[2] : 1)), schwaechster = buchstaben.length ? Math.min(...buchstaben) : 1;
+  // Ascenders, as the school ruling teaches them: where does the writing reach up into the roof band? Compared along x
+  // (±0.35 band) with the grey word. Separates e.g. "das Fahrrad" or "eine Maus" written over "die Ameise" (28–36 %)
+  // from real traces (46–92 % in tests); words with the same ascender pattern (der Baum, die Kiste) still look alike.
+  const yo = (pad.lines().mittel - pad.band * 0.25) / cell, r = Math.round(pad.band * 0.35 / cell);
+  const oben = m => { const a = new Uint8Array(W); for (let i = 0; i < m.length; i++) if (m[i] && (i / W | 0) < yo) a[i % W] = 1; return a.map((_, x) => { for (let k = -r; k <= r; k++) if (a[x + k]) return 1; return 0 }) };
+  const oT = oben(tpl), oI = oben(ink);
+  let schnitt = 0, verein = 0;
+  for (let x = 0; x < W; x++) { if (oT[x] && oI[x]) schnitt++; if (oT[x] || oI[x]) verein++ }
+  const oberlaengen = verein ? schnitt / verein : 1;
+  // Gate (15.10.2026, Thomas: "Baum" over "Ameise" was accepted): on the grey word, most of it covered, every letter touched.
+  // Synthetic checks (Playwrite glyphs as ink): exact, shaky (±0.25 band), half a band off and another handwriting (Andika) pass;
+  // "Baum" (A 41 %, last letters 0 %), "der Baum" (letter 3 %), "das Fahrrad", "eine Maus", one band off and half words fail.
+  // Without handwriting recognition a different word of the same shape (die Bäume, die Kiste) can still pass.
+  const ok = !!nI && praezision >= 0.5 && abdeckung >= 0.6 && schwaechster >= 0.3 && oberlaengen >= 0.35;
+  return { leer: !nI, praezision, abdeckung, schwaechster, buchstaben, oberlaengen, ok };
+}
+// Length check for free writing (no handwriting recognition in the browser): the child's ink compared with the width
+// of the word in the school font at the same band. Correct writing measured 0.79–1.28 in tests; "Baum" for "die Ameise" 0.54.
+// Only a soft check: it asks for a second look and marks the attempt for the parents' review, it never marks "wrong".
+function laengePasst(pad, text) {
+  let x0 = Infinity, x1 = -Infinity, punkte = 0;
+  for (const s of pad.strokes) for (const p of s.pts) { x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); punkte++ }
+  if (!punkte) return false;
+  const mc = document.createElement('canvas').getContext('2d'); mc.font = pad.tplFont();
+  const verhaeltnis = (x1 - x0 + pad.baseW()) / mc.measureText(text).width;
+  return verhaeltnis >= 0.6 && verhaeltnis <= 2.2;
 }
 // The weaker measure counts: clean but half-finished and complete scribbles both stay at one star.
 function sterneFuerSpur(praezision, abdeckung) {
@@ -1125,7 +1162,9 @@ function viewSchreiben(st, w, weiter) {
       let oben = '';
       if (st.typ === 'regenbogen') oben = `<div class="paesse">${FARBEN.map((f, k) => `<span class="pass${k === st.pad.pass ? ' an' : ''}" style="--f:${f}">${FARB_NAME[k]}${st.passSterne[k] ? ' ' + icon('star').repeat(st.passSterne[k]) : ''}</span>`).join('')}</div>`;
       const extra = st.typ === 'blitz' && st.blitze < 3 ? `<button class="btn" data-act="blitz-los" ${leer ? '' : 'hidden'}>${icon('bolt')}Nochmal blitzen</button>` : st.typ === 'merk' ? hoeren : '';
-      return `${oben}${host}${werkzeug(extra)}`;
+      const hinweis = st.typ === 'regenbogen' && st.spurHinweis ? `<p class="nochmal">Fahr genau auf dem grauen Wort nach, jeden Buchstaben!</p>` : '';
+      const ueberspringen = st.typ === 'regenbogen' && (st.spurFehl || 0) >= 3 ? `<button class="btn" data-act="spur-spaeter">Später nochmal</button>` : '';
+      return `${oben}${hinweis}${host}${werkzeug(extra + ueberspringen)}`;
     }
     case 'pruefen':
       return `<p class="anweisung">Vergleiche Buchstabe für Buchstabe. Tippe jeden Buchstaben an, der bei dir anders ist.</p>
@@ -1392,7 +1431,7 @@ function viewDiktat(st) {
 }
 function diktatWeiter() {
   const st = S.st;
-  st.antworten[st.i] = { striche: pack(st.pad), band: st.pad.band };
+  st.antworten[st.i] = { striche: pack(st.pad), band: st.pad.band, plausibel: laengePasst(st.pad, vollWort(st.ws[st.i])) };
   if (st.i < st.ws.length - 1) {
     st.i++; st.pad = new Pad({ mode: 'leer' }); st.pad.onChange = padGeaendert;
     render(); say(diktatSatz(st.ws[st.i]));
@@ -1403,9 +1442,9 @@ function diktatWeiter() {
 }
 function diktatPruef(ok) {
   const st = S.st, w = st.ws[st.k];
-  st.ergebnis[st.k] = { wort: w.id, ok, fehler: [...st.markiert] };
+  st.ergebnis[st.k] = { wort: w.id, ok, fehler: [...st.markiert], auffaellig: ok && !st.antworten[st.k].plausibel };
   if (st.k < st.ws.length - 1) {
-    st.k++; st.markiert = new Set(); st.aufgedeckt = false;
+    st.k++; st.markiert = new Set(); st.aufgedeckt = false; st.zweiterBlick = false;
     render(); st.aufgedeckt = true; if (ok) SFX.ok(); say(vollWort(st.ws[st.k]));
     return;
   }
@@ -1414,11 +1453,11 @@ function diktatPruef(ok) {
 function diktatFertig() {
   const st = S.st, k = S.D.wochen.find(x => x.id === st.woche), id = uid('d'), zeit = Date.now();
   st.ergebnis.forEach((e, i) => {
-    bewerte(e.wort, e.ok, e.fehler);
-    speichereVersuch({ profil: aktiv().id, wort: e.wort, station: 'diktat', diktat: id, zeit: zeit + i, tag: heute(), band: st.antworten[i].band, striche: st.antworten[i].striche, selbst: e.ok, fehler: e.fehler });
+    if (!e.auffaellig) bewerte(e.wort, e.ok, e.fehler);   // suspicious "all right": Karteikasten waits for the review
+    speichereVersuch({ profil: aktiv().id, wort: e.wort, station: 'diktat', diktat: id, zeit: zeit + i, tag: heute(), band: st.antworten[i].band, striche: st.antworten[i].striche, selbst: e.ok, fehler: e.fehler, auffaellig: !!e.auffaellig });
   });
   const fehler = st.ergebnis.filter(e => !e.ok).length;
-  zaehle('diktat'); zaehle('kopf', st.ergebnis.length - fehler); if (!fehler) zaehle('gold');
+  zaehle('diktat'); zaehle('kopf', st.ergebnis.filter(e => e.ok && !e.auffaellig).length); if (!fehler) zaehle('gold');
   st.pokal = fehler === 0 ? 0 : fehler <= 2 ? 1 : 2;   // every attempt earns a cup
   st.sterne = 5 - st.pokal; sternPlus(st.sterne);
   S.D.diktate.push({ id, woche: st.woche, datum: heute(), ergebnis: st.ergebnis, pokal: POKAL[st.pokal][0] });
@@ -1793,12 +1832,13 @@ function viewDurchsicht() {
   }
   if (!S.versuche.length) return '<p class="leise">Noch keine Schreibversuche. Sie entstehen beim Abschreiben, Regenbogen, Blitzlesen, Merk-Diktat und im Mini-Diktat.</p>';
   return `<p class="leise" style="font-size:15px;margin:0 0 10px">Je Wort die letzten drei Versuche. „Richtig“ oder „falsch“ überstimmt die Selbstkontrolle des Kindes. Bei Blitzlesen, Merk-Diktat und Mini-Diktat ändert das auch den Karteikasten, beim Mini-Diktat die Fehlerwörter der nächsten Woche.</p>
-    <div class="liste">${S.versuche.slice(0, 40).map(v => {
+    ${S.versuche.some(v => v.auffaellig && !v.eltern) ? '<p class="hinweis">Oben stehen Versuche mit „Bitte ansehen“: Das Kind hat „alles richtig“ getippt, aber die Länge der Schrift passt nicht zum Wort. Bitte kurz prüfen und richtig oder falsch wählen.</p>' : ''}
+    <div class="liste">${S.versuche.slice().sort((a, b) => (b.auffaellig && !b.eltern) - (a.auffaellig && !a.eltern)).slice(0, 40).map(v => {
       const w = S.D.woerter[v.wort]; if (!w) return '';
       const zeit = new Date(v.zeit).toLocaleString('de-DE', { weekday: 'short', day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' });
-      const urteil = v.eltern || (v.selbst ? 'ok' : 'falsch'), regenbogen = v.station === 'regenbogen';
+      const urteil = v.eltern || (v.auffaellig ? '' : v.selbst ? 'ok' : 'falsch'), regenbogen = v.station === 'regenbogen';
       const kind = regenbogen ? `Spur: ${(v.spur || []).join(' / ')} Sterne` : `Kind: ${v.selbst ? 'alles richtig' : 'Fehler markiert'}${v.eltern ? ' · von dir geändert' : ''}`;
-      return `<div class="versuch-eintrag"><div class="v-kopf"><b class="fw">${esc(vollWort(w))}</b><span class="leise">${esc(STATION_KURZ[v.station] || v.station)} · ${esc(zeit)} · ${esc(kind)}</span></div>
+      return `<div class="versuch-eintrag${v.auffaellig && !v.eltern ? ' ansehen' : ''}"><div class="v-kopf"><b class="fw">${esc(vollWort(w))}</b>${v.auffaellig && !v.eltern ? '<span class="ansehen-chip">Bitte ansehen</span>' : ''}<span class="leise">${esc(STATION_KURZ[v.station] || v.station)} · ${esc(zeit)} · ${esc(kind)}</span></div>
         <canvas class="versuch" data-versuch="${v.id}"></canvas>
         ${regenbogen ? '' : `<div class="row"><button class="chip" data-act="urteil" data-id="${v.id}" data-u="ok" aria-pressed="${urteil === 'ok'}">richtig</button><button class="chip" data-act="urteil" data-id="${v.id}" data-u="falsch" aria-pressed="${urteil === 'falsch'}">falsch</button></div>`}</div>`;
     }).join('')}</div>`;
@@ -1813,12 +1853,14 @@ function aktualisiereVersuch(v) { return idbOpen().then(db => { if (db) { try { 
 // Parent's verdict overrides the child's self-check. Memory writing and the dictation also adjust the Karteikasten;
 // a dictation verdict moves the word into or out of next week's mistake list.
 function urteilen(v, neu) {
-  const alt = v.eltern || (v.selbst ? 'ok' : 'falsch');
+  // A flagged attempt ("Bitte ansehen") is undecided until the parents look at it.
+  const offen = v.auffaellig && !v.eltern, alt = v.eltern || (offen ? null : v.selbst ? 'ok' : 'falsch');
   if (neu === alt) return;
   v.eltern = neu; aktualisiereVersuch(v);
   if (AUS_DEM_KOPF.includes(v.station) || v.station === 'diktat') {
     const c = karte(v.wort);
-    if (neu === 'falsch') bewerte(v.wort, false, []);
+    if (offen) bewerte(v.wort, neu === 'ok', []);   // the Karteikasten waited for exactly this decision
+    else if (neu === 'falsch') bewerte(v.wort, false, []);
     else if (c && c.letztes === 'falsch') bewerte(v.wort, true, []);
   }
   if (v.station === 'diktat') {
@@ -2034,11 +2076,15 @@ function wortSterne(st, n, text) {
 function pruefungFertig(ok) {
   if (S.st.typ === 'diktat') { diktatPruef(ok); return }
   const st = S.st, w = stationWort(), fehler = [...st.markiert];
-  speichereVersuch({ profil: aktiv().id, wort: w.id, station: st.typ, zeit: Date.now(), tag: heute(), band: st.pad.band, striche: pack(st.pad), selbst: ok, fehler });
+  speichereVersuch({ profil: aktiv().id, wort: w.id, station: st.typ, zeit: Date.now(), tag: heute(), band: st.pad.band, striche: pack(st.pad), selbst: ok, fehler, auffaellig: ok && !st.plausibel });
   if (AUS_DEM_KOPF.includes(st.typ)) {
-    const r = bewerte(w.id, ok, fehler);
-    if (ok) zaehle('kopf');
-    st.fachText = ok ? (r.auf ? `Ab in Fach ${r.fach}!` : 'Das Wort sitzt schon gut.') : 'Das Wort übst du bald noch einmal.';
+    // "All right" although the length does not fit: the Karteikasten waits for the parents' review.
+    if (ok && !st.plausibel) st.fachText = 'Das schauen wir uns noch zusammen an.';
+    else {
+      const r = bewerte(w.id, ok, fehler);
+      if (ok) zaehle('kopf');
+      st.fachText = ok ? (r.auf ? `Ab in Fach ${r.fach}!` : 'Das Wort sitzt schon gut.') : 'Das Wort übst du bald noch einmal.';
+    }
   } else if (!ok) { notiereFehler(w.id, fehler); saveDaten() }
   if (ok) { wortSterne(st, 2, lob()); return }
   st.phase = 'nochmal';
@@ -2213,6 +2259,12 @@ const ACT = {
     if (st.typ === 'diktat') { diktatWeiter(); return }
     if (st.typ === 'regenbogen' && st.phase === 'schreiben') {
       const r = bewerteSpur(pad, pad.pass);
+      if (!r.ok) {
+        st.spurFehl = (st.spurFehl || 0) + 1; pad.clear(); st.spurHinweis = true;
+        render(); SFX.sanft(); say('Das war noch nicht genau auf dem grauen Wort. Fahr jeden Buchstaben nach!');
+        return;
+      }
+      st.spurHinweis = false; st.spurFehl = 0;
       st.passSterne.push(sterneFuerSpur(r.praezision, r.abdeckung));
       if (pad.pass < FARBEN.length - 1) { pad.pass++; pad.color = FARBEN[pad.pass]; render(); SFX.krone(); say('Jetzt in ' + FARB_NAME[pad.pass] + '.'); return }
       speichereVersuch({ profil: aktiv().id, wort: w.id, station: st.typ, zeit: Date.now(), tag: heute(), band: pad.band, striche: pack(pad), spur: st.passSterne.slice() });
@@ -2220,9 +2272,17 @@ const ACT = {
       wortSterne(st, n, n === 3 ? 'Wunderschöner Regenbogen!' : n === 2 ? 'Schöner Regenbogen!' : 'Geschafft! Beim nächsten Mal noch genauer.');
       return;
     }
-    if (st.phase === 'nochmal') { wortSterne(st, 2, 'Prima abgeschrieben!'); return }
+    if (st.phase === 'nochmal') {
+      if (!laengePasst(pad, vollWort(w)) && !st.nochmalBlick) { st.nochmalBlick = true; toast('Schau genau auf die Vorlage: Hast du das ganze Wort geschrieben?'); say('Schau genau auf die Vorlage. Hast du das ganze Wort geschrieben?'); return }
+      wortSterne(st, 2, 'Prima abgeschrieben!'); return;
+    }
+    st.plausibel = laengePasst(pad, vollWort(w)); st.zweiterBlick = false;
     pad.locked = true; st.phase = 'pruefen'; render(); st.aufgedeckt = true;
     say(vollWort(w));
+  },
+  'spur-spaeter': () => {
+    const st = S.st;
+    st.sterneWort = 0; st.lob = 'Das üben wir ein anderes Mal.'; st.fachText = ''; st.phase = 'ergebnis'; render(); SFX.sanft(); say(st.lob);
   },
   vbst: el => {
     const st = S.st, key = el.dataset.key;
@@ -2231,7 +2291,17 @@ const ACT = {
     $('[data-act="fehler-fertig"]').hidden = !st.markiert.size;
     $('[data-act="alles-richtig"]').hidden = st.markiert.size > 0;
   },
-  'alles-richtig': () => pruefungFertig(true),
+  'alles-richtig': () => {
+    const st = S.st, plausibel = st.typ === 'diktat' ? st.antworten[st.k].plausibel : st.plausibel;
+    if (!plausibel && !st.zweiterBlick) {
+      st.zweiterBlick = true;
+      const a = $('.anweisung'); if (a) a.textContent = 'Schau noch einmal ganz genau hin: Stimmt wirklich jeder Buchstabe? Ist das ganze Wort da?';
+      const b = $('[data-act="alles-richtig"]'); if (b) b.lastChild.textContent = 'Ja, alles richtig';
+      SFX.sanft(); say('Schau noch einmal ganz genau hin. Stimmt wirklich jeder Buchstabe?');
+      return;
+    }
+    pruefungFertig(true);
+  },
   'fehler-fertig': () => pruefungFertig(false),
   // first start
   'ob-weiter': () => {
@@ -2364,7 +2434,7 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || /[?&]sw\b
 let resizeTimer = 0;
 window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { const p = aktuellesPad(); if (p && p.wrap.isConnected) p.layout() }, 150) });
 // Debug hook for local checks only (?debug): state, word functions, Karteikasten, and a day shift for "tomorrow".
-if (/[?&]debug\b/.test(location.search)) window.sf = { S, parseImport, silbenVorschlag, stellenVorschlag, neuesWort, tokens, render, bewerte, rundeAusDemKopf, bewerteSpur, tag: n => { zeitVersatz = n; return heute() }, alternative, ablenker, poolFuer, planStart, tagIndexHeute, holeAngebot, uebernehmen, stufe, pruefeAbzeichen, neuerSticker, sicherungsText, sicherungLaden };
+if (/[?&]debug\b/.test(location.search)) window.sf = { S, parseImport, silbenVorschlag, stellenVorschlag, neuesWort, tokens, render, bewerte, rundeAusDemKopf, bewerteSpur, tag: n => { zeitVersatz = n; return heute() }, alternative, ablenker, poolFuer, planStart, tagIndexHeute, holeAngebot, uebernehmen, laengePasst, stufe, pruefeAbzeichen, neuerSticker, sicherungsText, sicherungLaden };
 })();
 </script>
 </body>

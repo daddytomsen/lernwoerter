@@ -1,6 +1,6 @@
 # Übergabe an Claude Code – Schreibfuchs
 
-Stand: 14.10.2026 · **App 0.9 live** (an die Schule angeglichen, Wochen aus dem Repo übernehmen) auf `main` (M1–M6 zusammengeführt am 14.10. auf Wunsch von Thomas, vor dem M0-Test) · Werkstatt-Test unter `/werkstatt.html` · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
+Stand: 15.10.2026 · **App 0.10 live** (falsche Wörter fallen auf: Nachspur-Hürde, zweiter Blick, „Bitte ansehen“) auf `main` (M1–M6 zusammengeführt am 14.10. auf Wunsch von Thomas, vor dem M0-Test) · Werkstatt-Test unter `/werkstatt.html` · Projektordner `~/Downloads/lernwoerter` · live unter https://daddytomsen.github.io/lernwoerter/
 
 Lies zuerst `CLAUDE.md` (Aufbau, Regeln) und `KONZEPT.md` (Auftrag). Diese Datei sagt, was entschieden, was fertig und was als Nächstes zu tun ist.
 
@@ -208,6 +208,14 @@ Thomas erwartete, dass die von Claude erstellten Wochen von selbst in der App er
 - Im Repo: „der, die, das“ (15), „hat, haben“ (erst 7, Rest folgt als rev 2), „AB 4“ (15, Diktat 12.10. mit Schul-Diktat um, lesen, Baum).
 - Geprüft im Browser: Angebot nach der Rechenaufgabe, AB 4 übernommen mit Termin und Schul-Diktat 12/15, „der, die, das“ übernommen → Fehlerwörter um, lesen, Baum; Aktualisierung (rev 2 mit einem Wort mehr) behält Ids und Lernstand, keine doppelte Woche.
 - **Offen:** die aktuelle Schulwoche (vermutlich AB 5) fehlt noch, Fotos von Thomas; Wörter 8–15 von „hat, haben“.
+
+### 0.10 – Falsche Wörter fallen auf (15.10.2026, Meldung Thomas)
+
+Thomas: Beim Nachspuren von „die Ameise“ ging „Baum“ als richtig durch. Ursache: Die Regenbogen-Station hat nie einen Durchgang abgelehnt, sie hat nur Sterne verteilt; Genauigkeit und Abdeckung über das ganze Wort sind bei kurzen Fremdwörtern hoch genug.
+- **Nachspuren** (`bewerteSpur` → `ok`): zusätzlich Abdeckung je Buchstabe (schwächster ≥ 0,3, Toleranz 0,2 Band) und Vergleich der Oberlängen (Jaccard ≥ 0,35); dazu Genauigkeit ≥ 0,5, Abdeckung ≥ 0,6. Nicht bestanden → Spur gelöscht, „Fahr jeden Buchstaben nach!“, nach 3 Fehlversuchen „Später nochmal“ (0 Sterne).
+- **Freies Schreiben** (Blitz, Merk, Mini-Diktat, „Nochmal“): `laengePasst()` vergleicht die Breite der Tinte mit der Wortbreite (0,6–2,2). Passt sie nicht und das Kind tippt „Alles richtig“, kommt einmal ein zweiter Blick. Bleibt es dabei, wird der Versuch als `auffaellig` gespeichert, steht in der Durchsicht oben mit „Bitte ansehen“, und der **Karteikasten wartet auf das Elternurteil** („Das schauen wir uns noch zusammen an.“; Sterne gibt es trotzdem).
+- Synthetisch geprüft, Nachspuren „die Ameise“: abgelehnt Baum, der Baum, das Fahrrad, eine Maus, die Kiste, halbes Wort, eine Linie daneben; angenommen alle 6 richtigen Varianten inkl. 15 Zitterläufen. **Grenze:** gleich geformte Wörter (die Bäume) kommen durch, ohne Handschrifterkennung geht es nicht besser – Scribble ist verworfen, die Durchsicht bleibt die Absicherung.
+- Geprüft im Browser: Blitzlesen „die Ameise“ mit „Baum“ → zweiter Blick → Karteikasten unverändert → Durchsicht ohne Vorauswahl, „richtig“ → Fach 2, Umstellen auf „falsch“ → Fach 1.
 
 ## Nicht ohne Rückfrage
 
